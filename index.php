@@ -48,6 +48,9 @@ switch($page)
 	case "wap":
 		$inc = "main/wap.inc.php";
 		break;
+    case "database":
+        $inc = "main/database.inc.php";
+        break;
 }
 function createStats()
 {
@@ -189,6 +192,7 @@ input.text {
 			<li><a href=?page=spenden>Spenden</a></li>
 			<li><a href=http://scout.stuniverse.de target=_blank>Zeitung</a></li>
 			<li><a href=http://www.galors.net/bewertung/ target=_blank>Links</a></li>
+            <li><a href=?page=database>Database</a></li>
 			</ul></div>
 			</td>
 		</tr>
@@ -282,10 +286,10 @@ document.f.luser.focus();
 		</tr>
 		<tr>
 			<td class=tdmainobg align=Center width=590>
-			Star Trek™ is a registered trademark of Paramount Pictures.<br>
+			Star Trekï¿½ is a registered trademark of Paramount Pictures.<br>
 			This site is strictly non-profit.<br>
 			No copyright infringement is intended.<br> 
-			All other Content is copyrighted by the siteowner, unless otherwise noted. ©2003,2004,2005</td>
+			All other Content is copyrighted by the siteowner, unless otherwise noted. ï¿½2003,2004,2005</td>
 		</tr>
 		</table>
 	</td>
