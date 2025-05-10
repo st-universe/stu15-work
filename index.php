@@ -286,10 +286,10 @@ document.f.luser.focus();
 		</tr>
 		<tr>
 			<td class=tdmainobg align=Center width=590>
-			Star Trek� is a registered trademark of Paramount Pictures.<br>
+			Star Trek&#8482; is a registered trademark of Paramount Pictures.<br>
 			This site is strictly non-profit.<br>
 			No copyright infringement is intended.<br> 
-			All other Content is copyrighted by the siteowner, unless otherwise noted. �2003,2004,2005</td>
+			All other Content is copyrighted by the siteowner, unless otherwise noted. &#169;2003,2004,2005</td>
 		</tr>
 		</table>
 	</td>
