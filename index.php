@@ -8,6 +8,9 @@ include_once("class/db.class.php");
 $myDB = new db;
 include_once("class/game.class.php");
 $myGame = new game;
+
+$page = $_GET['page'] ?: null;
+
 switch($page)
 {
 	default:
