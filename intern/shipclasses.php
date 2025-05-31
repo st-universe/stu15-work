@@ -13,9 +13,9 @@ if (!$section || ($section == "overview")) {
 	<table>
 	<table width=90% bgcolor=#262323>
 	<tr>
-		<td class=tdmain colspan=7 align=center><a href=?page=shipclasses&section=addclass>Schiffsklasse einfügen</a></td>
+		<td class=tdmain colspan=7 align=center><a href=?page=shipclasses&section=addclass>Schiffsklasse einfï¿½gen</a></td>
 	</tr>";
-	$classes = $myShip->getclasses();
+	$classes = $myShip->getClasses();
 	for ($i=0;$i<count($classes);$i=$i+2) {
 		echo "<tr>
 			<td class=tdmainobg><img src=http://home.arcor.de/omega-sektion/stu/ships/".$classes[$i][id].".gif></td>
@@ -53,7 +53,7 @@ if (!$section || ($section == "overview")) {
 		<td class=tdmain><input type=text name=name value=\"".$class[name]."\" class=text></td>
 	</tr>
 	<tr>
-		<td class=tdmain>max Hülle</td>
+		<td class=tdmain>max Hï¿½lle</td>
 		<td class=tdmain><input type=text name=huelle value=\"".$class[huelle]."\" class=text></td>
 	</tr>
 	<tr>
@@ -81,7 +81,7 @@ if (!$section || ($section == "overview")) {
 		<td class=tdmain><input type=text name=erz value=\"".$class[erz]."\" class=text></td>
 	</tr>
 	<tr>
-		<td class=tdmain>Phaserstärke</td>
+		<td class=tdmain>Phaserstï¿½rke</td>
 		<td class=tdmain><input type=text name=phaser value=\"".$class[phaser]."\" class=text></td>
 	</tr>
 	<tr>
@@ -97,7 +97,7 @@ if (!$section || ($section == "overview")) {
 		<td class=tdmain><input type=text name=cloak value=\"".$class[cloak]."\" class=text></td>
 	</tr>
 	<tr>
-		<td class=tdmain>Dockplätze</td>
+		<td class=tdmain>Dockplï¿½tze</td>
 		<td class=tdmain><input type=text name=slots value=\"".$class[slots]."\" class=text></td>
 	</tr>
 	<tr>
@@ -113,7 +113,7 @@ if (!$section || ($section == "overview")) {
 		<td class=tdmain><input type=text name=view value=\"".$class[view]."\" class=text></td>
 	</tr>
 	<tr>
-		<td colspan=2 align=Center class=tdmain><input type=submit value=Editieren class=button> <input type=reset value=Zurücksetzen class=button></td>
+		<td colspan=2 align=Center class=tdmain><input type=submit value=Editieren class=button> <input type=reset value=Zurï¿½cksetzen class=button></td>
 	</tr>
 	</form>
 	</table>";
@@ -124,7 +124,7 @@ if (!$section || ($section == "overview")) {
 	<input type=hidden name=section value=overview>
 	<input type=hidden name=action value=addclass>
 	<tr>
-		<td class=tdmaintop colspan=5 align=center width=100%>Schiffsklasse hinzufügen</td>
+		<td class=tdmaintop colspan=5 align=center width=100%>Schiffsklasse hinzufï¿½gen</td>
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
@@ -140,7 +140,7 @@ if (!$section || ($section == "overview")) {
 		<td class=tdmain><input type=text name=name class=text></td>
 	</tr>
 	<tr>
-		<td class=tdmain>max Hülle</td>
+		<td class=tdmain>max Hï¿½lle</td>
 		<td class=tdmain><input type=text name=huelle class=text></td>
 	</tr>
 	<tr>
@@ -168,7 +168,7 @@ if (!$section || ($section == "overview")) {
 		<td class=tdmain><input type=text name=erz class=text></td>
 	</tr>
 	<tr>
-		<td class=tdmain>Phaserstärke</td>
+		<td class=tdmain>Phaserstï¿½rke</td>
 		<td class=tdmain><input type=text name=phaser class=text></td>
 	</tr>
 	<tr>
@@ -184,7 +184,7 @@ if (!$section || ($section == "overview")) {
 		<td class=tdmain><input type=text name=cloak class=text></td>
 	</tr>
 	<tr>
-		<td class=tdmain>Dockplätze</td>
+		<td class=tdmain>Dockplï¿½tze</td>
 		<td class=tdmain><input type=text name=slots class=text></td>
 	</tr>
 	<tr>
@@ -236,7 +236,7 @@ if (!$section || ($section == "overview")) {
 		<td class=tdmain><input type=checkbox name=gel></td>
 	</tr>
 	<tr>
-		<td colspan=2 align=Center class=tdmain><input type=submit value=Hinzufügen class=button> <input type=reset value=Zurücksetzen class=button></td>
+		<td colspan=2 align=Center class=tdmain><input type=submit value=Hinzufï¿½gen class=button> <input type=reset value=Zurï¿½cksetzen class=button></td>
 	</tr>
 	</form>
 	</table>";
