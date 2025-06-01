@@ -1,4 +1,6 @@
-### SetupAdd commentMore actions
+### Setup
+STU V1.5 - works with php5. maybe
+
 1. Copy and edit config
     ````shell 
     cp inc/config.inc.dist.php inc/config.inc.php
