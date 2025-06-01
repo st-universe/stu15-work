@@ -240,17 +240,17 @@ class ship
 		{
 			if ($data[c][crew_min] - 2 > $data[crew])
 			{
-				$return[msg] = "Zum fliegen werden mindestens ".($data[c][crew_min] - 2)." Crewmitglieder benï¿½tigt";
+				$return[msg] = "Zum fliegen werden mindestens ".($data[c][crew_min] - 2)." Crewmitglieder benötigt";
 				if ($fleetmove != 0)
 				{
 					$this->db->query("UPDATE stu_ships SET fleets_id=0 WHERE id=".$data[id]);
-					$return[msg] .= "<br>Die ".stripslashes($data[name])." hat sich auf der Flotte gelï¿½st";
+					$return[msg] .= "<br>Die ".stripslashes($data[name])." hat sich auf der Flotte gelöst";
 				}
 				return $return;
 			}
 			if ($data[crew] < 2)
 			{
-				$return[msg] = "Zum fliegen werden mindestens 2 Crewmitglieder benï¿½tigt";
+				$return[msg] = "Zum fliegen werden mindestens 2 Crewmitglieder benötigt";
 				return $return;
 			}
 		}
@@ -291,7 +291,7 @@ class ship
 				$raceenter .= "<td class=tdmainobg>Schiff fliegt in den Raum der Breen ein</td></tr>";
 				if (($userId > 100) && ($data[cloak] == 0)) $myComm->sendpm($cd[race],2,"Perimeteralarm: Die ".$data[name]." von ".$myUser->uuser." (".$data[user_id].") hat bei ".$x."/".$y." die Grenze durchbrochen",2);
 			}
-			if ($cd[race] == 10) $raceenter .= "<td class=tdmainobg>Schiff fliegt in den Raum der Fï¿½deration ein</td></tr>";
+			if ($cd[race] == 10) $raceenter .= "<td class=tdmainobg>Schiff fliegt in den Raum der Föderation ein</td></tr>";
 			if ($cd[race] == 24) $raceenter .= "<td class=tdmainobg>Schiff fliegt in den Raum der Verekkianer ein</td></tr>";
 			if ($cd[race] == 11)
 			{
@@ -311,8 +311,8 @@ class ship
 			if (($this->db->query("SELECT count(id) FROM stu_ships WHERE coords_x BETWEEN ($x-1) AND ($x+1) AND coords_y BETWEEN ($y-1) AND ($y+1) AND ships_rumps_id=189",1) != 0) AND ($this->db->query("SELECT id FROM stu_ships_action WHERE ships_id = ".$data[id]." AND mode='borderdet' AND ships_id2 = 15",1) == 0))
 			{
 				$this->db->query("INSERT INTO stu_ships_action (ships_id,mode,ships_id2) VALUES ('".$data[id]."','borderdet','15')");
-				$raceenter .= "<tr><td class=tdmainobg></td><td class=tdmainobg><img src=".$this->gfx."/ships/189.gif></td><td class=tdmainobg>Das Schiff wurde aufgespï¿½rt</td></tr>";
-				if ($userId > 100) $myComm->sendpm($cd[race],2,"Annï¿½herungsalarm: Die ".$data[name]." von ".$myUser->uuser." (".$data[user_id].") wurde bei ".$x."/".$y." entdeckt",2);
+				$raceenter .= "<tr><td class=tdmainobg></td><td class=tdmainobg><img src=".$this->gfx."/ships/189.gif></td><td class=tdmainobg>Das Schiff wurde aufgespürt</td></tr>";
+				if ($userId > 100) $myComm->sendpm($cd[race],2,"Annäherungsalarm: Die ".$data[name]." von ".$myUser->uuser." (".$data[user_id].") wurde bei ".$x."/".$y." entdeckt",2);
 			}
 		}
 		elseif (($cd[race] == 0) && ($this->db->query("SELECT id FROM stu_ships_action WHERE ships_id = ".$data[id]." AND mode='borderdet' AND ships_id2 = 15",1) != 0))
@@ -335,7 +335,7 @@ class ship
 			else
 			{
 				$trw = 0;
-				$trak_msg = " - Nicht genï¿½gend Energie, Traktorstrahl abgerissen";
+				$trak_msg = " - Nicht genügend Energie, Traktorstrahl abgerissen";
 				$this->db->query("UPDATE stu_ships SET traktor=0,traktormode=0 WHERE id=".$shipId." OR id=".$data[traktor]);
 			}
 		}
@@ -344,23 +344,23 @@ class ship
 			$data2 = $this->getdatabyid($data[traktor]);
 			if ($data2[energie] > 0 && $data2[user_id] != $data[user_id] && $this->traked == 0)
 			{
-				$trak_msg = "Kann nicht von Traktorstrahl der ".$data2[name]." lï¿½sen";
+				$trak_msg = "Kann nicht von Traktorstrahl der ".$data2[name]." lösen";
 				$this->db->query("UPDATE stu_ships SET energie=energie-1 WHERE id=".$data2[id]);
 				$this->db->query("UPDATE stu_ships SET energie=energie-1 WHERE id=".$data[id]." AND energie>0",$this->dblink);
-				if ($data2[user_id] != $userId) $myComm->sendpm($data2[user_id],$data[user_id],"Die ".$data[name]." hat versucht sich vom Traktorstrahl der ".$data2[name]." zu lï¿½sen",2);
-				$return[msg] = "Die ".$data[name]." kann sich nicht vom Traktorstrahl der ".$data2[name]." lï¿½sen";
+				if ($data2[user_id] != $userId) $myComm->sendpm($data2[user_id],$data[user_id],"Die ".$data[name]." hat versucht sich vom Traktorstrahl der ".$data2[name]." zu lösen",2);
+				$return[msg] = "Die ".$data[name]." kann sich nicht vom Traktorstrahl der ".$data2[name]." lösen";
 				return $return;
 			}
 			elseif ($data2[energie] == 0 && $data2[user_id] != $data[user_id])
 			{
-				if ($data[user_id] != $data2[user_id]) $myComm->sendpm($data2[user_id],$data[user_id],"Die ".$data[name]." hat sich vom Traktorstrahl der ".$data2[name]." gelï¿½st",2);
-				$trak_msg = "Vom Traktorstrahl der ".$data2[name]." gelï¿½st";
+				if ($data[user_id] != $data2[user_id]) $myComm->sendpm($data2[user_id],$data[user_id],"Die ".$data[name]." hat sich vom Traktorstrahl der ".$data2[name]." gelöst",2);
+				$trak_msg = "Vom Traktorstrahl der ".$data2[name]." gelöst";
 				$this->db->query("UPDATE stu_ships SET traktor=0,traktormode=0 WHERE id=".$data[id]." OR id=".$data2[id]);
 				$tl = 1;
 			}
 			if ($data2[user_id] == $data[user_id] && $this->traked == 0)
 			{
-				$trak_msg = "Vom Traktorstrahl der ".$data2[name]." gelï¿½st";
+				$trak_msg = "Vom Traktorstrahl der ".$data2[name]." gelöst";
 				$this->db->query("UPDATE stu_ships SET traktormode=0,traktor=0 WHERE id=".$data2[id]." OR id=".$data[id]);
 				$tl = 1;
 			}
@@ -424,7 +424,7 @@ class ship
 				}
 			}
 			else $huelle -= $dam;
-			if ($huelle < 1) $myHistory->addEvent("Die ".addslashes($data[name])." wurde durch einen Asteroiden zerstï¿½rt",$userId);
+			if ($huelle < 1) $myHistory->addEvent("Die ".addslashes($data[name])." wurde durch einen Asteroiden zerstört",$userId);
 		}
 		if ($cd[type] == 5 || $cd[type] == 18 || $cd[type] == 20 || $cd[type] == 27 || $cd[type] == 32)
 		{
@@ -467,7 +467,7 @@ class ship
 				return $return;
 			}
 			$energie += 1;
-			if ($this->fmsg == 0) $msg .= "<br>Feldtyp: Rï¿½ntgenpulsar";
+			if ($this->fmsg == 0) $msg .= "<br>Feldtyp: Röntgenpulsar";
 			$sa = 0;
 			$cl = 0;
 			$ks = 0;
@@ -532,7 +532,7 @@ class ship
 				$rand = rand(1,3);
 				if ($huelle + $rand > $mh) $rand = $mh - $huelle;
 				$huelle += $rand;
-				if ($rand != 0) $msg .= "<br>Regeneration: Hï¿½lle um ".$rand." Punkte regeneriert";
+				if ($rand != 0) $msg .= "<br>Regeneration: Hülle um ".$rand." Punkte regeneriert";
 			}
 			$red = 0;
 		}
@@ -705,13 +705,13 @@ class ship
 		if (($data[lss] == 1 && $ls == 0) || ($data[kss] == 1 && $ks == 0)) $amsg .= " Sensoren";
 		if ($sa == 1 && $schilde > 0 && $data[schilde] != $schilde) $msg .= "<br>Schildschaden: ".($data[schilde]-$schilde)." - Schilde bei ".$schilde;
 		if ($sa == 0 && $data[schilde_aktiv] == 1 && $data[schilde] != $schilde) $msg .= "<br>Schildeschaden: ".$data[schilde]." - Schilde zusammengebrochen";
-		if ($huelle < $data[huelle] && $huelle > 0) $msg .= "<br>Hï¿½llenschaden: ".($data[huelle]-$huelle)." - Hï¿½lle bei ".$huelle;
+		if ($huelle < $data[huelle] && $huelle > 0) $msg .= "<br>Hüllenschaden: ".($data[huelle]-$huelle)." - Hülle bei ".$huelle;
 		if ($huelle < 1)
 		{
 			$this->trumfield($shipId);
 			$destroy = 1;
 			$red = 0;
-			$msg .= "<br>Die ".stripslashes($data[name])." wurde beim Einflug in den Sektor zerstï¿½rt";
+			$msg .= "<br>Die ".stripslashes($data[name])." wurde beim Einflug in den Sektor zerstört";
 			$this->cshow == 0;
 		}
 		if ($crewkill > 0)
@@ -723,7 +723,7 @@ class ship
 			{
 				$cl = 0;
 				$sa = 0;
-				$msg .= "<br>Systemausfï¿½lle durch fehlende Besatzung";
+				$msg .= "<br>Systemausfälle durch fehlende Besatzung";
 			}
 			if ($data[c][crew_min] - 2 > $crew)
 			{
@@ -746,7 +746,7 @@ class ship
 		if ($data[fleets_id] > 0 && $fleet == 0 && $fleetmove == 0)
 		{
 			$this->db->query("UPDATE stu_ships SET fleets_id=0 WHERE id=".$shipId);
-			$fleetmsg = "Die ".$data[name]." hat sich aus der Flotte gelï¿½st<br>";
+			$fleetmsg = "Die ".$data[name]." hat sich aus der Flotte gelöst<br>";
 		}
 		$return[msg] .= $fleetmsg.$msg;
 		$return[code] = 1;
@@ -865,7 +865,7 @@ class ship
 			elseif ($cc > 0 && $cc < time()) $this->repairssd("cloakdef",$shipId);
 			if ($data[mtype] == 31 || $data[mtype] == 15)
 			{
-				$return[msg] = "Die Tarnung kann aufgrund eines stellaren Phï¿½nomens nicht aktiviert werden";
+				$return[msg] = "Die Tarnung kann aufgrund eines stellaren Phänomens nicht aktiviert werden";
 				return $return;
 			}
 			if ($data[mtype] == 2 || $data[mtype] == 3 || $data[mtype] == 16 || $data[mtype] == 28 || $data[mtype] == 30)
@@ -887,7 +887,7 @@ class ship
 			$mh = $h[huell]*$data[huellmod];
 			if (floor((100/$mh)*$data[huelle]) < 5)
 			{
-				$return[msg] = "Das Schiff ist zu sehr beschï¿½digt um die Tarnung zu aktivieren";
+				$return[msg] = "Das Schiff ist zu sehr beschädigt um die Tarnung zu aktivieren";
 				return $return;
 			}
 			if ($data[schilde_aktiv] == 1)
@@ -917,7 +917,7 @@ class ship
 			}
 			if ($data[energie] < 5)
 			{
-				$return[msg] = "Um den Active-Scan Modus zu aktivieren werden 5 Energie benï¿½tigt";
+				$return[msg] = "Um den Active-Scan Modus zu aktivieren werden 5 Energie benötigt";
 				return $return;
 			}
 		}
@@ -946,7 +946,7 @@ class ship
 			global $myUser;
 			if ($myUser->ulevel < 2)
 			{
-				$return[msg] = "Diese Funktion steht erst ab Level 2 zur Verfï¿½gung";
+				$return[msg] = "Diese Funktion steht erst ab Level 2 zur Verfügung";
 				return $return;
 			}
 			if ($data[crew_min] - 2 > $data[crew] && $data[ships_rumps_id] != 88)
@@ -969,12 +969,12 @@ class ship
 		}
 		if (($value == "kss" || $value == "lss") && $data[mtype] == 31 && $data[sensormodlvl] != 52)
 		{
-			$return[msg] = "Aufgrund des Mutaranebels kï¿½nnen die Sensoren nicht aktiviert werden";
+			$return[msg] = "Aufgrund des Mutaranebels können die Sensoren nicht aktiviert werden";
 			return $return;
 		}
 		if (($value == "kss" || $value == "lss") && $data[mtype] == 15 && $data[sensormodlvl] != 52)
 		{
-			$return[msg] = "Aufgrund des Quasars kï¿½nnen die Sensoren nicht aktiviert werden";
+			$return[msg] = "Aufgrund des Quasars können die Sensoren nicht aktiviert werden";
 			return $return;
 		}
 		if ($value == "schilde_aktiv")
@@ -986,7 +986,7 @@ class ship
 			}
 			if ($data[schilde] < 1)
 			{
-				$return[msg] = "Zum aktivieren der Schilde mï¿½ssen die Schildemitter aufgeladen werden";
+				$return[msg] = "Zum aktivieren der Schilde müssen die Schildemitter aufgeladen werden";
 				return $return;
 			}
 			if ($data[dock] > 0)
@@ -996,17 +996,17 @@ class ship
 			}
 			if ($data[mtype] == 13)
 			{
-				$return[msg] = "Die Schilde kï¿½nnen aufgrund des Rï¿½ntgenpulsars nicht aktiviert werden";
+				$return[msg] = "Die Schilde können aufgrund des Röntgenpulsars nicht aktiviert werden";
 				return $return;
 			}
 			if ($data[mtype] == 21)
 			{
-				$return[msg] = "Die Schilde kï¿½nnen aufgrund des ceruleanischen Nebels nicht aktiviert werden";
+				$return[msg] = "Die Schilde können aufgrund des ceruleanischen Nebels nicht aktiviert werden";
 				return $return;
 			}
 			if ($data[mtype] == 2 || $data[mtype] == 3 || $data[mtype] == 16 || $data[mtype] == 28 || $$data[mtype] == 30 || $data[mtype] == 31)
 			{
-				$return[msg] = "Die Schilde kï¿½nnen aufgrund des Nebels nicht aktiviert werden";
+				$return[msg] = "Die Schilde können aufgrund des Nebels nicht aktiviert werden";
 				return $return;
 			}
 			if ($data[traktormode] == 1)
@@ -1041,7 +1041,7 @@ class ship
 			{
 				if (time()-10800 < $loadtime)
 				{
-					$return[msg] = "Die Schilde sind polarisiert und kï¿½nnen frï¿½hestens um ".date("H:i",$loadtime+10800)." Uhr wieder aktiviert werden";
+					$return[msg] = "Die Schilde sind polarisiert und können frühestens um ".date("H:i",$loadtime+10800)." Uhr wieder aktiviert werden";
 					return $return;
 				}
 				$this->db->query("DELETE FROM stu_ships_action WHERE mode='sload' AND ships_id=".$shipId);
@@ -1129,7 +1129,7 @@ class ship
 		}
 		if ($this->cclass[crew_min] - 2 > $this->ccrew)
 		{
-			$return[msg] = "Fï¿½r den Energietransfer werden ".($this->cclass[crew_min] - 2)." Crewmitglieder benï¿½tigt";
+			$return[msg] = "Für den Energietransfer werden ".($this->cclass[crew_min] - 2)." Crewmitglieder benötigt";
 			return $return;
 		}
 		if ($this->cenergie == 0)
@@ -1247,7 +1247,7 @@ class ship
 		}
 		if ($this->user > 100 && $goodId == 308)
 		{
-			$return[msg] = "Ein Dï¿½mpfungsfeld schï¿½tzt das Hangardeck, Transport fehlgeschlagen";
+			$return[msg] = "Ein Dämpfungsfeld schützt das Hangardeck, Transport fehlgeschlagen";
 			return $return;
 		}
 		global $myUser,$myColony;
@@ -1321,7 +1321,7 @@ class ship
 			$shipdata[user_id] == $this->user ? $img = "<a href=?page=ship&section=showship&id=".$shipdata[id]."><img src=".$this->gfx."/ships/".$impf.$shipdata[ships_rumps_id].".gif border=0></a>" : $img = "<img src=".$this->gfx."/ships/".$impf.$shipdata[ships_rumps_id].".gif border=0>";
 			if ($shipdata[c][trumfield] == 1)
 			{
-				$return[msg] = "Das Trï¿½mmerfeld kann nicht erfasst werden";
+				$return[msg] = "Das Trümmerfeld kann nicht erfasst werden";
 				return $return;
 			}
 			if ($shipdata[cloak] == 1)
@@ -1357,7 +1357,7 @@ class ship
 				$probes = $this->db->query("SELECT SUM(COUNT) FROM stu_ships_storage WHERE ships_id=".$shipdata[id]." AND (goods_id=35 OR goods_id=36 OR goods_id=37 OR goods_id=204)",1);
 				if ($torpcount >= ($shipdata[c][torps]-$probes))
 				{
-					$probes != 0 ? $return[msg] = "Es kï¿½nnen maximal ".($shipdata[c][torps]-$probes)." Torpedos geladen werden - ".$probes." Rampen durch Sonden belegt" : $return[msg] = "Es kï¿½nnen maximal ".$shipdata[c][torps]." Torpedos geladen werden";
+					$probes != 0 ? $return[msg] = "Es können maximal ".($shipdata[c][torps]-$probes)." Torpedos geladen werden - ".$probes." Rampen durch Sonden belegt" : $return[msg] = "Es können maximal ".$shipdata[c][torps]." Torpedos geladen werden";
 					return $return;
 				}
 				if ($torpcount + $goodcount + $probes > $shipdata[c][torps]) $goodcount = $shipdata[c][torps]-$torpcount-$probes;
@@ -1370,14 +1370,14 @@ class ship
 				if ($tt != 0) $tc = $this->getcountbygoodid($tt,$shipdata[id]);
 				if ($probes >= $shipdata[c][probe_stor])
 				{
-					$return[msg] = "Es kï¿½nnen maximal ".$shipdata[c][probe_stor]." Sonden geladen werden";
+					$return[msg] = "Es können maximal ".$shipdata[c][probe_stor]." Sonden geladen werden";
 					return $return;
 				}
 				$sonkap = $shipdata[c][torps] - $tc;
 				if ($sonkap > $shipdata[c][probe_stor]) $sonkap = $shipdata[c][probe_stor];
 				if ($probes >= $sonkap)
 				{
-					$return[msg] = "Es kï¿½nnen keine Sonden mehr geladen werden";
+					$return[msg] = "Es können keine Sonden mehr geladen werden";
 					return $return;
 				}
 				if ($goodcount > ($sonkap-$probes)) $goodcount = ($sonkap-$probes);
@@ -1392,19 +1392,19 @@ class ship
 		}
 		if ($myUser->ulevel == 1)
 		{
-			$return[msg] = "Als Level 1 Kolonist kannst Du die Warenbï¿½rse nicht nutzen";
+			$return[msg] = "Als Level 1 Kolonist kannst Du die Warenbörse nicht nutzen";
 			return $return;
 		}
 		if ($this->user != 17)
 		{
 			if ($this->cclass[crew_min] -2 > $this->ccrew)
 			{
-				$return[msg] = "Zum beamen werden ".($this->cclass[crew_min] - 2)." Crewmitglieder benï¿½tigt";
+				$return[msg] = "Zum beamen werden ".($this->cclass[crew_min] - 2)." Crewmitglieder benötigt";
 				return $return;
 			}
 			if ($this->ccrew < 2)
 			{
-				$return[msg] = "Zum beamen werden 2 Crewmitglieder benï¿½tigt";
+				$return[msg] = "Zum beamen werden 2 Crewmitglieder benötigt";
 				return $return;
 			}
 		}
@@ -1494,7 +1494,7 @@ class ship
 		}
 		if ($myUser->ulevel == 1)
 		{
-			$return[msg] = "Kolonisten mit Level 1 kï¿½nnen keinen Waren von anderen Schiffen/Kolonien transferieren";
+			$return[msg] = "Kolonisten mit Level 1 können keinen Waren von anderen Schiffen/Kolonien transferieren";
 			return $return;
 		}
 		if (($this->user != 19) && ($goodId == 301))
@@ -1510,7 +1510,7 @@ class ship
 		}
 		if ($this->user > 100 && $goodId == 308)
 		{
-			$return[msg] = "Ein Dï¿½mpfungsfeld schï¿½tzt das Hangardeck, Transport fehlgeschlagen";
+			$return[msg] = "Ein Dämpfungsfeld schützt das Hangardeck, Transport fehlgeschlagen";
 			return $return;
 		}
 		if ($mode == "col")
@@ -1631,7 +1631,7 @@ class ship
 			$torpcount = $this->getcountbygoodid($goodId,$this->cid);
 			if ($torpcount >= $this->cclass[torps])
 			{
-				$return[msg] = "Es kï¿½nnen maximal ".$this->cclass[torps]." Torpedos geladen werden";
+				$return[msg] = "Es können maximal ".$this->cclass[torps]." Torpedos geladen werden";
 				return $return;
 			}
 			if ($torpcount + $goodcount > $this->cclass[torps]) $goodcount = $this->cclass[torps]-$torpcount;
@@ -1639,7 +1639,7 @@ class ship
 			$probes = $this->db->query("SELECT SUM(COUNT) FROM stu_ships_storage WHERE ships_id=".$this->cid." AND (goods_id=35 OR goods_id=36 OR goods_id=37 OR goods_id=204)",1);
 			if ($torpcount >= ($this->cclass[torps]-$probes))
 			{
-				$probes != 0 ? $return[msg] = "Es kï¿½nnen maximal ".($this->cclass[torps]-$probes)." Torpedos geladen werden - ".$probes." Rampen durch Sonden belegt" : $return[msg] = "Es kï¿½nnen maximal ".$this->cclass[torps]." Torpedos geladen werden";
+				$probes != 0 ? $return[msg] = "Es können maximal ".($this->cclass[torps]-$probes)." Torpedos geladen werden - ".$probes." Rampen durch Sonden belegt" : $return[msg] = "Es können maximal ".$this->cclass[torps]." Torpedos geladen werden";
 				return $return;
 			}
 			if ($torpcount + $goodcount + $probes > $this->cclass[torps]) $goodcount = $this->cclass[torps]-$torpcount-$probes;
@@ -1652,14 +1652,14 @@ class ship
 			if ($tt != 0) $tc = $this->getcountbygoodid($tt,$this->cid);
 			if ($probes >= $this->cclass[probe_stor])
 			{
-				$return[msg] = "Es kï¿½nnen maximal ".$this->cclass[probe_stor]." Sonden geladen werden";
+				$return[msg] = "Es können maximal ".$this->cclass[probe_stor]." Sonden geladen werden";
 				return $return;
 			}
 			$sonkap = $this->cclass[torps] - $tc;
 			if ($sonkap > $this->cclass[probe_stor]) $sonkap = $this->cclass[probe_stor];
 			if ($probes >= $sonkap)
 			{
-				$return[msg] = "Es kï¿½nnen keine Sonden mehr geladen werden";
+				$return[msg] = "Es können keine Sonden mehr geladen werden";
 				return $return;
 			}
 			if ($goodcount > ($sonkap-$probes)) $goodcount = ($sonkap-$probes);
@@ -1684,12 +1684,12 @@ class ship
 		{
 			if ($this->cclass[crew_min] - 2 > $this->ccrew)
 			{
-				$return[msg] = "Zum beamen werden ".($this->cclass[crew_min] - 2)." Crewmitglieder benï¿½tigt";
+				$return[msg] = "Zum beamen werden ".($this->cclass[crew_min] - 2)." Crewmitglieder benötigt";
 				return $return;
 			}
 			if ($this->ccrew < 2)
 			{
-				$return[msg] = "Zum beamen werden 2 Crewmitglieder benï¿½tigt";
+				$return[msg] = "Zum beamen werden 2 Crewmitglieder benötigt";
 				return $return;
 			}
 		}
@@ -1755,9 +1755,7 @@ class ship
 		return $return;
 	}
 	
-	function getClasses() {
-		return $this->db->query("SELECT * FROM stu_ships_rumps WHERE view=1 ORDER BY sorta ASC,sortb ASC", 2);
-	}
+	function getclasses() { return $this->db->query("SELECT * FROM stu_ships_rumps WHERE view=1 ORDER BY sorta ASC,sortb ASC",2); }
 	
 	function getnpcclasses() { return $this->db->query("SELECT * FROM stu_ships_rumps ORDER BY sorta ASC,sortb ASC",2); }
 	
@@ -1825,7 +1823,7 @@ class ship
 		}
 		if ($myUser->usymp < 100 && $myUser->ulevel >= 2)
 		{
-			$return[msg] = "Es werden 100 Sympathie zum beantragen eines Schiffes benï¿½tigt - Vorhanden sind nur ".$myUser->usymp;
+			$return[msg] = "Es werden 100 Sympathie zum beantragen eines Schiffes benötigt - Vorhanden sind nur ".$myUser->usymp;
 			return $return;
 		}
 		if ($classId == 4 || $classId == 5)
@@ -1837,7 +1835,7 @@ class ship
 			}
 			if ($myUser->usymp < 100)
 			{
-				$return[msg] = "Es werden 100 Sympathie zum beantragen eines Schiffes benï¿½tigt - Vorhanden sind nur ".$myUser->usymp;
+				$return[msg] = "Es werden 100 Sympathie zum beantragen eines Schiffes benötigt - Vorhanden sind nur ".$myUser->usymp;
 				return $return;
 			}
 			$this->db->query("UPDATE stu_user SET symp=symp-100 WHERE id=".$this->user);
@@ -1896,17 +1894,17 @@ class ship
 			}
 			if ($myUser->ulevel < 4 && ($coldata[colonies_classes_id] == 2 || $coldata[colonies_classes_id] == 3))
 			{
-				$return[msg] = "Zur Besiedlung dieses Plantentypes wird Kolonistenlevel 4 benï¿½tigt";
+				$return[msg] = "Zur Besiedlung dieses Plantentypes wird Kolonistenlevel 4 benötigt";
 				return $return;
 			}
 			if ($myUser->ulevel < 6 && ($coldata[colonies_classes_id] == 4 || $coldata[colonies_classes_id] == 5 || $coldata[colonies_classes_id] == 6))
 			{
-				$return[msg] = "Zur Besiedlung dieses Plantentypes wird Kolonistenlevel 6 benï¿½tigt";
+				$return[msg] = "Zur Besiedlung dieses Plantentypes wird Kolonistenlevel 6 benötigt";
 				return $return;
 			}
 			if ($myUser->ulevel < 8 && $coldata[colonies_classes_id] > 6)
 			{
-				$return[msg] = "Zur Besiedlung dieses Plantentypes wird Kolonistenlevel 8 benï¿½tigt";
+				$return[msg] = "Zur Besiedlung dieses Plantentypes wird Kolonistenlevel 8 benötigt";
 				return $return;
 			}
 			if ($this->db->query("SELECT id FROM stu_colonies WHERE user_id=".$this->user." AND colonies_classes_id=1",1) != 0 && $coldata[colonies_classes_id] == 1)
@@ -1916,7 +1914,7 @@ class ship
 			}
 			if ($this->db->query("SELECT COUNT(id) FROM stu_colonies WHERE user_id=".$this->user." AND (colonies_classes_id=2 OR colonies_classes_id=3 OR colonies_classes_id=4 OR colonies_classes_id=5 OR colonies_classes_id=7 OR colonies_classes_id=8 OR colonies_classes_id=10)",1) == 2 && ($coldata[colonies_classes_id] == 2 || $coldata[colonies_classes_id] == 3 || $coldata[colonies_classes_id] == 4 || $coldata[colonies_classes_id] == 5 || $coldata[colonies_classes_id] == 7 || $coldata[colonies_classes_id] == 8 || $coldata[colonies_classes_id] == 10))
 			{
-				$return[msg] = "Es sind nur 2 Planeten der Klasse L,N,G,K,H oder X zusï¿½tzlich zur Klasse M pro Kolonist erlaubt";
+				$return[msg] = "Es sind nur 2 Planeten der Klasse L,N,G,K,H oder X zusätzlich zur Klasse M pro Kolonist erlaubt";
 				return $return;
 			}
 			if ($this->db->query("SELECT id FROM stu_colonies WHERE user_id=".$this->user." AND colonies_classes_id!=6 AND colonies_classes_id!=9",3) == 3 && $coldata[colonies_classes_id] != 6 && $coldata[colonies_classes_id] != 9)
@@ -1944,12 +1942,12 @@ class ship
 		$stor = $this->getcountbygoodid(3,$shipId);
 		if ($stor < 50)
 		{
-			$return[msg] = "Zum Kolonisieren werden 50 Baumaterial an Bord des Schiffes benï¿½tigt - Vorhanden sind nur ".$stor;
+			$return[msg] = "Zum Kolonisieren werden 50 Baumaterial an Bord des Schiffes benötigt - Vorhanden sind nur ".$stor;
 			return $return;
 		}
 		if ($this->cenergie < 10)
 		{
-			$return[msg] = "Zum Kolonisieren wird 10 Energie benï¿½tigt - Vorhanden ist nur ".$this->cenergie;
+			$return[msg] = "Zum Kolonisieren wird 10 Energie benötigt - Vorhanden ist nur ".$this->cenergie;
 			return $return;
 		}
 		if ($coldata[colonies_classes_id] > 10)
@@ -1988,7 +1986,7 @@ class ship
 		}
 		if ($data[crew_min] - 2 > $data[crew])
 		{
-			$return[msg] = "Fï¿½r das entladen der Ersatzbatterie werden ".($data[crew_min] - 2)." Crewmitglieder benï¿½tigt";
+			$return[msg] = "Für das entladen der Ersatzbatterie werden ".($data[crew_min] - 2)." Crewmitglieder benötigt";
 			return $return;
 		}
 		$me = $this->getmodulebyid($data[epsmodlvl]);
@@ -2016,12 +2014,12 @@ class ship
 		}
 		if ($data[crew_min] - 2 > $data[crew])
 		{
-			$return[msg] = "Fï¿½r die Bussard-Kollektoren werden ".($data[crew_min] - 2)." Crewmitglieder benï¿½tigt";
+			$return[msg] = "Für die Bussard-Kollektoren werden ".($data[crew_min] - 2)." Crewmitglieder benötigt";
 			return $return;
 		}
 		if ($data[energie] == 0)
 		{
-			$return[msg] = "Keine Energie fï¿½r die Bussard-Kollektoren vorhanden";
+			$return[msg] = "Keine Energie für die Bussard-Kollektoren vorhanden";
 			return $return;
 		}
 		global $myMap;
@@ -2159,7 +2157,7 @@ class ship
 		}
 		if ($ship1[c][crew_min] > $ship1[crew])
 		{
-			$this->msghandle("Fï¿½r einen Schuï¿½ werden ".$ship1[c][crew_min]." Crewmitglieder benï¿½tigt");
+			$this->msghandle("Für einen Schuß werden ".$ship1[c][crew_min]." Crewmitglieder benötigt");
 			return $this->cret($destroy);
 		}
 		$ship2 = $this->getDatabyid($shipId2);
@@ -2179,7 +2177,7 @@ class ship
 		}
 		if ($myUser->getfield("level",$ship2[user_id]) < 2)
 		{
-			$this->msghandle("Es kï¿½nnen keine Kolonisten unter Level 2 angegriffen werden");
+			$this->msghandle("Es können keine Kolonisten unter Level 2 angegriffen werden");
 			return $this->cret($destroy);
 		}
 		if ($ship2[ships_rumps_id] == 154)
@@ -2200,7 +2198,7 @@ class ship
 			if ($ship1[schilde_aktiv] == 1 && $ship1[schilde] > $selfschaden)
 			{
 				$sschilde = $ship1[schilde] - $selfschaden;
-				$this->msghandle("Explosion durch entzï¿½ndetes Metreongas - Schildschaden: ".$selfschaden.", Schilde jetzt bei ".$sschilde);
+				$this->msghandle("Explosion durch entzündetes Metreongas - Schildschaden: ".$selfschaden.", Schilde jetzt bei ".$sschilde);
 				$this->db->query("UPDATE stu_ships SET schilde=".$sschilde." WHERE id=".$shipId);
 			}
 			elseif ($ship1[schilde_aktiv] == 1 && $ship1[schilde] < $selfschaden)
@@ -2210,12 +2208,12 @@ class ship
 				if ($srhuelle < 1)
 				{
 					$this->trumfield($shipId);
-					$myHistory->addEvent("Die ".addslashes($ship1[name])." wurde in Sektor ".$ship1[coords_x]."/".$ship1[coords_y].($ship1[wese] == 2 ? " (2)" : "")." durch eine Metreongasexplosion zerstï¿½rt",$ship1[user_id]);
-					$this->msghandle("Explosion durch entzï¿½ndetes Metreongas - Schilde brechen zusammen - Hï¿½llenbruch!<br>Das Schiff wurde zerstï¿½rt");
+					$myHistory->addEvent("Die ".addslashes($ship1[name])." wurde in Sektor ".$ship1[coords_x]."/".$ship1[coords_y].($ship1[wese] == 2 ? " (2)" : "")." durch eine Metreongasexplosion zerstört",$ship1[user_id]);
+					$this->msghandle("Explosion durch entzündetes Metreongas - Schilde brechen zusammen - Hüllenbruch!<br>Das Schiff wurde zerstört");
 					return $this->cret($destroy);
 				}
 				$this->db->query("UPDATE stu_ships SET schilde=0,schilde_aktiv=0,huelle=".$srhuelle." WHERE id=".$shipId);
-				$this->msghandle("Explosion durch entzï¿½ndetes Metreongas - Schilde brechen zusammen, Hï¿½lle jetzt bei ".$srhuelle);
+				$this->msghandle("Explosion durch entzündetes Metreongas - Schilde brechen zusammen, Hülle jetzt bei ".$srhuelle);
 			}
 			else
 			{
@@ -2223,12 +2221,12 @@ class ship
 				if ($srhuelle < 1)
 				{
 					$this->trumfield($shipId);
-					$myHistory->addEvent("Die ".addslashes($ship1[name])." wurde in Sektor ".$ship1[coords_x]."/".$ship1[coords_y].($ship1[wese] == 2 ? " (2)" : "")." durch eine Metreongasexplosion zerstï¿½rt",$ship1[user_id]);
-					$this->msghandle("Explosion durch entzï¿½ndetes Metreongas - Hï¿½llenbruch!<br>Das Schiff wurde zerstï¿½rt");
+					$myHistory->addEvent("Die ".addslashes($ship1[name])." wurde in Sektor ".$ship1[coords_x]."/".$ship1[coords_y].($ship1[wese] == 2 ? " (2)" : "")." durch eine Metreongasexplosion zerstört",$ship1[user_id]);
+					$this->msghandle("Explosion durch entzündetes Metreongas - Hüllenbruch!<br>Das Schiff wurde zerstört");
 					return $this->cret($destroy);
 				}
 				$this->db->query("UPDATE stu_ships SET huelle=".$srhuelle." WHERE id=".$shipId);
-				$this->msghandle("Explosion durch entzï¿½ndetes Metreongas - Hï¿½llenschaden: ".$selfschaden.", Hï¿½lle jetzt bei ".$srhuelle);
+				$this->msghandle("Explosion durch entzündetes Metreongas - Hüllenschaden: ".$selfschaden.", Hülle jetzt bei ".$srhuelle);
 			}
 		}
 		if ($decloak != 0 && $react == 0 && $ship2[alertlevel] > 1 && $ship2[crew] > 0 && $ship2[energie] > 0)
@@ -2256,7 +2254,7 @@ class ship
 		if ($waffe[besonder] == "Pulswaffe")
 		{
 		// -------- Pulsphaser
-			$this->msghandle("Die ".$ship1[name]." schieï¿½t mit einer Pulswaffe auf die ".$ship2[name],3);
+			$this->msghandle("Die ".$ship1[name]." schießt mit einer Pulswaffe auf die ".$ship2[name],3);
 			for ($i=0;$i<3;$i++)
 			{
 				$sad = 0;
@@ -2268,7 +2266,7 @@ class ship
 				}
 				if ((rand(1,100) > 60) && ($ship2[ships_rumps_id] == 165))
 				{
-					$this->msghandle("Die ".$ship2[name]." fï¿½hrt ein Ausweichmanï¿½ver durch - Schuss ".$nr." hat sein Ziel verfehlt",3);
+					$this->msghandle("Die ".$ship2[name]." führt ein Ausweichmanöver durch - Schuss ".$nr." hat sein Ziel verfehlt",3);
 					continue;
 				}
 				if ($sa == 1 && $schilde > 0)
@@ -2291,13 +2289,13 @@ class ship
 				if ($destroy == 1 && $ship2[c][trumfield] == 0)
 				{
 					$this->trumfield($shipId2);
-					$this->msghandle("Schuss ".$nr." trifft - Hï¿½llenbruch!<br>Das Schiff wurde zerstï¿½rt!",3);
-					$myHistory->addEvent("Die ".addslashes($ship2[name])." wurde in Sektor ".$ship2[coords_x]."/".$ship2[coords_y].($ship2[wese] == 2 ? " (2)" : "")." von der ".addslashes($ship1[name])." zerstï¿½rt",$ship2[user_id],1);
+					$this->msghandle("Schuss ".$nr." trifft - Hüllenbruch!<br>Das Schiff wurde zerstört!",3);
+					$myHistory->addEvent("Die ".addslashes($ship2[name])." wurde in Sektor ".$ship2[coords_x]."/".$ship2[coords_y].($ship2[wese] == 2 ? " (2)" : "")." von der ".addslashes($ship1[name])." zerstört",$ship2[user_id],1);
 					break;
 				}
 				if ($destroy == 1 && $ship2[c][trumfield] == 1)
 				{
-					$this->msghandle("Schuss ".$nr." trifft - Das Trï¿½mmerfeld wurde beseitigt");
+					$this->msghandle("Schuss ".$nr." trifft - Das Trümmerfeld wurde beseitigt");
 					$this->deletetrumfield($shipId2);
 					break;
 				}
@@ -2310,8 +2308,8 @@ class ship
 				{
 					$this->db->query("UPDATE stu_ships SET huelle=".$huelle.",schilde=".$schilde.",schilde_aktiv=".$sa." WHERE id=".$shipId2);
 					if ($huelle > 0 && $sa == 1) $this->msghandle("Schuss ".$nr." trifft - Schilde bei ".$schilde,3);
-					elseif ($sad == 1) $this->msghandle("Schuss ".$nr." trifft - Schilde brechen zusammen - Hï¿½lle bei ".$huelle,3);
-					else $this->msghandle("Schuss ".$nr." trifft - Hï¿½lle bei ".$huelle,3);
+					elseif ($sad == 1) $this->msghandle("Schuss ".$nr." trifft - Schilde brechen zusammen - Hülle bei ".$huelle,3);
+					else $this->msghandle("Schuss ".$nr." trifft - Hülle bei ".$huelle,3);
 				}
 			}
 			if ($destroy == 1)
@@ -2332,12 +2330,12 @@ class ship
 			}
 			elseif ((rand(1,100) > 60) && ($ship2[ships_rumps_id] == 165))
 			{
-				$this->msghandle("Die ".$ship2[name]." fï¿½hrt ein Ausweichmanï¿½ver durch - Der Phaserschuss hat sein Ziel verfehlt",3);
+				$this->msghandle("Die ".$ship2[name]." führt ein Ausweichmanöver durch - Der Phaserschuss hat sein Ziel verfehlt",3);
 				$miss = 1;
 			}
 			else
 			{
-				$this->msghandle("Die ".$ship1[name]." schieï¿½t auf die ".$ship2[name]." - kein direkter Schaden",3);
+				$this->msghandle("Die ".$ship1[name]." schießt auf die ".$ship2[name]." - kein direkter Schaden",3);
 				$ship2[epsupgrade] == 1 ? $this->msghandle("Teilweiser Zusammenbruch aller Energiesysteme",3) : $this->msghandle("Kompletter Zusammenbruch aller Energiesysteme");
 				$breen = 1;
 				$class1 = $this->getclassbyid($ship1[ships_rumps_id]);
@@ -2367,7 +2365,7 @@ class ship
 				if ($ship2[cloak] == 1)
 				{
 					$this->deactivatevalue($ship2[id],"cloak",$ship2[user_id]);
-					$this->msghandle("Die Tarnung der ".$ship2[name]." fï¿½llt aus",3);
+					$this->msghandle("Die Tarnung der ".$ship2[name]." fällt aus",3);
 					$this->db->query("DELETE FROM stu_ships_uncloaked WHERE ships_id=".$ship2[id]);
 				}
 				if ($ship2[epsupgrade] != 1)
@@ -2408,7 +2406,7 @@ class ship
 			}
 			elseif ((rand(1,100) > 60) && ($ship2[ships_rumps_id] == 165))
 			{
-				$this->msghandle("Die ".$ship2[name]." fï¿½hrt ein Ausweichmanï¿½ver durch - Der Phaserschuss hat sein Ziel verfehlt",3);
+				$this->msghandle("Die ".$ship2[name]." führt ein Ausweichmanöver durch - Der Phaserschuss hat sein Ziel verfehlt",3);
 				$miss = 1;
 			}
 			else
@@ -2469,27 +2467,27 @@ class ship
 				if ($destroy == 1 && $ship2[c][trumfield] == 0)
 				{
 					$this->trumfield($shipId2);
-					$this->msghandle("Die ".$ship1[name]." schieï¿½t auf die ".$ship2[name]." - Hï¿½llenbruch!<br>Das Schiff wurde zerstï¿½rt!",3);
-					if ($ship2[c][probe] == 0) $myHistory->addEvent("Die ".addslashes($ship2[name])." wurde in Sektor ".$ship2[coords_x]."/".$ship2[coords_y].($ship2[wese] == 2 ? " (2)" : "")." von der ".addslashes($ship1[name])." zerstï¿½rt",$ship2[user_id],1);
+					$this->msghandle("Die ".$ship1[name]." schießt auf die ".$ship2[name]." - Hüllenbruch!<br>Das Schiff wurde zerstört!",3);
+					if ($ship2[c][probe] == 0) $myHistory->addEvent("Die ".addslashes($ship2[name])." wurde in Sektor ".$ship2[coords_x]."/".$ship2[coords_y].($ship2[wese] == 2 ? " (2)" : "")." von der ".addslashes($ship1[name])." zerstört",$ship2[user_id],1);
 					$this->returndestroy = 1;
 					$myComm->sendpm($ship2[user_id],$this->user,$this->pmmsg,2);
 					return $this->cret($destroy);
 				}
 				if ($destroy == 1 && $ship2[c][trumfield] == 1)
 				{
-					$this->msghandle("Die ".$ship1[name]." schieï¿½t im Sektor ".$ship1[coords_x]."/".$ship1[coords_y]." auf das Trï¿½mmerfeld - Das Trï¿½mmerfeld wurde beseitigt",3);
+					$this->msghandle("Die ".$ship1[name]." schießt im Sektor ".$ship1[coords_x]."/".$ship1[coords_y]." auf das Trümmerfeld - Das Trümmerfeld wurde beseitigt",3);
 					$this->deletetrumfield($shipId2);
 					$this->returndestroy = 1;
 					$myComm->sendpm($ship2[user_id],$this->user,$this->pmmsg,2);
 					return $this->cret($destroy);
 				}
-				if ($destroy == 0 && $ship2[c][trumfield] == 1) $this->msghandle("Die ".$ship1[name]." schieï¿½t auf das Trï¿½mmerfeld - Status: ".$huelle,3);
+				if ($destroy == 0 && $ship2[c][trumfield] == 1) $this->msghandle("Die ".$ship1[name]." schießt auf das Trümmerfeld - Status: ".$huelle,3);
 				else
 				{
-					if ($schilde > 0 && $durch == 0 && $sa == 1 && $sad == 0) $this->msghandle("Die ".$ship1[name]." schieï¿½t auf die ".$ship2[name]."<br>Die Schilde der ".$ship2[name]." sind bei ".$schilde,3);
-					elseif ($durch == 1) $this->msghandle("Die ".$ship1[name]." schieï¿½t auf die ".$ship2[name]."<br>Die Hï¿½lle der ".$ship2[name]." ist bei ".$huelle,3);
-					elseif ($sad == 1) $this->msghandle("Die ".$ship1[name]." schieï¿½t auf die ".$ship2[name]."<br>Die Schilde der ".$ship2[name]." brechen zusammen<br>Die Hï¿½lle ist bei ".$huelle,3);
-					else $this->msghandle("Die ".$ship1[name]." schieï¿½t auf die ".$ship2[name]."<br>Die Hï¿½lle der ".$ship2[name]." ist bei ".$huelle,3);
+					if ($schilde > 0 && $durch == 0 && $sa == 1 && $sad == 0) $this->msghandle("Die ".$ship1[name]." schießt auf die ".$ship2[name]."<br>Die Schilde der ".$ship2[name]." sind bei ".$schilde,3);
+					elseif ($durch == 1) $this->msghandle("Die ".$ship1[name]." schießt auf die ".$ship2[name]."<br>Die Hülle der ".$ship2[name]." ist bei ".$huelle,3);
+					elseif ($sad == 1) $this->msghandle("Die ".$ship1[name]." schießt auf die ".$ship2[name]."<br>Die Schilde der ".$ship2[name]." brechen zusammen<br>Die Hülle ist bei ".$huelle,3);
+					else $this->msghandle("Die ".$ship1[name]." schießt auf die ".$ship2[name]."<br>Die Hülle der ".$ship2[name]." ist bei ".$huelle,3);
 				}
 				$this->db->query("UPDATE stu_ships SET huelle=".$huelle.",schilde=".$schilde.",schilde_aktiv=".$sa." WHERE id=".$shipId2);
 				if ($destroy == 0 && $sa == 0 && $ship2[c][trumfield] == 0)
@@ -2640,7 +2638,7 @@ class ship
 			if ($shipId == 69003) $this->upperstoragebygoodid(5,33,$shipId,2);
 			if ($shipId == 69409) $this->db->query("UPDATE stu_ships SET coords_x=100,coords_y=100 WHERE id=69408");
 			global $myHistory,$user;
-			$myHistory->addEvent($this->db->query("SELECT name FROM stu_ships WHERE id=".$shipId,1)." wurde von ".addslashes($this->db->query("SELECT user FROM stu_user WHERE id=".$user,1))." geï¿½ffnet",$user,1);
+			$myHistory->addEvent($this->db->query("SELECT name FROM stu_ships WHERE id=".$shipId,1)." wurde von ".addslashes($this->db->query("SELECT user FROM stu_user WHERE id=".$user,1))." geöffnet",$user,1);
 			return 0;
 		}
 		$this->db->query("DELETE FROM stu_ships WHERE id=".$shipId);
@@ -2682,7 +2680,7 @@ class ship
 		if ($target[ships_rumps_id] >= 65 && $target[ships_rumps_id] <= 68 && $target[strb_mode] == 2 && $tt == 0 && $target[waffenmodlvl] == 0) $nr = 1;
 		if ($nr == 1)
 		{
-			$return[msg] .= "Die ".$target[name]." fï¿½hrt keine Reaktion durch";
+			$return[msg] .= "Die ".$target[name]." führt keine Reaktion durch";
 			return $return;
 		}
 		if (($target[ships_rumps_id] == 211) && ($target[alertlevel] != 1))
@@ -2694,13 +2692,13 @@ class ship
 			elseif ($this->getcountbygoodid(308,$target[id]) == 1)
 			{
 				$this->npclaunchfighter($target[id],1);
-				$msg .= "Jï¿½ger wurde gestartet<br>";
+				$msg .= "Jäger wurde gestartet<br>";
 			}
 			else
 			{
 				$this->npclaunchfighter($target[id],1);
 				$this->npclaunchfighter($target[id],1);
-				$msg .= "Jï¿½gerstaffel wurde gestartet<br>";
+				$msg .= "Jägerstaffel wurde gestartet<br>";
 			}
 		}
 		if ($target[strb_mode] == 2 && $tt != 0) $strb = $this->torp($shipId2,$shipId,$target[user_id],$this->gettorptype($shipId2),0,$sbtype,0);
@@ -2756,7 +2754,7 @@ class ship
 			{
 				$tmpdat = mysql_fetch_assoc($result);
 				$this->trumfield($tmpdat[id]);
-				$myComm->sendpm($tmpdat[user_id],"2","Die ".$tmpdat[name]." wurde in Sektor ".$tmpdat[coords_x]."/".$tmpdat[coords_y]." durch eine Subraumexplosion zerstï¿½rt",2,1);
+				$myComm->sendpm($tmpdat[user_id],"2","Die ".$tmpdat[name]." wurde in Sektor ".$tmpdat[coords_x]."/".$tmpdat[coords_y]." durch eine Subraumexplosion zerstört",2,1);
 			}
 		}
 		$fleet = $myFleet->getfleetbyshipid($shipId,$shipdata[user_id]);
@@ -2872,7 +2870,7 @@ class ship
 			{
 				if ($data2[max_bev] < $data2[bev_used] + $data2[bev_free])
 				{
-					$return[msg] = "Aufgrund von Wohnraummangel kï¿½nnen keine Crewmitglieder transferiert werden";
+					$return[msg] = "Aufgrund von Wohnraummangel können keine Crewmitglieder transferiert werden";
 					return $return;
 				}
 				if ($data2[max_bev] - $data2[bev_used] - $data2[bev_free] < $count) $count = $data2[max_bev] - $data2[bev_used] - $data2[bev_free];
@@ -2894,7 +2892,7 @@ class ship
 		}
 		if ($this->cclass[crew_min] -2 > $this->ccrew)
 		{
-			$return[msg] = "Zum beamen werden ".($this->cclass[crew_min]-2)." Crewmitglieder benï¿½tigt";
+			$return[msg] = "Zum beamen werden ".($this->cclass[crew_min]-2)." Crewmitglieder benötigt";
 			return $return;
 		}
 		if ($count == 0)
@@ -3065,7 +3063,7 @@ class ship
 		}
 		if ($this->cclass[crew_min] - 2 > $this->ccrew)
 		{
-			$return[msg] = "Es werden ".($this->cclass[crew_min] - 2)." Crewmitglieder benï¿½tigt";
+			$return[msg] = "Es werden ".($this->cclass[crew_min] - 2)." Crewmitglieder benötigt";
 			return $return;
 		}
 		if ($data2[c][trumfield] == 1 || $data2[c][slots] > 0 || $data2[c][probe] == 1)
@@ -3113,12 +3111,12 @@ class ship
 		}
 		if ($data[maxshields] == $data[schilde])
 		{
-			$return[msg] = "Die Schilde sind bereits vollstï¿½ndig geladen";
+			$return[msg] = "Die Schilde sind bereits vollständig geladen";
 			return $return;
 		}
 		if ($data[c][crew_min] - 2 > $data[crew] && $data[ships_rumps_id] != 88)
 		{
-			$return[msg] = "Es werden ".($data[c][crew_min] - 2)." Crewmitglieder benï¿½tigt";
+			$return[msg] = "Es werden ".($data[c][crew_min] - 2)." Crewmitglieder benötigt";
 			return $return;
 		}
 		if ($count == "max") $count = $data[energie];
@@ -3165,7 +3163,7 @@ class ship
 		}
 		if ($ship1[c][crew_min] > $ship1[crew])
 		{
-			$this->msghandle("Es werden ".$class[crew_min]." Crewmitglieder benï¿½tigt");
+			$this->msghandle("Es werden ".$class[crew_min]." Crewmitglieder benötigt");
 			return $this->cret($destroy);
 		}
 		if ($ship1[dock] > 0)
@@ -3180,7 +3178,7 @@ class ship
 		}
 		if ($ship2[ships_rumps_id] == 110)
 		{
-			$this->msghandle("Dieses Trï¿½mmerfeld kann mit den Sensoren nicht erfasst werden");
+			$this->msghandle("Dieses Trümmerfeld kann mit den Sensoren nicht erfasst werden");
 			return $this->cret($destroy);
 		}
 		if ($ship2[ships_rumps_id] == 154)
@@ -3202,12 +3200,12 @@ class ship
 		elseif ($wc > 0 && $wc < time()) $this->repairssd("waffdef",$shipId);
 		if ($myUser->getfield("level",$ship2[user_id]) < 2)
 		{
-			$this->msghandle("Es kï¿½nnen keine Kolonisten unter Level 2 angegriffen werden");
+			$this->msghandle("Es können keine Kolonisten unter Level 2 angegriffen werden");
 			return $this->cret($destroy);
 		}
 		if ($myUser->getfield("level",$ship1[user_id]) == 1)
 		{
-			$this->msghandle("Mit Level 1 kannst Du keine Torpedos abschieï¿½en");
+			$this->msghandle("Mit Level 1 kannst Du keine Torpedos abschießen");
 			return $this->cret($destroy);
 		}
 		global $myColony;
@@ -3250,7 +3248,7 @@ class ship
 			{
 				if (rand(1,100) <= $evade && $ship2[crew] > 0 && $ship2[c][trumfield] == 0 && $ship2[energie] > 0 && $ship2[dock] == 0 && $ship2[c][slots] == 0)
 				{
-					$this->msghandle("Die ".$ship2[name]." fï¿½hrt ein Ausweichmanï¿½ver durch - Der Torpedo hat sein Ziel verfehlt",3);
+					$this->msghandle("Die ".$ship2[name]." führt ein Ausweichmanöver durch - Der Torpedo hat sein Ziel verfehlt",3);
 					$miss = 1;
 				}
 				else
@@ -3259,7 +3257,7 @@ class ship
 					{
 						global $myComm,$myHistory;
 						$this->msghandle("Subraumschockwelle durch Detonation eines isolytischen Torpedos");
-						$myHistory->addevent("Subrauminstabilitï¿½t in Sektor ".$ship2[coords_x]."/".$ship2[coords_y].($ship2[wese] == 2 ? " (2)" : ""),$ship1[user_id],1);
+						$myHistory->addevent("Subrauminstabilität in Sektor ".$ship2[coords_x]."/".$ship2[coords_y].($ship2[wese] == 2 ? " (2)" : ""),$ship1[user_id],1);
 						$this->db->query("INSERT INTO stu_map_special (coords_x,coords_y,type) VALUES ('".$ship2[coords_x]."','".$ship2[coords_y]."','1')");
 						$sr = $this->db->query("SELECT a.id,a.huelle,a.name,a.user_id FROM stu_ships as a LEFT OUTER JOIN stu_ships_rumps as b ON a.ships_rumps_id=b.id WHERE a.coords_x=".$ship2[coords_x]." AND a.coords_y=".$ship2[coords_y]." AND a.reaktormodlvl>0 AND b.trumfield=0 AND a.id!=".$ship1[id]);
 						while($sd=mysql_fetch_assoc($sr))
@@ -3267,13 +3265,13 @@ class ship
 							$dmg = rand(20,40);
 							if ($sd[huelle] <= $dmg)
 							{
-								$myComm->sendpm($sd[user_id],2,"Die ".$sd[name]." wurde aufgrund einer Subraumschockwelle in Sektor ".$ship2[coords_x]."/".$ship2[coords_y]." zerstï¿½rt",2);
-								$myHistory->addEvent("Die ".addslashes($sd[name])." wurde in Sektor ".$ship2[coords_x]."/".$ship2[coords_y].($ship2[wese] == 2 ? " (2)" : "")." durch eine Subraumschockwelle zerstï¿½rt",$ship2[user_id],1);
+								$myComm->sendpm($sd[user_id],2,"Die ".$sd[name]." wurde aufgrund einer Subraumschockwelle in Sektor ".$ship2[coords_x]."/".$ship2[coords_y]." zerstört",2);
+								$myHistory->addEvent("Die ".addslashes($sd[name])." wurde in Sektor ".$ship2[coords_x]."/".$ship2[coords_y].($ship2[wese] == 2 ? " (2)" : "")." durch eine Subraumschockwelle zerstört",$ship2[user_id],1);
 								$this->trumfield($sd[id]);
 							}
 							else
 							{
-								$myComm->sendpm($sd[user_id],2,"Die ".$sd[name]." wurde aufgrund einer Subraumschockwelle in Sektor ".$ship2[coords_x]."/".$ship2[coords_y]." beschï¿½digt - Hï¿½lle bei ".($sd[huelle]-$dmg),2);
+								$myComm->sendpm($sd[user_id],2,"Die ".$sd[name]." wurde aufgrund einer Subraumschockwelle in Sektor ".$ship2[coords_x]."/".$ship2[coords_y]." beschädigt - Hülle bei ".($sd[huelle]-$dmg),2);
 								$this->db->query("UPDATE stu_ships SET huelle=huelle-".$dmg.",schilde_aktiv=0 WHERE id=".$sd[id]);
 							}
 						}
@@ -3374,7 +3372,7 @@ class ship
 			if ($destroy == 1 && $ship2[c][trumfield] == 0)
 			{
 				global $myHistory;
-				if ($ship2[c][probe] == 0) $myHistory->addEvent("Die ".addslashes($ship2[name])." wurde in Sektor ".$ship2[coords_x]."/".$ship2[coords_y].($ship2[wese] == 2 ? " (2)" : "")." von der ".addslashes($ship1[name])." zerstï¿½rt",$ship2[user_id],1);
+				if ($ship2[c][probe] == 0) $myHistory->addEvent("Die ".addslashes($ship2[name])." wurde in Sektor ".$ship2[coords_x]."/".$ship2[coords_y].($ship2[wese] == 2 ? " (2)" : "")." von der ".addslashes($ship1[name])." zerstört",$ship2[user_id],1);
 				$this->trumfield($shipId2);
 			}
 			elseif (($destroy == 1) && ($ship2[c][trumfield] == 1)) $this->deletetrumfield($shipId2);
@@ -3385,11 +3383,11 @@ class ship
 		}
 		else $this->db->query("UPDATE stu_ships SET energie=energie-1 WHERE id=".$ship2[id]);
 		if ($schilde > 0 && $ship2[schilde_aktiv] && $miss != 1) $this->msghandle("Die Schilde der ".$ship2[name]." sind bei ".$schilde,3);
-		elseif ($schilde <= 0 && $sad == 0 && $ship2[schilde_aktiv] == 1 && $ship2[c][trumfield] == 0 && $destroy != 1) $this->msghandle("Die Schilde der ".$ship2[name]." brechen zusammen - Hï¿½lle bei ".$huelle,3);
-		elseif ($destroy == 1 && $ship2[c][trumfield] == 0) $this->msghandle("Hï¿½llenbruch!<br>Die ".$ship2[name]." wurde zerstï¿½rt!",3);
-		elseif ($ship2[c][trumfield] == 1 && $destroy == 0) $this->msghandle("Status des Trï¿½mmerfelds: ".$huelle,3);
-		elseif ($ship2[c][trumfield] == 1 && $destroy == 1) $this->msghandle("Das Trï¿½mmerfeld wurde beseitigt",3);
-		elseif ($miss != 1) $this->msghandle("Die Hï¿½lle der ".$ship2[name]." ist bei ".$huelle,3);
+		elseif ($schilde <= 0 && $sad == 0 && $ship2[schilde_aktiv] == 1 && $ship2[c][trumfield] == 0 && $destroy != 1) $this->msghandle("Die Schilde der ".$ship2[name]." brechen zusammen - Hülle bei ".$huelle,3);
+		elseif ($destroy == 1 && $ship2[c][trumfield] == 0) $this->msghandle("Hüllenbruch!<br>Die ".$ship2[name]." wurde zerstört!",3);
+		elseif ($ship2[c][trumfield] == 1 && $destroy == 0) $this->msghandle("Status des Trümmerfelds: ".$huelle,3);
+		elseif ($ship2[c][trumfield] == 1 && $destroy == 1) $this->msghandle("Das Trümmerfeld wurde beseitigt",3);
+		elseif ($miss != 1) $this->msghandle("Die Hülle der ".$ship2[name]." ist bei ".$huelle,3);
 		if ($miss == 0 && $destroy == 0 && $sad == 0 && $ship2[c][trumfield] == 0)
 		{
 			$hke = ceil((100/$ship2[maxhuell])*$huelle);
@@ -3493,7 +3491,7 @@ class ship
 		if (($level < 1) || ($level > 3)) return 0;
 		if (($data[c][crew_min] - 2 > $data[crew]) && ($data[ships_rumps_id] != 88))
 		{
-			$return[msg] = "Zum ï¿½ndern der Alarmstufe werden ".($data[c][crew_min] - 2)." Crewmitglieder benï¿½tigt";
+			$return[msg] = "Zum ändern der Alarmstufe werden ".($data[c][crew_min] - 2)." Crewmitglieder benötigt";
 			return $return;
 		}
 		global $myUser;
@@ -3507,7 +3505,7 @@ class ship
 		if ($data[damaged] == 1) $mpf = "d/";
 		$return[msg] = "<table bgcolor=#262323><tr><td class=tdmainobg><img src=".$this->gfx."/buttons/alert".$level.".gif></td>
 					<td class=tdmainobg align=center><img src=".$this->gfx."/ships/".$mpf.$data[ships_rumps_id].".gif></td>
-					<td class=tdmainobg>Alarmstufe wurde geï¿½ndert</td></tr></table>";
+					<td class=tdmainobg>Alarmstufe wurde geändert</td></tr></table>";
 		return $return;
 	}
 	
@@ -3527,7 +3525,7 @@ class ship
 		}
 		if ($data[c][crew_min] - 2 > $data[crew])
 		{
-			$return[msg] = "Fï¿½r die Erz-Kollektoren werden ".($data[c][crew_min] - 2)." Crewmitglieder benï¿½tigt";
+			$return[msg] = "Für die Erz-Kollektoren werden ".($data[c][crew_min] - 2)." Crewmitglieder benötigt";
 			return $return;
 		}
 		if ($data[schilde_aktiv] == 1)
@@ -3537,7 +3535,7 @@ class ship
 		}
 		if ($data[energie] < 1)
 		{
-			$return[msg] = "Keine Energie fï¿½r die Erz-Kollektoren vorhanden";
+			$return[msg] = "Keine Energie für die Erz-Kollektoren vorhanden";
 			return $return;
 		}
 		global $myMap;
@@ -3645,14 +3643,14 @@ class ship
 		if ($this->cshow == 0) return 0;
 		if ($this->db->query("SELECT ships_id2 FROM stu_ships_action WHERE mode='destruct' AND ships_id=".$shipId." AND ships_id2='".$code."'",1) == 0)
 		{
-			$return[msg] = "Falscher Bestï¿½tigungscode!";
+			$return[msg] = "Falscher Bestätigungscode!";
 			return $return;
 		}
 		global $myUser,$myHistory;
 		$this->trumfield($shipId);
-		if ($myUser->ulevel > 1) $myHistory->addEvent("Die ".addslashes($this->cname)." hat sich im Sektor ".$this->ccoords_x."/".$this->ccoords_y.($this->cwese == 2 ? " (2)" : "")." selbst zerstï¿½rt",$this->user,2);
+		if ($myUser->ulevel > 1) $myHistory->addEvent("Die ".addslashes($this->cname)." hat sich im Sektor ".$this->ccoords_x."/".$this->ccoords_y.($this->cwese == 2 ? " (2)" : "")." selbst zerstört",$this->user,2);
 		$this->db->query("DELETE FROM stu_ships_action WHERE mode='destruct' AND ships_id=".$shipId);
-		$return[msg] = "Selbstzerstï¿½rung erfolgreich";
+		$return[msg] = "Selbstzerstörung erfolgreich";
 		return $return;
 	}
 	
@@ -3666,7 +3664,7 @@ class ship
 		}
 		if ($this->cclass[crew_min] - 2 > $this->ccrew && $this->cships_rumps_id != 88)
 		{
-			$return[msg] = "Zum laden des Warpkerns werden ".($this->cclass[crew_min] - 2)." Crewmitglieder benï¿½tigt";
+			$return[msg] = "Zum laden des Warpkerns werden ".($this->cclass[crew_min] - 2)." Crewmitglieder benötigt";
 			return $return;
 		}
 		if ($this->cwarpcore == 1000)
@@ -3679,13 +3677,13 @@ class ship
 			$deut = $this->getcountbygoodid(2,$shipId);
 			if ($deut < 6)
 			{
-				$return[msg] = "Es wird 6 Deuterium benï¿½tigt";
+				$return[msg] = "Es wird 6 Deuterium benötigt";
 				return $return;
 			}
 			$plas = $this->getcountbygoodid(15,$shipId);
 			if ($plas < 6)
 			{
-				$return[msg] = "Es wird 6 Plasma benï¿½tigt";
+				$return[msg] = "Es wird 6 Plasma benötigt";
 				return $return;
 			}
 			if ($max == 1)
@@ -3705,19 +3703,19 @@ class ship
 			$dil = $this->getcountbygoodid(8,$shipId);
 			if ($dil == 0)
 			{
-				$return[msg] = "Es wird 1 Dilithium benï¿½tigt";
+				$return[msg] = "Es wird 1 Dilithium benötigt";
 				return $return;
 			}
 			$am = $this->getcountbygoodid(5,$shipId);
 			if ($am < 2)
 			{
-				$return[msg] = "Es werden 2 Antimaterie benï¿½tigt";
+				$return[msg] = "Es werden 2 Antimaterie benötigt";
 				return $return;
 			}
 			$deut = $this->getcountbygoodid(2,$shipId);
 			if ($deut < 2)
 			{
-				$return[msg] = "Es werden 2 Deuterium benï¿½tigt";
+				$return[msg] = "Es werden 2 Deuterium benötigt";
 				return $return;
 			}
 			if ($max == 1)
@@ -3776,14 +3774,14 @@ class ship
 		$data2 = $this->getdatabyid($shipId2);
 		if ($data2[schilde_aktiv] == 1)
 		{
-			$return[msg] = "Andocken nicht mï¿½glich - Die ".$data2[name]." hat die Schilde aktiviert";
+			$return[msg] = "Andocken nicht möglich - Die ".$data2[name]." hat die Schilde aktiviert";
 			return $return;
 		}
 		if ($data[coords_x] != $data[coords_x] || $data[coords_y] != $data[coords_y]) return 0;
 		if ($data[wese] != $data2[wese]) return 0;
 		if ($data[c][crew_min] - 2 > $data[crew])
 		{
-			$return[msg] = "Zum andocken werden mindestens ".($data[c][crew_min] - 2)." Crewmitglieder benï¿½tigt";
+			$return[msg] = "Zum andocken werden mindestens ".($data[c][crew_min] - 2)." Crewmitglieder benötigt";
 			return $return;
 		}
 		if ($this->cdock != 0)
@@ -3793,7 +3791,7 @@ class ship
 		}
 		if ($this->db->query("SELECT COUNT(id) FROM stu_ships WHERE dock=".$shipId2,1) >= $data2[c][slots])
 		{
-			$return[msg] = "Alle Dockplï¿½tze der ".stripslashes($data2[name])." sind belegt";
+			$return[msg] = "Alle Dockplätze der ".stripslashes($data2[name])." sind belegt";
 			return $return;
 		}
 		global $myComm,$myUser;
@@ -3842,7 +3840,7 @@ class ship
 		}
 		if ($this->cclass[crew_min] - 2 > $this->ccrew)
 		{
-			$return[msg] = "Zum Abdocken werden ".($this->cclass[crew_min] -2)." Crewmitglieder benï¿½tigt";
+			$return[msg] = "Zum Abdocken werden ".($this->cclass[crew_min] -2)." Crewmitglieder benötigt";
 			return $return;
 		}
 		if ($this->cships_rumps_id == 7)
@@ -3890,7 +3888,7 @@ class ship
 		}
 		if ($myUser->getfield("level",$coldata[user_id]) < 2)
 		{
-			$return[msg] = "Es kï¿½nnen keine Kolonisten unter Level 2 angegriffen werden";
+			$return[msg] = "Es können keine Kolonisten unter Level 2 angegriffen werden";
 			return $return;
 		}
 		if ($this->cenergie == 0)
@@ -3900,20 +3898,20 @@ class ship
 		}
 		if ($this->cclass[crew_min] > $this->ccrew)
 		{
-			$return[msg] = "Es werden ".$this->cclass[crew_min]." Crewmitglieder benï¿½tigt";
+			$return[msg] = "Es werden ".$this->cclass[crew_min]." Crewmitglieder benötigt";
 			return $return;
 		}
 		if ($mode == "field") {	$fielddata = $myColony->getfielddatabyid($fieldId,$colId); $fadd = "fields"; }
 		elseif ($mode == "orbit") { $fielddata = $myColony->getorbitfielddatabyid($fieldId,$colId); $fadd = "orbit"; }
 		if ($fielddata[buildings_id] == 218)
 		{
-			$return[msg] = "Dieses Gebï¿½ude kann nicht angegriffen werden";
+			$return[msg] = "Dieses Gebäude kann nicht angegriffen werden";
 			return $return;
 		}
 		$this->db->query("UPDATE stu_ships SET energie=energie-1 WHERE id=".$this->cid);
 		if ($colclass[atmos] >= $this->cmaxphaser && $this->cstrb_mode == 1)
 		{
-			$return[msg] = "Der Phaserschuï¿½ wurde von der Atmosphï¿½re kompensiert";
+			$return[msg] = "Der Phaserschuß wurde von der Atmosphäre kompensiert";
 			$defend = $myColony->defendColony($colId,$shipId);
 			if ($defend[msg] != "") {
 				$return[msg] .= "<br><strong>Kolonieverteidigung</strong><br>".$defend[msg];
@@ -3945,7 +3943,7 @@ class ship
 			$phaser = 1;
 		}
 		$cl = $myColony->getcloaked($colId);
-		$cl[$fieldId] == 1 ? $msg = "Die ".$this->cname." schieï¿½t auf der Kolonie ".$coldata[name]." auf das Gebï¿½ude auf Feld ".($fieldId+1) : $msg = "Die ".$this->cname." schieï¿½t auf der Kolonie ".$coldata[name]." auf das Gebï¿½ude ".$building[name]." auf Feld ".($fieldId+1);
+		$cl[$fieldId] == 1 ? $msg = "Die ".$this->cname." schießt auf der Kolonie ".$coldata[name]." auf das Gebäude auf Feld ".($fieldId+1) : $msg = "Die ".$this->cname." schießt auf der Kolonie ".$coldata[name]." auf das Gebäude ".$building[name]." auf Feld ".($fieldId+1);
 		if ($coldata[schilde_aktiv] == 1 && $coldata[schild_freq1].$coldata[schild_freq2] != $freq)
 		{
 			if (($phaser == 1) && ($this->db->query("SELECT besonder FROM stu_ships_modules WHERE id=".$this->cwaffenmodlvl,1) == "Partikelwaffe"))
@@ -3974,7 +3972,7 @@ class ship
 		}
 		if ($fielddata[buildings_id] == 0)
 		{
-			$return[msg] .= $msg."<br>Der Schuï¿½ richtete keinen Schaden an";
+			$return[msg] .= $msg."<br>Der Schuß richtete keinen Schaden an";
 			$defend = $myColony->defendColony($colId,$shipId);
 			if ($defend[msg] != "")
 			{
@@ -4007,13 +4005,13 @@ class ship
 				$this->db->query("UPDATE stu_colonies_underground SET aktiv=0 WHERE colonies_id=".$colId);
 				$this->db->query("UPDATE stu_colonies_underground SET buildings_id=0,aktiv=0,integrity=0 WHERE field_id=13 ANd colonies_id=".$colId);
 			}
-			$msg .= "<br>Das Gebï¿½ude wurde zerstï¿½rt - Es gab ".$building[bev_use]." Tote";
+			$msg .= "<br>Das Gebäude wurde zerstört - Es gab ".$building[bev_use]." Tote";
 			if ((($building[id] > 25) && ($building[id] < 31)) || ($building[id] == 135)) $this->db->query("DELETE FROM stu_ships_buildprogress WHERE colonies_id=".$colId);
 		}
 		else
 		{
 			$this->db->query("UPDATE stu_colonies_".$fadd." SET integrity=".($fielddata[integrity]-$schaden)." WHERE field_id=".$fieldId." AND colonies_id=".$colId);
-			$msg .= "<br>Schaden: ".$schaden." - Integritï¿½t: ".($fielddata[integrity]-$schaden);
+			$msg .= "<br>Schaden: ".$schaden." - Integrität: ".($fielddata[integrity]-$schaden);
 		}
 		$this->cenergie -= 1;
 		$return[msg] = $msg;
@@ -4189,7 +4187,7 @@ class ship
 		if ($class == 0) return 0;
 		if ($this->getcountbygoodid($goodId,$basis) == 0)
 		{
-			$return[msg] = "Keine startbereiten Jï¿½ger mehr vorhanden";
+			$return[msg] = "Keine startbereiten Jäger mehr vorhanden";
 			return $return;
 		}
 		$data = $this->getclassbyid($classId);
@@ -4198,12 +4196,12 @@ class ship
 		$schild = $this->getmodulebyid($schildmod);
 		$mh = $data[huellmod]*$huell[huell];
 
-		$name = addslashes($basedata[name]." Jï¿½ger");
+		$name = addslashes($basedata[name]." Jäger");
 		$nextid = $this->db->query("SELECT max(id) AS next_id FROM stu_ships",4);
 		$nextid = $nextid[next_id] + 1;
 		$this->db->query("INSERT INTO stu_ships (id,name,ships_rumps_id,user_id,coords_x,coords_y,huelle,energie,schilde,batt,crew,huellmodlvl,sensormodlvl,schildmodlvl,reaktormodlvl,epsmodlvl,antriebmodlvl,waffenmodlvl,computermodlvl,wese,fleets_id,alertlevel,kss) VALUES ('".$nextid."','".$name."','".$classId."','".$basedata[user_id]."','".$basedata[coords_x]."','".$basedata[coords_y]."','".$mh."','".($data[epsmod]*$eps[eps])."','".($data[schildmod]*$schild[shields])."','".$data[max_batt]."','".$data[crew]."','".$huellmod."','".$sensormod."','".$schildmod."','".$reaktormod."','".$epsmod."','".$antriebmod."','".$waffenmod."','".$computermod."','".$basedata[wese]."','".$basedata[fleets_id]."','2','1')");
 		$this->lowerstoragebygoodid(1,$goodId,$basedata[id]);
-		$return[msg] = "Jï¿½ger wurde gestartet";
+		$return[msg] = "Jäger wurde gestartet";
 		return $return;
 	}
 
@@ -4221,7 +4219,7 @@ class ship
 		$anzahl = $anzahl[anzahl];
 		$this->upperstoragebygoodid($anzahl,$goodId,$basedata[id],$basedata[user_id]);
 		$this->db->query("DELETE FROM stu_ships WHERE ships_rumps_id = ".$classId." AND coords_x = ".$basedata[coords_x]." AND coords_y = ".$basedata[coords_y]." AND wese = ".$basedata[wese]." AND fleets_id = ".$basedata[fleets_id]);
-		$return[msg] = $anzahl." Jï¿½ger sind gelandet";
+		$return[msg] = $anzahl." Jäger sind gelandet";
 		return $return;
 	}
 
@@ -4231,11 +4229,11 @@ class ship
 		if ($data[user_id] != $userId) return 0;
 		if ($data[c][crew_min] - 1 > $data[crew])
 		{
-			$return[msg] = "Es werden ".($data[c][crew_min] - 1)." Crewmitglieder benï¿½tigt um in das Wurmloch zu fliegen";
+			$return[msg] = "Es werden ".($data[c][crew_min] - 1)." Crewmitglieder benötigt um in das Wurmloch zu fliegen";
 			if ($fleet > 0)
 			{
 				$this->db->query("UPDATE stu_ships SET fleets_id=0 WHERE id=".$shipId);
-				$return[msg] .= "<br>Die ".$data[name]." hat sich von der Flotte gelï¿½st";
+				$return[msg] .= "<br>Die ".$data[name]." hat sich von der Flotte gelöst";
 			}
 			return $return;
 		}
@@ -4251,7 +4249,7 @@ class ship
 		}
 		if ($data[energie] < 13)
 		{
-			$return[msg] = "Es wird mindestens 13 Energie benï¿½tigt um in das Wurmloch zu fliegen";
+			$return[msg] = "Es wird mindestens 13 Energie benötigt um in das Wurmloch zu fliegen";
 			return $return;
 		}
 		if ($data[dock] > 0)
@@ -4282,7 +4280,7 @@ class ship
 				$ry = rand(1,$mapfields[max_y]);
 				$this->db->query("UPDATE stu_ships SET coords_x=".$rx.",coords_y=".$ry." WHERE id=".$shipId);
 				$this->trumfield($shipId);
-				$return[msg] = $msg."Die ".$data[name]." wurde im instabilen Wurmloch zerstï¿½rt";
+				$return[msg] = $msg."Die ".$data[name]." wurde im instabilen Wurmloch zerstört";
 				return $return;
 			}
 		}
@@ -4299,7 +4297,7 @@ class ship
 		if ($this->cshow == 0) return 0;
 		if ($this->cships_rumps_id != 7)
 		{
-			$return[msg] = "Zum Konstruktbau wird ein Workbee benï¿½tigt";
+			$return[msg] = "Zum Konstruktbau wird ein Workbee benötigt";
 			return $return;
 		}
 		if ($this->db->query("SELECT a.id FROM stu_ships as a LEFT OUTER JOIN stu_ships_rumps as b ON a.ships_rumps_id=b.id WHERE a.coords_x=".$this->ccoords_x." AND a.coords_y=".$this->ccoords_y." AND wese=".$this->cwese." AND b.slots>0",1) != 0)
@@ -4320,7 +4318,7 @@ class ship
 		}
 		if ($this->cclass[crew_min] > $this->ccrew)
 		{
-			$return[msg] = "Zum Konstruktbau werden ".$this->cclass[crew_min]." Crewmitglieder benï¿½tigt";
+			$return[msg] = "Zum Konstruktbau werden ".$this->cclass[crew_min]." Crewmitglieder benötigt";
 			return $return;
 		}
 		global $myMap;
@@ -4333,7 +4331,7 @@ class ship
 		$builddat = $this->getclassbyid(111);
 		if ($this->cenergie < 15)
 		{
-			$return[msg] = "Es wird 15 Energie auf dem Workbee benï¿½tigt - Vorhanden sind nur ".$this->cenergie;
+			$return[msg] = "Es wird 15 Energie auf dem Workbee benötigt - Vorhanden sind nur ".$this->cenergie;
 			return $return;
 		}
 		$return = $this->mincost(111,$this->user,$shipId);
@@ -4359,7 +4357,7 @@ class ship
 		}
 		if ($this->db->query("SELECT id FROM stu_ships WHERE dock=".$shipId." AND ships_rumps_id=7",1) == 0)
 		{
-			$return[msg] = "Um eine Station bauen zu kï¿½nnen muss ein Workbee am Konstrukt angedockt sein";
+			$return[msg] = "Um eine Station bauen zu können muss ein Workbee am Konstrukt angedockt sein";
 			return $return;
 		}
 		global $myColony;
@@ -4395,7 +4393,7 @@ class ship
 		}
 		if ($this->cenergie < $builddat[eps_cost])
 		{
-			$return[msg] = "Es wird ".$builddat[eps_cost]." Energie benï¿½tigt - Vorhanden ist nur ".$this->cenergie;
+			$return[msg] = "Es wird ".$builddat[eps_cost]." Energie benötigt - Vorhanden ist nur ".$this->cenergie;
 			return $return;
 		}
 		$result = $this->checkModules($huellmod,$schildmod,$waffenmod,$epsmod,$computermod,$sensormod,$reaktormod,$stationId,$shipId,$this->user);
@@ -4446,12 +4444,12 @@ class ship
 		$buildwp = $this->db->query("SELECT SUM(points) FROM stu_ships_buildprogress WHERE user_id=".$this->user,1);
 		if (round($wirtsum,2) < round($wirtdata+$points+$buildwp,2))
 		{
-			$return[msg] = "Es sind ".round($wirtsum,2)." Punkte vorhanden - Zum Bau werden ".round($wirtdata+$points+$buildwp,2)." benï¿½tigt";
+			$return[msg] = "Es sind ".round($wirtsum,2)." Punkte vorhanden - Zum Bau werden ".round($wirtdata+$points+$buildwp,2)." benötigt";
 			return $return;
 		}
 		if ($this->cenergie - $builddat[eps_cost] < 0)
 		{
-			$return[msg] = "Es wird ".$this->cclass[eps_cost]." Energie benï¿½tigt - Vorhanden ist aber nur ".$this->cenergie;
+			$return[msg] = "Es wird ".$this->cclass[eps_cost]." Energie benötigt - Vorhanden ist aber nur ".$this->cenergie;
 			return $return;
 		}
 		$result = $this->mincost($stationId,$this->user,$shipId);
@@ -4539,7 +4537,7 @@ class ship
 			$rress = $this->db->query("SELECT count FROM stu_ships_storage WHERE goods_id=".$result[$i][goods_id]." AND ships_id=".$shipId,1);
 			if ($result[$i]['count'] > $rress)
 			{
-				$return[msg] = "Es werden ".$result[$i]['count']." ".$result[$i][name]." benï¿½tigt - Vorhanden sind nur ".$rress;
+				$return[msg] = "Es werden ".$result[$i]['count']." ".$result[$i][name]." benötigt - Vorhanden sind nur ".$rress;
 				$return[code] = 0;
 				return $return;
 			}
@@ -4571,11 +4569,11 @@ class ship
 			}
 			if ($this->db->query("SELECT id FROM stu_dock_permissions WHERE ships_id=".$shipId." AND id2=".$dockId." AND type='ship'",1) > 0)
 			{
-				$return[msg] = "Fï¿½r dieses Schiff ist bereits eine Andockregel vorhanden";
+				$return[msg] = "Für dieses Schiff ist bereits eine Andockregel vorhanden";
 				return $return;
 			}
 			$this->db->query("INSERT INTO stu_dock_permissions (ships_id,type,id2,mode) VALUES ('".$shipId."','ship',".$dockId.",'".$perm."')");
-			$return[msg] = "Die Andockerlaubnis fï¿½r die ".stripslashes($data2[name])." wurde erstellt";
+			$return[msg] = "Die Andockerlaubnis für die ".stripslashes($data2[name])." wurde erstellt";
 		}
 		elseif ($type == "allyid")
 		{
@@ -4589,11 +4587,11 @@ class ship
 			
 			if ($this->db->query("SELECT id FROM stu_dock_permissions WHERE ships_id=".$shipId." ANd id2=".$dockId." AND type='ally'",1) > 0)
 			{
-				$return[msg] = "Fï¿½r diese Allianz ist bereits eine Andockregel vorhanden";
+				$return[msg] = "Für diese Allianz ist bereits eine Andockregel vorhanden";
 				return $return;
 			}
 			$this->db->query("INSERT INTO stu_dock_permissions (ships_id,type,id2,mode) VALUES ('".$shipId."','ally',".$dockId.",'".$perm."')");
-			$return[msg] = "Die Andockerlaubnis fï¿½r die Allianz ".$data2[name]." wurde erstellt";
+			$return[msg] = "Die Andockerlaubnis für die Allianz ".$data2[name]." wurde erstellt";
 		}
 		elseif ($type == "userid")
 		{
@@ -4607,11 +4605,11 @@ class ship
 			
 			if ($this->db->query("SELECT id FROM stu_dock_permissions WHERE ships_id=".$shipId." ANd id2=".$dockId." AND type='user'",1) > 0)
 			{
-				$return[msg] = "Fï¿½r diesen Siedler ist bereits eine Andockregel vorhanden";
+				$return[msg] = "Für diesen Siedler ist bereits eine Andockregel vorhanden";
 				return $return;
 			}
 			$this->db->query("INSERT INTO stu_dock_permissions (ships_id,type,id2,mode) VALUES ('".$shipId."','user',".$dockId.",'".$perm."')");
-			$return[msg] = "Die Andockerlaubnis fï¿½r den User ".$data2[user]." wurde erstellt";
+			$return[msg] = "Die Andockerlaubnis für den User ".$data2[user]." wurde erstellt";
 		}
 		return $return;
 	}
@@ -4624,7 +4622,7 @@ class ship
 		if ($data2[dock] == 0) return 0;
 		if ($this->cclass[crew_min] - 2 > $this->ccrew)
 		{
-			$return[msg] = "Zum Abdocken werden ".($this->cclass[crew_min] - 2)." Crewmitglieder benï¿½tigt";
+			$return[msg] = "Zum Abdocken werden ".($this->cclass[crew_min] - 2)." Crewmitglieder benötigt";
 			return $return;
 		}
 		if ($data2[ships_rumps_id] == 7)
@@ -4662,7 +4660,7 @@ class ship
 	{
 		if ($this->cshow == 0) return 0;
 		$this->db->query("DELETE FROM stu_dock_permissions WHERE ships_id=".$shipId." AND id=".$dockId);
-		$return[msg] = "Die Andockerlaubnis wurde gelï¿½scht";
+		$return[msg] = "Die Andockerlaubnis wurde gelöscht";
 		return $return;
 	}
 	
@@ -4673,7 +4671,7 @@ class ship
 		if ($this->cshow == 0 || $this->cclass[probe] == 1) return 0;
 		if ($this->cenergie == 0)
 		{
-			$return[msg] = "Zum Abschuï¿½ einer Phasersalve wird mindestens 1 Energie benï¿½tigt";
+			$return[msg] = "Zum Abschuß einer Phasersalve wird mindestens 1 Energie benötigt";
 			return $return;
 		}
 		if ($this->ctype != 31 && $this->ctype != 15) return 0;
@@ -4697,34 +4695,34 @@ class ship
 		$class = $this->getclassbyid($classId);
 		if ($huellmod == 0)
 		{
-			$return[msg] = "Es wurde kein Hï¿½llenmodul ausgewï¿½hlt";
+			$return[msg] = "Es wurde kein Hüllenmodul ausgewählt";
 			$return[code] = 0;
 			return $return;
 		}
 		$module = $this->getmodulebyid($huellmod);
 		if (($module[lvl] > $class[huellmod_max]) || ($module[lvl] < $class[huellmod_min]))
 		{
-			$return[msg] = "Dieses Hï¿½llenmodul kann in den gewï¿½hlten Schiffsrumpf nicht eingebaut werden";
+			$return[msg] = "Dieses Hüllenmodul kann in den gewählten Schiffsrumpf nicht eingebaut werden";
 			$return[code] = 0;
 			return $return;
 		}
 		$stor = $this->checkstoragebygoodid($class[huellmod],$module[goods_id],$shipId);
 		if ($stor == 0)
 		{
-			$return[msg] = "Dieses Hï¿½llenmodul befindet sich nicht an Bord des Konstrukts";
+			$return[msg] = "Dieses Hüllenmodul befindet sich nicht an Bord des Konstrukts";
 			$return[code] = 0;
 			return $return;
 		}
 		if ($schildmod == 0)
 		{
-			$return[msg] = "Es wurde kein Schildmodul ausgewï¿½hlt";
+			$return[msg] = "Es wurde kein Schildmodul ausgewählt";
 			$return[code] = 0;
 			return $return;
 		}
 		$module = $this->getmodulebyid($schildmod);
 		if (($module[lvl] > $class[schildmod_max]) || ($module[lvl] < $class[schildmod_min]))
 		{
-			$return[msg] = "Dieses Schildmodul kann in den gewï¿½hlten Schiffsrumpf nicht eingebaut werden";
+			$return[msg] = "Dieses Schildmodul kann in den gewählten Schiffsrumpf nicht eingebaut werden";
 			$return[code] = 0;
 			return $return;
 		}
@@ -4740,7 +4738,7 @@ class ship
 			$module = $this->getmodulebyid($waffenmod);
 			if (($module[lvl] > $class[waffenmod_max]) || ($module[lvl] < $class[waffenmod_min]))
 			{
-				$return[msg] = "Dieses Waffenmodul kann in den gewï¿½hlten Schiffsrumpf nicht eingebaut werden";
+				$return[msg] = "Dieses Waffenmodul kann in den gewählten Schiffsrumpf nicht eingebaut werden";
 				$return[code] = 0;
 				return $return;
 			}
@@ -4754,14 +4752,14 @@ class ship
 		}
 		if ($epsmod == 0)
 		{
-			$return[msg] = "Es wurde kein EPS-Gittermodul ausgewï¿½hlt";
+			$return[msg] = "Es wurde kein EPS-Gittermodul ausgewählt";
 			$return[code] = 0;
 			return $return;
 		}
 		$module = $this->getmodulebyid($epsmod);
 		if (($module[lvl] > $class[epsmod_max]) || ($module[lvl] < $class[epsmod_min]))
 		{
-			$return[msg] = "Dieses EPS-Gittermodul kann in den gewï¿½hlten Schiffsrumpf nicht eingebaut werden";
+			$return[msg] = "Dieses EPS-Gittermodul kann in den gewählten Schiffsrumpf nicht eingebaut werden";
 			$return[code] = 0;
 			return $return;
 		}
@@ -4774,14 +4772,14 @@ class ship
 		}
 		if ($computermod == 0)
 		{
-			$return[msg] = "Es wurde kein Computermodul ausgewï¿½hlt";
+			$return[msg] = "Es wurde kein Computermodul ausgewählt";
 			$return[code] = 0;
 			return $return;
 		}
 		$module = $this->getmodulebyid($computermod);
 		if (($module[lvl] > $class[computermod_max]) || ($module[lvl] < $class[computermod_min]))
 		{
-			$return[msg] = "Dieses Computermodul kann in den gewï¿½hlten Schiffsrumpf nicht eingebaut werden";
+			$return[msg] = "Dieses Computermodul kann in den gewählten Schiffsrumpf nicht eingebaut werden";
 			$return[code] = 0;
 			return $return;
 		}
@@ -4794,14 +4792,14 @@ class ship
 		}
 		if ($sensormod == 0)
 		{
-			$return[msg] = "Es wurde kein Sensorenmodul ausgewï¿½hlt";
+			$return[msg] = "Es wurde kein Sensorenmodul ausgewählt";
 			$return[code] = 0;
 			return $return;
 		}
 		$module = $this->getmodulebyid($sensormod);
 		if (($module[lvl] > $class[sensormod_max]) || ($module[lvl] < $class[sensormod_min]))
 		{
-			$return[msg] = "Dieses Sensorenmodul kann in den gewï¿½hlten Schiffsrumpf nicht eingebaut werden";
+			$return[msg] = "Dieses Sensorenmodul kann in den gewählten Schiffsrumpf nicht eingebaut werden";
 			$return[code] = 0;
 			return $return;
 		}
@@ -4817,7 +4815,7 @@ class ship
 			$module = $this->getmodulebyid($reaktormod);
 			if (($module[lvl] > $class[reaktormod_max]) || ($module[lvl] < $class[reaktormod_min]))
 			{
-				$return[msg] = "Dieses Reaktormodul kann in den gewï¿½hlten Schiffsrumpf nicht eingebaut werden";
+				$return[msg] = "Dieses Reaktormodul kann in den gewählten Schiffsrumpf nicht eingebaut werden";
 				$return[code] = 0;
 				return $return;
 			}
@@ -4870,7 +4868,7 @@ class ship
 		}
 		if ($this->cclass[crew_min] > $this->ccrew)
 		{
-			$return[msg] = "Zur Verteidigung werden ".$this->cclass[crew_min]." Crewmitglieder benï¿½tigt";
+			$return[msg] = "Zur Verteidigung werden ".$this->cclass[crew_min]." Crewmitglieder benötigt";
 			return $return;
 		}
 		if ($this->db->query("SELECT id FROM stu_ships_action WHERE ships_id=".$shipId." AND mode='defend'",1) > 0)
@@ -4947,7 +4945,7 @@ class ship
 					}
 					break;
 				}
-				else $msg .= "<br>Drohne konnte Ziel nicht aufspï¿½ren";
+				else $msg .= "<br>Drohne konnte Ziel nicht aufspüren";
 				if ($i == 4) $msg .= "<br>Energievorrat der Drohne verbraucht";
 			}
 			$this->lowerstoragebygoodid(1,215,$this->cid);
@@ -5018,7 +5016,7 @@ class ship
 		$class = $this->db->query("SELECT * FROM stu_ships_rumps WHERE id='".$data[ships_rumps_id]."'",4);
 		if ($class[size] < 5)
 		{
-			$return[msg] = "Umstellung nicht mï¿½glich";
+			$return[msg] = "Umstellung nicht möglich";
 			return $return;
 		}
 		$beg = 0;
@@ -5040,11 +5038,11 @@ class ship
 		}
 		if ($beg == 0)
 		{
-			$return[msg] = "Keine Quad-fï¿½higen Torpedos an Bord";
+			$return[msg] = "Keine Quad-fähigen Torpedos an Bord";
 			return $return;
 		}
 		$this->db->query("UPDATE stu_ships_storage SET goods_id=".$end." WHERE ships_id=".$shipId." AND goods_id=".$beg);
-		$return[msg] = "Feuermodus geï¿½ndert";
+		$return[msg] = "Feuermodus geändert";
 		return $return;
 	}
 
@@ -5146,7 +5144,7 @@ class ship
 			if ($res[code] == 1)
 			{
 				$msg .= strip_tags($this->returnmsg,"<font></font><br><strong></strong>")."<br>";
-				$myComm->sendpm($data[user_id],2,"<strong>Kampf in Sektor ".$x."/".$y."</strong><br>Die ".stripslashes($data[name])." (Alarm Rot/Freund-Feind-Erkennung) beschieï¿½t die ".stripslashes($target[name])." des Users ".stripslashes($myUser->getfield("user",$userId))." (".$this->user.")",2);
+				$myComm->sendpm($data[user_id],2,"<strong>Kampf in Sektor ".$x."/".$y."</strong><br>Die ".stripslashes($data[name])." (Alarm Rot/Freund-Feind-Erkennung) beschießt die ".stripslashes($target[name])." des Users ".stripslashes($myUser->getfield("user",$userId))." (".$this->user.")",2);
 			}
 			$this->returnmsg = "";
 			$this->pmmsg = "";
@@ -5184,12 +5182,12 @@ class ship
 		}
 		if ($this->cenergie < 8)
 		{
-			$return[msg] = "Fï¿½r einen Gravitonscan werden 8 Energie benï¿½tigt";
+			$return[msg] = "Für einen Gravitonscan werden 8 Energie benötigt";
 			return $return;
 		}
 		if ($this->ccrew < $this->cclass[crew_min])
 		{
-			$return[msg] = "Es werden ".$this->cclass[crew_min]." Crewmitglieder benï¿½tigt";
+			$return[msg] = "Es werden ".$this->cclass[crew_min]." Crewmitglieder benötigt";
 			return $return;
 		}
 		$j=0;
@@ -5197,7 +5195,7 @@ class ship
 		$cmodule = $this->getmodulebyid($this->ccomputermodlvl);
 		if ($cmodule[lvl] < 3)
 		{
-			$return[msg] = "Fï¿½r einen Gravitonscan wird mindestens ein Isolinearer Computer benï¿½tigt";
+			$return[msg] = "Für einen Gravitonscan wird mindestens ein Isolinearer Computer benötigt";
 			return $return;
 		}
 		$chance = round($smodule[lvl] * $data[c][sensormod] * $cmodule[lvl] / 2);
@@ -5285,25 +5283,25 @@ class ship
 		if ($shipdata == 0 || $targetdata == 0) return 0;
 		if ($targetdata[c][trumfield] == 1)
 		{
-			$return[msg] = "Wracks kï¿½nnen nicht repariert werden";
+			$return[msg] = "Wracks können nicht repariert werden";
 			return $return;
 		}
 		if ($targetdata[c][id] == 111)
 		{
-			$return[msg] = "Konstrukte kï¿½nnen nicht repariert werden";
+			$return[msg] = "Konstrukte können nicht repariert werden";
 			return $return;
 		}
 		if ($targetdata[c][slots] == 0)
 		{
 			if ($targetdata[huelle] <= ($targetdata[maxhuell] * 0.4))
 			{
-				$return[msg] = "Schiff ist zu schwer beschï¿½digt";
+				$return[msg] = "Schiff ist zu schwer beschädigt";
 				return $return;
 			}
 		}
 		if (($shipdata[coords_x] != $targetdata[coords_x]) || ($shipdata[coords_y] != $targetdata[coords_y]) || ($shipdata[wese] != $targetdata[wese]))
 		{
-			$return[msg] = "Die Schiffe mï¿½ssen sich im selben Sektor befinden";
+			$return[msg] = "Die Schiffe müssen sich im selben Sektor befinden";
 			return $return;
 		}
 		if (($shipdata[cloak] == 1) || ($targetdata[cloak] == 1))
@@ -5318,7 +5316,7 @@ class ship
 		}
 		if ($targetdata[maxhuell] == $targetdata[huelle])
 		{
-			$return[msg] = "Das Schiff ist nicht beschï¿½digt";
+			$return[msg] = "Das Schiff ist nicht beschädigt";
 			return $return;
 		}
 		$cost = $this->getshiprepaircost($targetId);
@@ -5326,73 +5324,73 @@ class ship
 		{
 			if ($cost[0] > $this->cenergie)
 			{
-				$return[msg] = "Zur Reparatur wird ".$cost[0]." Energie benï¿½tigt - Vorhanden ist nur ".$this->cenergie;
+				$return[msg] = "Zur Reparatur wird ".$cost[0]." Energie benötigt - Vorhanden ist nur ".$this->cenergie;
 				return $return;
 			}
 			$count = $this->getcountbygoodid(3,$this->cid);
 			if ($cost[3] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[3]." Baumaterial benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[3]." Baumaterial benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid(6,$this->cid);
 			if ($cost[6] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[6]." Duranium benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[6]." Duranium benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid(9,$this->cid);
 			if ($cost[9] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[9]." Tritanium benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[9]." Tritanium benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid(10,$this->cid);
 			if ($cost[10] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[10]." Iso-Chips benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[10]." Iso-Chips benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid(12,$this->cid);
 			if ($cost[12] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[12]." Kelbonit benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[12]." Kelbonit benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid(14,$this->cid);
 			if ($cost[14] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[14]." Nitrium benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[14]." Nitrium benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid(15,$this->cid);
 			if ($cost[15] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[15]." Plasma benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[15]." Plasma benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid(19,$this->cid);
 			if ($cost[19] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[19]." Gel-Packs benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[19]." Gel-Packs benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid($cost[modules][huelleg],$this->cid);
 			if ($cost[modules][huellec] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[modules][huellec]." Hï¿½llenmodule benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[modules][huellec]." Hüllenmodule benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid($cost[modules][schildeg],$this->cid);
 			if ($cost[modules][schildec] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[modules][schildec]." Schildmodule benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[modules][schildec]." Schildmodule benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid($cost[modules][antriebg],$this->cid);
 			if ($cost[modules][antriebc] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[modules][antriebc]." Antriebsmodule benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[modules][antriebc]." Antriebsmodule benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			if ($shipdata[reaktormodlvl] > 0)
@@ -5400,20 +5398,20 @@ class ship
 				$count = $this->getcountbygoodid($cost[modules][reaktorg],$this->cid);
 				if ($cost[modules][reaktorc] > $count)
 				{
-					$return[msg] = "Zur Reparatur werden ".$cost[modules][reaktorc]." Reaktormodule benï¿½tigt - Vorhanden sind nur ".$count;
+					$return[msg] = "Zur Reparatur werden ".$cost[modules][reaktorc]." Reaktormodule benötigt - Vorhanden sind nur ".$count;
 					return $return;
 				}
 			}
 			$count = $this->getcountbygoodid($cost[modules][sensorg],$this->cid);
 			if ($cost[modules][sensorc] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[modules][sensorc]." Sensormodule benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[modules][sensorc]." Sensormodule benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid($cost[modules][computerg],$this->cid);
 			if ($cost[modules][computerc] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[modules][computerc]." Computermodule benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[modules][computerc]." Computermodule benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			if ($shipdata[waffenmodlvl] > 0)
@@ -5421,14 +5419,14 @@ class ship
 				$count = $this->getcountbygoodid($cost[modules][waffeng],$this->cid);
 				if ($cost[modules][waffenc] > $count)
 				{
-					$return[msg] = "Zur Reparatur werden ".$cost[modules][waffenc]." Waffenmodule benï¿½tigt - Vorhanden sind nur ".$count;
+					$return[msg] = "Zur Reparatur werden ".$cost[modules][waffenc]." Waffenmodule benötigt - Vorhanden sind nur ".$count;
 					return $return;
 				}
 			}
 			$count = $this->getcountbygoodid($cost[modules][epsg],$this->cid);
 			if ($cost[modules][epsc] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[modules][epsc]." EPS-Gittermodule benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[modules][epsc]." EPS-Gittermodule benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			if ($cost[modules][huellec] > 0) $this->lowerstoragebygoodid($cost[modules][huellec],$cost[modules][huelleg],$this->cid);
@@ -5457,67 +5455,67 @@ class ship
 		{
 			if ($cost[0] > ($this->cenergie + $targetdata[energie]))
 			{
-				$return[msg] = "Zur Reparatur wird ".$cost[0]." Energie benï¿½tigt - Vorhanden ist nur ".($this->cenergie + $targetdata[energie]);
+				$return[msg] = "Zur Reparatur wird ".$cost[0]." Energie benötigt - Vorhanden ist nur ".($this->cenergie + $targetdata[energie]);
 				return $return;
 			}
 			$count = $this->getcountbygoodid(3,$this->cid) + $this->getcountbygoodid(3,$targetId);
 			if ($cost[3] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[3]." Baumaterial benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[3]." Baumaterial benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid(6,$this->cid) + $this->getcountbygoodid(6,$targetId);
 			if ($cost[6] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[6]." Duranium benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[6]." Duranium benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid(9,$this->cid) + $this->getcountbygoodid(9,$targetId);
 			if ($cost[9] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[9]." Tritanium benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[9]." Tritanium benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid(10,$this->cid) + $this->getcountbygoodid(10,$targetId);
 			if ($cost[10] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[10]." Iso-Chips benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[10]." Iso-Chips benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid(12,$this->cid) + $this->getcountbygoodid(12,$targetId);
 			if ($cost[12] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[12]." Kelbonit benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[12]." Kelbonit benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid(14,$this->cid) + $this->getcountbygoodid(14,$targetId);
 			if ($cost[14] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[14]." Nitrium benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[14]." Nitrium benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid(15,$this->cid) + $this->getcountbygoodid(15,$targetId);
 			if ($cost[15] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[15]." Plasma benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[15]." Plasma benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid(19,$this->cid) + $this->getcountbygoodid(19,$targetId);
 			if ($cost[19] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[19]." Gel-Packs benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[19]." Gel-Packs benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid($cost[modules][huelleg],$this->cid) + $this->getcountbygoodid($cost[modules][huelleg],$targetId);
 			if ($cost[modules][huellec] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[modules][huellec]." Hï¿½llenmodule benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[modules][huellec]." Hüllenmodule benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid($cost[modules][schildeg],$this->cid) + $this->getcountbygoodid($cost[modules][schildeg],$targetId);
 			if ($cost[modules][schildec] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[modules][schildec]." Schildmodule benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[modules][schildec]." Schildmodule benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			if ($targetdata[reaktormodlvl] > 0)
@@ -5525,20 +5523,20 @@ class ship
 				$count = $this->getcountbygoodid($cost[modules][reaktorg],$this->cid) + $this->getcountbygoodid($cost[modules][reaktorg],$targetId);
 				if ($cost[modules][reaktorc] > $count)
 				{
-					$return[msg] = "Zur Reparatur werden ".$cost[modules][reaktorc]." Reaktormodule benï¿½tigt - Vorhanden sind nur ".$count;
+					$return[msg] = "Zur Reparatur werden ".$cost[modules][reaktorc]." Reaktormodule benötigt - Vorhanden sind nur ".$count;
 					return $return;
 				}
 			}
 			$count = $this->getcountbygoodid($cost[modules][sensorg],$this->cid) + $this->getcountbygoodid($cost[modules][sensorg],$targetId);
 			if ($cost[modules][sensorc] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[modules][sensorc]." Sensormodule benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[modules][sensorc]." Sensormodule benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			$count = $this->getcountbygoodid($cost[modules][computerg],$this->cid) + $this->getcountbygoodid($cost[modules][computerg],$targetId);
 			if ($cost[modules][computerc] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[modules][computerc]." Computermodule benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[modules][computerc]." Computermodule benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			if ($targetdata[waffenmodlvl] > 0)
@@ -5546,14 +5544,14 @@ class ship
 				$count = $this->getcountbygoodid($cost[modules][waffeng],$this->cid) + $this->getcountbygoodid($cost[modules][waffeng],$targetId);
 				if ($cost[modules][waffenc] > $count)
 				{
-					$return[msg] = "Zur Reparatur werden ".$cost[modules][waffenc]." Waffenmodule benï¿½tigt - Vorhanden sind nur ".$count;
+					$return[msg] = "Zur Reparatur werden ".$cost[modules][waffenc]." Waffenmodule benötigt - Vorhanden sind nur ".$count;
 					return $return;
 				}
 			}
 			$count = $this->getcountbygoodid($cost[modules][epsg],$this->cid) + $this->getcountbygoodid($cost[modules][epsg],$targetId);
 			if ($cost[modules][epsc] > $count)
 			{
-				$return[msg] = "Zur Reparatur werden ".$cost[modules][epsc]." EPS-Gittermodule benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[modules][epsc]." EPS-Gittermodule benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 			if ($cost[modules][huellec] > 0)
@@ -5778,17 +5776,17 @@ class ship
 		if ($this->ccoords_x != $shipdata[coords_x] || $this->ccoords_y != $shipdata[coords_y] || $this->cwese != $shipdata[wese]) return 0;
 		if ($this->ccrew < $this->cclass[crew_min])
 		{
-			$return[msg] = "Es werden ".$this->cclass[crew_min]." Crewmitglieder benï¿½tigt";
+			$return[msg] = "Es werden ".$this->cclass[crew_min]." Crewmitglieder benötigt";
 			return $return;
 		}
 		if ($shipdata[batt] == $shipdata[max_batt])
 		{
-			$return[msg] = "Die Reservebatterie der ".$shipdata[name]." ist bereits vollstï¿½ndig aufgeladen";
+			$return[msg] = "Die Reservebatterie der ".$shipdata[name]." ist bereits vollständig aufgeladen";
 			return $return;
 		}
 		if ($shipdata[slots] == 0)
 		{
-			$return[msg] = "Nur Stationen kï¿½nnen mit Reparaturschiffen aufgeladen werden";
+			$return[msg] = "Nur Stationen können mit Reparaturschiffen aufgeladen werden";
 			return $return;
 		}
 		if ($count == "max") $count = floor($this->cenergie / 3);
@@ -5816,7 +5814,7 @@ class ship
 		}
 		if ($this->getcountbygoodid(24,$this->cid) < 2)
 		{
-			$return[msg] = "Nicht genï¿½gend Latinum vorhanden";
+			$return[msg] = "Nicht genügend Latinum vorhanden";
 			return $return;
 		}
 		if ($val < 1 || $val > 40)

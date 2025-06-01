@@ -11,7 +11,7 @@ class db
 			$sqlerr = 1;
 			return -1;
 		}
-		mysql_select_db($db['database'], $this->dblink);
+		mysql_select_db($db[database], $this->dblink);
 	}
 	
 	function query($qry,$m=0)
