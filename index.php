@@ -9,7 +9,7 @@ $myDB = new db;
 include_once("class/game.class.php");
 $myGame = new game;
 
-$page = $_GET['page'] ?: null;
+$page = isset($_GET['page']) ? $_GET['page'] : null;
 
 switch($page)
 {

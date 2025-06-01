@@ -49,7 +49,12 @@ class colony
 	}
 	
 	function getcolonylist() { return $this->db->query("SELECT id,colonies_classes_id,name from stu_colonies WHERE user_id='".$this->user."' ORDER BY colonies_classes_id ASC"); }
-	
+
+	function getColonyTypes()
+	{
+		return $this->db->query("SELECT * FROM stu_colonies_classes", 2);
+	}
+
 	function getnrebyid($colId)
 	{
 		$gtc = @($this->db->query("SELECT COUNT(id) FROM stu_colonies_fields WHERE buildings_id=80 AND aktiv=1 AND colonies_id=".$colId,1)*$this->getgravenergy($colId));
