@@ -298,6 +298,7 @@ class ship
 				$raceenter .= "<td class=tdmainobg>Schiff fliegt in den Raum der Romulaner ein</td></tr>";
 				if ($userId > 100) $myComm->sendpm($cd[race],2,"Perimeteralarm: Die ".$data[name]." von ".$myUser->uuser." (".$data[user_id].") hat bei ".$x."/".$y." die Grenze durchbrochen",2);
 			}
+
 			if ($cd[race] == 27)
 			{
 				$raceenter .= "<td class=tdmainobg>Schiff fliegt in den Raum der Kzinti Hegemonie ein</td></tr>";
