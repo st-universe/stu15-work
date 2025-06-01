@@ -1756,7 +1756,9 @@ class ship
 		return $return;
 	}
 	
-	function getclasses() { return $this->db->query("SELECT * FROM stu_ships_rumps WHERE view=1 ORDER BY sorta ASC,sortb ASC",2); }
+	function getClasses() { 
+		return $this->db->query("SELECT * FROM stu_ships_rumps WHERE view=1 ORDER BY sorta ASC,sortb ASC",2); 
+	}
 	
 	function getnpcclasses() { return $this->db->query("SELECT * FROM stu_ships_rumps ORDER BY sorta ASC,sortb ASC",2); }
 	
