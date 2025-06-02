@@ -108,6 +108,7 @@ if ($login == 1) {
 		$myGame->addlog("700", "5", $user, "Urlaubsmodus aktiviert");
 		exit;
 	}
+	$mdvm = 0;
 	if ($myUser->uvac == 1) {
 		$mdvm = 1;
 		$myUser->dvm();
