@@ -15,12 +15,12 @@ include_once($global_path."/class/db.class.php");
 $myDB = new db;
 if ($_SESSION["login"] != 1 && (!$_GET["pass"] || !$_GET["luser"])) exit;
 if ($_SESSION["login"] != 1) $result = $myDB->query("SELECT id,vac,vactime,kn_lz FROM stu_user WHERE pass='".md5($_GET["pass"])."' AND login='".addslashes(str_replace("\"","",$_GET["luser"]))."'",4);
-if ($_SESSION["login"] == 1 || ($result != 0 && ($result[vac] == 0 || $result[vactime] < time())))
+if ($_SESSION["login"] == 1 || ($result != 0 && ($result['vac'] == 0 || $result['vactime'] < time())))
 {
 	if ($_SESSION["login"] != 1)
 	{
-		$_SESSION["uid"] = $result[id];
-		$_SESSION["knlz"] = $result[kn_lz];
+		$_SESSION["uid"] = $result['id'];
+		$_SESSION["knlz"] = $result['kn_lz'];
 		$_SESSION["login"] = 1;
 	}
 	echo '<wml>

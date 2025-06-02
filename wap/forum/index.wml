@@ -22,10 +22,10 @@ include_once($global_path."/class/db.class.php");
 $myDB = new db;
 
 // Fand ein Login statt?
-if ($_GET[a] == "login" && is_string($_GET[un]) && is_string($_GET[up]))
+if ($_GET['a'] == "login" && is_string($_GET['un']) && is_string($_GET['up']))
 {
-	// Prüfung der Logindaten
-	$lr = $myDB->query("SELECT user_id,username FROM phpbb_users WHERE username='".stripslashes($_GET[un])."' AND user_password='".md5($_GET[up])."' AND user_active=1",4);
+	// Prï¿½fung der Logindaten
+	$lr = $myDB->query("SELECT user_id,username FROM phpbb_users WHERE username='".stripslashes($_GET['un'])."' AND user_password='".md5($_GET['up'])."' AND user_active=1",4);
 	if ($lr == 0) echo '<small>Login fehlgeschlagen</small><br/>';
 	else
 	{
@@ -53,18 +53,18 @@ $lr = $myDB->query("SELECT a.*,b.cat_title FROM phpbb_forums as a LEFT JOIN phpb
 <p><small>';
 $cid = 0;
 
-// Begrüßung wenn eingeloggt
+// Begrï¿½ï¿½ung wenn eingeloggt
 if ($_SESSION["flog"] == 1) echo 'Hallo '.$_SESSION["fun"].'<br/>';
 
-// Schleife für Kategorien und Foren
+// Schleife fï¿½r Kategorien und Foren
 while($data=mysql_fetch_assoc($lr))
 {
-	if ($data[cat_id] != $cid)
+	if ($data['cat_id'] != $cid)
 	{
-		$cid = $data[cat_id];
-		echo htmlentities($data[cat_title])."<br/>";
+		$cid = $data['cat_id'];
+		echo htmlentities($data['cat_title'])."<br/>";
 	}
-	echo '<a href="showboard.wml?bid='.$data[forum_id].'&amp;'.session_name()."=".session_id().'">'.htmlentities($data[forum_name]).'</a><br/>';
+	echo '<a href="showboard.wml?bid='.$data['forum_id'].'&amp;'.session_name()."=".session_id().'">'.htmlentities($data['forum_name']).'</a><br/>';
 }
 
 // Link zum Login ausgeben

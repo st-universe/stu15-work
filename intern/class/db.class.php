@@ -1,22 +1,22 @@
 <?
-class db {
+class db
+{
 
-	function db() {
-		
-		global $db,$sqlerr;
-		$this->dblink = @mysql_connect($db[server],$db[user],$db[pass]);
+	function db()
+	{
+
+		global $db, $sqlerr;
+		$this->dblink = @mysql_connect($db['server'], $db['user'], $db['pass']);
 		if (!$this->dblink) {
 			$sqlerr = 1;
 			return -1;
 		}
-		mysql_select_db($db[database], $this->dblink);
+		mysql_select_db($db['database'], $this->dblink);
 		return 1;
 	}
-	
+
 	function query($qry)
 	{
-		return mysql_query($qry,$this->dblink);
-		
+		return mysql_query($qry, $this->dblink);
 	}
 }
-?>
