@@ -5,6 +5,25 @@ include_once("class/mod.class.php");
 include_once("class/db.class.php");
 session_start();
 
+// Variablen sicher abrufen
+$page = isset($_GET['page']) ? $_GET['page'] : 'main';
+$action = isset($_GET['action']) ? $_GET['action'] : '';
+$section = isset($_GET['section']) ? $_GET['section'] : '';
+$field = isset($_GET['field']) ? $_GET['field'] : '';
+$col = isset($_GET['col']) ? $_GET['col'] : '';
+$class = isset($_GET['class']) ? $_GET['class'] : '';
+$classid = isset($_GET['classid']) ? $_GET['classid'] : '';
+$shipid = isset($_GET['shipid']) ? $_GET['shipid'] : '';
+$id = isset($_GET['id']) ? $_GET['id'] : '';
+$tpa = isset($_GET['tpa']) ? $_GET['tpa'] : '';
+$tid = isset($_GET['tid']) ? $_GET['tid'] : '';
+$tsec = isset($_GET['tsec']) ? $_GET['tsec'] : '';
+$tfie = isset($_GET['tfie']) ? $_GET['tfie'] : '';
+$tcol = isset($_GET['tcol']) ? $_GET['tcol'] : '';
+$tcla = isset($_GET['tcla']) ? $_GET['tcla'] : '';
+$tclai = isset($_GET['tclai']) ? $_GET['tclai'] : '';
+$tsid = isset($_GET['tsid']) ? $_GET['tsid'] : '';
+
 // Überprüfung der Cookies
 if (!$_SESSION["user"] || !$_SESSION["chk"]) {
 	$page = "error";
