@@ -36,8 +36,11 @@
 			if ($result == -1) $error['register'] = "Es sind derzeit keine weiteren Anmeldungen möglich";
 			elseif ($result == 0) $error['register'] = "Es existiert schon ein User mit diesem Login oder mit dieser Emailadresse";
 			else {
-				include_once("inc/functions.inc.php");
-				addlog("500", "6", $result, getenv("SCRIPT_NAME"), "-");
+				// Logging nur wenn functions.inc.php existiert
+				if (file_exists("inc/functions.inc.php")) {
+					include_once("inc/functions.inc.php");
+					addlog("500", "6", $result, getenv("SCRIPT_NAME"), "-");
+				}
 			}
 		}
 	}
@@ -63,7 +66,7 @@
 		$s = 1;
 	}
 
-	if (!$result || $result == 0) {
+	if (!isset($s) && (!$result || $result == 0)) {
 		echo "<tr>
 		<td class=tdmain align=center colspan=2><b>Registrierung</b></td>
 	</tr>
