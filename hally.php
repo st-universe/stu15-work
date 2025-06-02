@@ -1,4 +1,13 @@
 <?php
+$rb = $_POST['rb'] ?? $_GET['rb'] ?? null;
+$se = $_POST['se'] ?? $_GET['se'] ?? 1;
+$stxt = $_POST['stxt'] ?? $_GET['stxt'] ?? '';
+$sort = $_POST['sort'] ?? $_GET['sort'] ?? '';
+$way = $_POST['way'] ?? $_GET['way'] ?? '';
+$action = $_POST['action'] ?? $_GET['action'] ?? '';
+$id = $_POST['id'] ?? $_GET['id'] ?? '';
+$shipid = $_POST['shipid'] ?? $_GET['shipid'] ?? '';
+$stationid = $_POST['stationid'] ?? $_GET['stationid'] ?? '';
 if ($myUser->uhasperr == 1 && $section != "goodview") {
 	echo "<table width=100% bgcolor=#262323 cellpadding=1 cellspacing=1>
 	<tr>
