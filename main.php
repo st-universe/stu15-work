@@ -31,7 +31,6 @@ if (!$_SESSION["user"] || !$_SESSION["chk"]) {
 }
 // Datenbankverbindung herstellen
 $user = $_SESSION["user"];
-$sqlerr = 0;
 
 $myDB = new db;
 if ($sqlerr == 1) {

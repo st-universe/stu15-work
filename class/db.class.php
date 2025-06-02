@@ -4,11 +4,13 @@ class db
 {
 	function db()
 	{
-		global $db, $page;
+		global $db, $page, $sqlerr;
+		$sqlerr = 0;
+
 		$this->dblink = @mysql_connect($db['server'], $db['user'], $db['pass']);
 		if (!$this->dblink) {
 			$sqlerr = 1;
-			return -1;
+			return;
 		}
 		mysql_select_db($db['database'], $this->dblink);
 	}
