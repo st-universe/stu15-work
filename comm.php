@@ -1,4 +1,10 @@
 <?php
+$vmark = isset($_GET['vmark']) ? $_GET['vmark'] : (isset($_POST['vmark']) ? $_POST['vmark'] : null);
+$setmark = isset($_GET['setmark']) ? $_GET['setmark'] : null;
+$mark = isset($_GET['mark']) ? $_GET['mark'] : null;
+$off = isset($_GET['off']) ? $_GET['off'] : 0;
+$return = null;
+$kn = '';
 if ($section == "write") {
 	if ($myUser->uknsperr == 1) {
 		$return['msg'] = "Schreibzugriff für das Kommunikationsnetzwerk wurde verweigert";
