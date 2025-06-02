@@ -31,15 +31,15 @@ if (!$section || ($section == "main")) {
 		<td align=center class=tdmain><strong>Passwort Recovery</strong></td>
 	</tr>
 	<tr>
-		<td class=tdmainobg align=center>" . $result['msg'] . "</td>
+		<td class=tdmainobg align=center>".$result[msg]."</td>
 	</tr>
 	<tr>
-		<td align=center class=tdmainobg><a href=index.php?page=lostpass&section=changepass>Passwort ï¿½ndern</a></td>
+		<td align=center class=tdmainobg><a href=index.php?page=lostpass&section=changepass>Passwort ändern</a></td>
 	</tr>
 	</table>
 	</form>";
 } elseif ($section == "changepass") {
-	if ($pass && $pass2 && $code) $result = $myUser->editpass($code, $pass, $pass2);
+	if ($pass && $pass2 && $code) $result = $myUser->editpass($code,$pass,$pass2);
 	echo "
 	<table bgcolor=#262323>
 	<form action=index.php method=post>
@@ -48,7 +48,7 @@ if (!$section || ($section == "main")) {
 	<tr>
 		<td colspan=2 align=center class=tdmain><strong>Passwort Recovery</strong></td>
 	</tr>";
-	if ($result) echo "<tr><td colspan=2 class=tdmainobg>" . $result['msg'] . "</td></tr>";
+	if ($result) echo "<tr><td colspan=2 class=tdmainobg>".$result[msg]."</td></tr>";
 	echo "<tr>
 		<td class=tdmainobg>Aktivierungscode</td>
 		<td class=tdmainobg><input type=text size=10 name=code class=text></td>
@@ -62,8 +62,9 @@ if (!$section || ($section == "main")) {
 		<td class=tdmainobg><input type=password size=10 name=pass2 class=text></td>
 	</tr>
 	<tr>
-		<td colspan=2 align=center><input type=submit value=ï¿½ndern class=button></td>
+		<td colspan=2 align=center><input type=submit value=Ändern class=button></td>
 	</tr>
 	</table>
 	</form>";
 }
+?>

@@ -16,34 +16,34 @@ class colony
 			$data = $this->db->query("SELECT id,name,energie,bev_used,bev_free,max_bev,max_energie,colonies_classes_id,coords_y,coords_x,max_storage,schild_freq1,schild_freq2,max_schilde,schilde,schilde_aktiv,gravi,dn_mode,dn_nextchange,dn_duration,weather,wirtschaft,temp,ewopt,bev_stop_count,sperrung,mkolz,wese FROM stu_colonies WHERE id=".$id." AND user_id=".$user,4);
 			if ($data == 0) return 0;
 			$this->cshow = 1;
-			$this->cid = $data['id'];
-			$this->cname = stripslashes($data['name']);
-			$this->cenergie = $data['energie'];
-			$this->cbev_used = $data['bev_used'];
-			$this->cbev_free = $data['bev_free'];
-			$this->cmax_bev = $data['max_bev'];
-			$this->cmax_energie = $data['max_energie'];
-			$this->ccolonies_classes_id = $data['colonies_classes_id'];
-			$this->ccoords_x = $data['coords_x'];
-			$this->ccoords_y = $data['coords_y'];
-			$this->cmax_storage = $data['max_storage'];
-			$this->cschilde = $data['schilde'];
-			$this->cmax_schilde = $data['max_schilde'];
-			$this->cschilde_aktiv = $data['schilde_aktiv'];
-			$this->cschild_freq1 = $data['schild_freq1'];
-			$this->cschild_freq2 = $data['schild_freq2'];
-			$this->cgravi = $data['gravi'];
-			$this->cdn_mode = $data['dn_mode'];
-			$this->cdn_nextchange = $data['dn_nextchange'];
-			$this->cdn_duration = $data['dn_duration'];
-			$this->cweather = $data['weather'];
-			$this->cwirtschaft = $data['wirtschaft'];
-			$this->ctemp = $data['temp'];
-			$this->cewopt = $data['ewopt'];
-			$this->cbev_stop_count = $data['bev_stop_count'];
-			$this->csperrung = $data['sperrung'];
-			$this->cmkolz = $data['mkolz'];
-			$this->cwese = $data['wese'];
+			$this->cid = $data[id];
+			$this->cname = stripslashes($data[name]);
+			$this->cenergie = $data[energie];
+			$this->cbev_used = $data[bev_used];
+			$this->cbev_free = $data[bev_free];
+			$this->cmax_bev = $data[max_bev];
+			$this->cmax_energie = $data[max_energie];
+			$this->ccolonies_classes_id = $data[colonies_classes_id];
+			$this->ccoords_x = $data[coords_x];
+			$this->ccoords_y = $data[coords_y];
+			$this->cmax_storage = $data[max_storage];
+			$this->cschilde = $data[schilde];
+			$this->cmax_schilde = $data[max_schilde];
+			$this->cschilde_aktiv = $data[schilde_aktiv];
+			$this->cschild_freq1 = $data[schild_freq1];
+			$this->cschild_freq2 = $data[schild_freq2];
+			$this->cgravi = $data[gravi];
+			$this->cdn_mode = $data[dn_mode];
+			$this->cdn_nextchange = $data[dn_nextchange];
+			$this->cdn_duration = $data[dn_duration];
+			$this->cweather = $data[weather];
+			$this->cwirtschaft = $data[wirtschaft];
+			$this->ctemp = $data[temp];
+			$this->cewopt = $data[ewopt];
+			$this->cbev_stop_count = $data[bev_stop_count];
+			$this->csperrung = $data[sperrung];
+			$this->cmkolz = $data[mkolz];
+			$this->cwese = $data[wese];
 		}
 		else $this->cshow = 0;
 	}
@@ -115,8 +115,8 @@ class colony
 		for ($i=0;$i<mysql_num_rows($result);$i++)
 		{
 			$data[$i] = mysql_fetch_assoc($result);
-			$data[$i]['field'] = $this->db->query("SELECT type FROM stu_field_build WHERE buildings_id='".$data[$i]['id']."' LIMIT 1",1);
-			$data[$i]['cost'] = $this->getbuildingcostbyid($data[$i]['id']);
+			$data[$i][field] = $this->db->query("SELECT type FROM stu_field_build WHERE buildings_id='".$data[$i][id]."' LIMIT 1",1);
+			$data[$i][cost] = $this->getbuildingcostbyid($data[$i][id]);
 		}
 		return $data;
 	}
@@ -130,8 +130,8 @@ class colony
 		if ($this->db->query("SELECT id FROM stu_colonies WHERE user_id=".$this->user,3) == 5) return -1;
 		$data = $this->db->query("SELECT id,colonies_classes_id FROM stu_colonies WHERE coords_x='".$coords_x."' AND coords_y='".$coords_y."' AND wese=".$wese." AND user_id='2'",4);
 		if ($data == 0) return -1;
-		if (($data['colonies_classes_id'] == 1) && ($this->db->query("SELECT id FROM stu_colonies WHERE user_id=".$this->user." AND colonies_classes_id=1",3) < 1)) return $data;
-		if ($data['colonies_classes_id'] == 1) return -1;
+		if (($data[colonies_classes_id] == 1) && ($this->db->query("SELECT id FROM stu_colonies WHERE user_id=".$this->user." AND colonies_classes_id=1",3) < 1)) return $data;
+		if ($data[colonies_classes_id] == 1) return -1;
 		return $data;
 	}
 	
@@ -158,7 +158,7 @@ class colony
 		$this->user < 100 ? $result = $this->db->query("SELECT a.buildings_id,a.type,b.id,b.research_id,b.name FROM stu_field_build as a LEFT JOIN stu_buildings as b ON a.buildings_id=b.id WHERE a.type='".$type."' AND a.buildings_id!=1 AND a.buildings_id!=23 AND a.buildings_id!=89 AND (a.buildings_id<63 OR a.buildings_id>66) ORDER by b.name") : $result = $this->db->query("SELECT a.buildings_id,a.type,b.id,b.research_id,b.name FROM stu_field_build as a LEFT JOIN stu_buildings as b ON a.buildings_id=b.id WHERE a.type='".$type."' AND a.buildings_id!=1 AND a.buildings_id!=23 AND a.buildings_id!=89 AND (a.buildings_id<63 OR a.buildings_id>66) AND b.view=1 AND b.level<=".$myUser->ulevel." ORDER by b.name");
 		while($data=mysql_fetch_assoc($result))
 		{
-			if ($data['id'] == 210)
+			if ($data[id] == 210)
 			{
 				if ($this->db->query("SELECT a.id FROM stu_allys as a LEFT JOIN stu_user as b ON b.allys_id = a.id LEFT JOIN stu_allys_embassys as c ON a.id = c.allys_id1 WHERE ( a.user_id = ".$this->user." OR a.vize = ".$this->user." OR a.diplo = ".$this->user." ) AND c.colonies_id = 0 GROUP by a.id.") != 0)
 				{
@@ -167,8 +167,8 @@ class colony
 			}
 			else
 			{
-				if ($data['research_id'] > 0) if ($this->db->query("SELECT COUNT(user_id) FROM stu_research_user WHERE research_id=".$data['research_id']." AND user_id=".$this->user,1) == 1) $return[] = $data;
-				if ($data['research_id'] == 0) $return[] = $data;
+				if ($data[research_id] > 0) if ($this->db->query("SELECT COUNT(user_id) FROM stu_research_user WHERE research_id=".$data[research_id]." AND user_id=".$this->user,1) == 1) $return[] = $data;
+				if ($data[research_id] == 0) $return[] = $data;
 			}
 		}
 		return $return;
@@ -176,8 +176,8 @@ class colony
 	
 	function getfieldbyid($fieldId,$colId)
 	{
-		$field['data'] = $this->getfielddatabyid($fieldId,$colId);
-		$field['build'] = $this->getbuildbyid($field['data']['buildings_id']);
+		$field[data] = $this->getfielddatabyid($fieldId,$colId);
+		$field[build] = $this->getbuildbyid($field[data][buildings_id]);
 		return $field;
 	}
 	
@@ -188,116 +188,116 @@ class colony
 		$field = $this->getfielddatabyid($fieldId,$colId);
 		if ($field == 0)
 		{
-			$return['msg'] = "Dieses Feld kann nicht bebaut werden";
+			$return[msg] = "Dieses Feld kann nicht bebaut werden";
 			return $return;
 		}
 		$building = $this->getbuildbyid($buildingId);
-		if ($field['buildings_id'] > 0)
+		if ($field[buildings_id] > 0)
 		{
-			$return['msg'] = $field['field_id']." ist bereits bebaut";
+			$return[msg] = $field[field_id]." ist bereits bebaut";
 			return $return;
 		}
-		if ($this->db->query("SELECT id FROM stu_field_build WHERE type='".$field['type']."' AND buildings_id='".$buildingId."'",3) == 0) return 0;
+		if ($this->db->query("SELECT id FROM stu_field_build WHERE type='".$field[type]."' AND buildings_id='".$buildingId."'",3) == 0) return 0;
 		global $myUser;
-		if ($building['level'] > $myUser->ulevel)
+		if ($building[level] > $myUser->ulevel)
 		{
-			$return['msg'] = "Das Gebï¿½ude ($return['msg']e].") kann erst ab Level $return['msg']l]." gebaut werden.";
-			$return['code'] = 0;
+			$return[msg] = "Das Gebäude (".$building[name].") kann erst ab Level ".$building[level]." gebaut werden.";
+			$return[code] = 0;
 			return $return;
 		}
-		if ($building['research_id'] > 0)
+		if ($building[research_id] > 0)
 		{
-			if ($this->db->query("SELECT id FROM stu_research_user WHERE research_id=".$building['research_id']." AND user_id=".$this->user,3) == 0)
+			if ($this->db->query("SELECT id FROM stu_research_user WHERE research_id=".$building[research_id]." AND user_id=".$this->user,3) == 0)
 			{
-				$return['msg'] = "Dieses Gebï¿½ude wurde noch nicht erforscht";
-				$return['code'] = 0;
+				$return[msg] = "Dieses Gebäude wurde noch nicht erforscht";
+				$return[code] = 0;
 				return $return;
 			}
 		}
-		if (($this->cenergie - $building['eps_cost']) < 0)
+		if (($this->cenergie - $building[eps_cost]) < 0)
 		{
-			$return['msg'] = "Zum Bau werden ".$building['eps_cost']." Energie benï¿½tigt - Vorhanden ist aber nur ".$this->cenergie;
-			$return['code'] = 0;
+			$return[msg] = "Zum Bau werden ".$building[eps_cost]." Energie benötigt - Vorhanden ist aber nur ".$this->cenergie;
+			$return[code] = 0;
 			return $return;
 		}
-		if (($building['id'] == 7) || ($building['id'] == 17) || ($building['id'] == 33) || ($building['id'] == 34) || ($building['id'] == 74) || ($building['id'] == 75) || ($building['id'] == 76))
+		if (($building[id] == 7) || ($building[id] == 17) || ($building[id] == 33) || ($building[id] == 34) || ($building[id] == 74) || ($building[id] == 75) || ($building[id] == 76))
 		{
 			$class = $this->getclassbyid($this->ccolonies_classes_id);
-			$count = $this->db->query("SELECT COUNT(id) FROM stu_colonies_fields WHERE buildings_id=".$building['id']." AND colonies_id=".$colId,1);
-			$count += $this->db->query("SELECT COUNT(id) FROM stu_colonies_underground WHERE buildings_id=".$building['id']." AND colonies_id=".$colId,1);
-			if ($count >= $class["mine".$building['id']])
+			$count = $this->db->query("SELECT COUNT(id) FROM stu_colonies_fields WHERE buildings_id=".$building[id]." AND colonies_id=".$colId,1);
+			$count += $this->db->query("SELECT COUNT(id) FROM stu_colonies_underground WHERE buildings_id=".$building[id]." AND colonies_id=".$colId,1);
+			if ($count >= $class["mine".$building[id]])
 			{
-				$class["mine".$building['id']] == 0 ? $return['msg'] = $building['name']." ist auf diesem Planeten nicht baubar" : $return['msg'] = "Es kï¿½nnen keine weiteren Gebï¿½ude von diesem Typ$building['id']ame].") errichtet werden";
+				$class["mine".$building[id]] == 0 ? $return[msg] = $building[name]." ist auf diesem Planeten nicht baubar" : $return[msg] = "Es können keine weiteren Gebäude von diesem Typ (".$building[name].") errichtet werden";
 				return $return;
 			}
 		}
-		if ($building['blimit'] > 0)
+		if ($building[blimit] > 0)
 		{
-			if ($this->db->query("SELECT COUNT(id) FROM stu_colonies_fields WHERE buildings_id=".$building['id']." AND colonies_id=".$colId,1) >= $building['blimit'])
+			if ($this->db->query("SELECT COUNT(id) FROM stu_colonies_fields WHERE buildings_id=".$building[id]." AND colonies_id=".$colId,1) >= $building[blimit])
 			{
-				$return['msg'] = $building['name']." kann maximal ".$building['blimit']." mal pro Kolonie gebaut werden";
+				$return[msg] = $building[name]." kann maximal ".$building[blimit]." mal pro Kolonie gebaut werden";
 				return $return;
 			}
 		}
-		if ($building['id'] == 210)
+		if ($building[id] == 210)
 		{
 			global $myAlly;
 			if ($myAlly->checkembassybuild() == 0)
 			{
-				$return['msg'] = "Botschaft kann aufgrund fehlender Vorraussetzung nicht gebaut werden";
+				$return[msg] = "Botschaft kann aufgrund fehlender Vorraussetzung nicht gebaut werden";
 				return $return;
 			}
 		}
-		if ($building['id'] == 51)
+		if ($building[id] == 51)
 		{
 			if ($this->db->query("SELECT id FROM stu_colonies_fields WHERE colonies_id=".$colId." AND buildings_id=81",1) > 0)
 			{
-				$return['msg'] = "Es kann nur ein Schildemitter pro Planet gebaut werden";
+				$return[msg] = "Es kann nur ein Schildemitter pro Planet gebaut werden";
 				return $return;
 			}
 		}
-		if ($building['id'] == 82)
+		if ($building[id] == 82)
 		{
 			$count = $this->db->query("SELECT COUNT(id) FROM stu_colonies_fields WHERE buildings_id=82 AND colonies_id=".$colId,1);
 			$count += $this->db->query("SELECT COUNT(id) FROM stu_colonies_underground WHERE buildings_id=82 AND colonies_id=".$colId,1);
 			if ($count == 3)
 			{
-				$return['msg'] = "Es kï¿½nnen nur maximal 3 Schildbatterien gebaut werden";
+				$return[msg] = "Es können nur maximal 3 Schildbatterien gebaut werden";
 				return $return;
 			}
 		}
-		if ($building['id'] == 83)
+		if ($building[id] == 83)
 		{
 			$count = $this->db->query("SELECT COUNT(a.id) FROM stu_colonies_fields as a LEFT JOIN stu_colonies as b ON a.colonies_id=b.id WHERE b.user_id=".$this->user." AND a.buildings_id=83",1);
 			if ($count >= 4)
 			{
-				$return['msg'] = "Es kï¿½nnen maximal 4 Minengefï¿½ngnisse gebaut werden";
+				$return[msg] = "Es können maximal 4 Minengefängnisse gebaut werden";
 				return $return;
 			}
 		}
-		if ($building['id'] == 86)
+		if ($building[id] == 86)
 		{
 			if ($this->db->query("SELECT COUNT(a.id) from stu_colonies_fields as a LEFT JOIN stu_colonies as b ON a.colonies_id=b.id WHERE b.user_id=".$this->user." AND a.buildings_id=86",1) >= 3)
 			{
-				$return['msg'] = "Es kï¿½nnen maximal 3 $return['msg']e] ."gebaut werden";
+				$return[msg] = "Es können maximal 3 ".$building[name] ."gebaut werden";
 				return $return;
 			}
 		}
 		$cost = $this->mincost($buildingId,$this->user,$colId);
-		if ($cost['code'] == 0)
+		if ($cost[code] == 0)
 		{
-			$return['msg'] = $cost['msg'];
-			$return['code'] = 0;
+			$return[msg] = $cost[msg];
+			$return[code] = 0;
 			return $return;
 		}
-		if ($building['id'] == 38) $this->db->query("UPDATE stu_colonies_underground SET buildings_id=39,integrity=30 WHERE field_id=13 AND colonies_id=".$colId);
-		$this->db->query("UPDATE stu_colonies_fields SET buildings_id='".$buildingId."',integrity='".$building['integrity']."',buildtime='".(time()+$building['buildtime'])."' WHERE field_id='".$fieldId."' AND colonies_id='".$colId."'");
-		$this->db->query("UPDATE stu_colonies SET energie=energie-".$building['eps_cost']." WHERE id='".$colId."'");
-		if ($building['eps'] > 0) $this->db->query("UPDATE stu_colonies SET max_energie=max_energie+".$building['eps']." WHERE id='".$colId."' AND user_id='".$this->user."'");
-		if ($building['lager'] > 0) $this->db->query("UPDATE stu_colonies SET max_storage=max_storage+".$building['lager']." WHERE id='".$colId."' AND user_id='".$this->user."'");
-		if ($building['schilde'] > 0) $this->db->query("UPDATE stu_colonies SET max_schilde=max_schilde+".$building['schilde']." WHERE id=".$colId." AND user_id=".$this->user);
-		$return['msg'] = "Der Bau des Gebï¿½udes ($return['msg']e].") auf Feld "$return['msg']d]+1)." wird am ".date("d.m.Y H:i",(time($return['msg']e]))." beendet sein";
-		$return['code'] = 1;
+		if ($building[id] == 38) $this->db->query("UPDATE stu_colonies_underground SET buildings_id=39,integrity=30 WHERE field_id=13 AND colonies_id=".$colId);
+		$this->db->query("UPDATE stu_colonies_fields SET buildings_id='".$buildingId."',integrity='".$building[integrity]."',buildtime='".(time()+$building[buildtime])."' WHERE field_id='".$fieldId."' AND colonies_id='".$colId."'");
+		$this->db->query("UPDATE stu_colonies SET energie=energie-".$building[eps_cost]." WHERE id='".$colId."'");
+		if ($building[eps] > 0) $this->db->query("UPDATE stu_colonies SET max_energie=max_energie+".$building[eps]." WHERE id='".$colId."' AND user_id='".$this->user."'");
+		if ($building[lager] > 0) $this->db->query("UPDATE stu_colonies SET max_storage=max_storage+".$building[lager]." WHERE id='".$colId."' AND user_id='".$this->user."'");
+		if ($building[schilde] > 0) $this->db->query("UPDATE stu_colonies SET max_schilde=max_schilde+".$building[schilde]." WHERE id=".$colId." AND user_id=".$this->user);
+		$return[msg] = "Der Bau des Gebäudes (".$building[name].") auf Feld ".($field[field_id]+1)." wird am ".date("d.m.Y H:i",(time()+$building[buildtime]))." beendet sein";
+		$return[code] = 1;
 		return $return;
 	}
 
@@ -307,38 +307,38 @@ class colony
 		if ($data == 0) return 0;
 		$field = $this->getfielddatabyid($fieldId,$colId);
 		if ($field == 0) return 0;
-		$build = $this->getbuildbyid($field['buildings_id']);
-		if (($field['buildings_id'] == 1) || ($field['buildings_id'] == 23) || ($field['buildings_id'] == 63) || ($field['buildings_id'] == 64) ||($field['buildings_id'] == 65) || ($field['buildings_id'] == 66) || ($field['buildings_id'] == 89) || ($field['buildings_id'] == 163) || ($field['buildings_id'] == 178))
+		$build = $this->getbuildbyid($field[buildings_id]);
+		if (($field[buildings_id] == 1) || ($field[buildings_id] == 23) || ($field[buildings_id] == 63) || ($field[buildings_id] == 64) ||($field[buildings_id] == 65) || ($field[buildings_id] == 66) || ($field[buildings_id] == 89) || ($field[buildings_id] == 163) || ($field[buildings_id] == 178))
 		{
-			$return['msg'] = $build['name']." kann nicht deaktiviert werden.";
-			$return['code'] = -1;
+			$return[msg] = $build[name]." kann nicht deaktiviert werden.";
+			$return[code] = -1;
 			return $return;
 		}
-		if ($field['aktiv'] == 0) return 0;
-		if (($build['bev_pro'] > 0) && ($data['max_bev'] - $build['bev_pro'] < $data['bev_used']))
+		if ($field[aktiv] == 0) return 0;
+		if (($build[bev_pro] > 0) && ($data[max_bev] - $build[bev_pro] < $data[bev_used]))
 		{
-			$return['msg'] = "Das Gebï¿½ude konnte nicht deaktiviert werden, da sonst einige Arbeiter obdachlos wï¿½ren";
+			$return[msg] = "Das Gebäude konnte nicht deaktiviert werden, da sonst einige Arbeiter obdachlos wären";
 			return $return;
 		}
 		$this->db->query("UPDATE stu_colonies_fields SET aktiv=0 WHERE colonies_id='".$colId."' AND field_id='".$fieldId."' AND aktiv=1");
-		$this->db->query("UPDATE stu_colonies SET bev_free=bev_free+".$build['bev_use'].",bev_used=bev_used-".$build['bev_use'].",max_bev=max_bev-".$build['bev_pro']." WHERE id='".$colId."'");
-		if ($build['id'] == 51 || $build['id'] == 81) $this->db->query("UPDATE stu_colonies SET schilde_aktiv=0 WHERE id=".$colId);
-		if ($build['id'] == 21 || $build['id'] == 168 || ($build['id'] == 192 && $this->db->query("SELECT COUNT(id) FROM stu_colonies_fields WHERE colonies_id=".$colId." AND buildings_id=192 AND aktiv=1",1) < 1))
+		$this->db->query("UPDATE stu_colonies SET bev_free=bev_free+".$build[bev_use].",bev_used=bev_used-".$build[bev_use].",max_bev=max_bev-".$build[bev_pro]." WHERE id='".$colId."'");
+		if ($build[id] == 51 || $build[id] == 81) $this->db->query("UPDATE stu_colonies SET schilde_aktiv=0 WHERE id=".$colId);
+		if ($build[id] == 21 || $build[id] == 168 || ($build[id] == 192 && $this->db->query("SELECT COUNT(id) FROM stu_colonies_fields WHERE colonies_id=".$colId." AND buildings_id=192 AND aktiv=1",1) < 1))
 		{
 			$orbu = $this->db->query("SELECT SUM(a.bev_use) as usum,SUM(a.bev_pro) as besum FROM stu_buildings as a LEFT JOIN stu_colonies_orbit as b ON a.id=b.buildings_id WHERE b.aktiv=1 AND colonies_id=".$colId,4);
-			if ($orbu['usum'] != "") $this->db->query("UPDATE stu_colonies SET bev_used=bev_used-".$orbu['usum'].",bev_free=bev_free+".$orbu['usum'].",max_bev=max_bev-".$orbu['besum']." WHERE id=".$colId);
+			if ($orbu[usum] != "") $this->db->query("UPDATE stu_colonies SET bev_used=bev_used-".$orbu[usum].",bev_free=bev_free+".$orbu[usum].",max_bev=max_bev-".$orbu[besum]." WHERE id=".$colId);
 			$this->db->query("UPDATE stu_colonies_orbit SET aktiv=0 WHERE colonies_id=".$colId);
 		}
-		if ($build['id'] == 38 || ($build['id'] == 192 && $this->db->query("SELECT COUNT(id) FROM stu_colonies_fields WHERE colonies_id=".$colId." AND buildings_id=195 AND aktiv=1",1) < 2))
+		if ($build[id] == 38 || ($build[id] == 192 && $this->db->query("SELECT COUNT(id) FROM stu_colonies_fields WHERE colonies_id=".$colId." AND buildings_id=195 AND aktiv=1",1) < 2))
 		{
 			$grou = $this->db->query("SELECT SUM(a.bev_use) as usum,SUM(a.bev_pro) as besum FROM stu_buildings as a LEFT JOIN stu_colonies_underground as b ON a.id=b.buildings_id WHERE b.aktiv=1 AND colonies_id=".$colId,4);
-			if ($grou['usum'] != "") $this->db->query("UPDATE stu_colonies SET bev_used=bev_used-".$grou['usum'].",bev_free=bev_free+".$grou['usum'].",max_bev=max_bev-".$grou['besum']." WHERE id=".$colId);
+			if ($grou[usum] != "") $this->db->query("UPDATE stu_colonies SET bev_used=bev_used-".$grou[usum].",bev_free=bev_free+".$grou[usum].",max_bev=max_bev-".$grou[besum]." WHERE id=".$colId);
 			$this->db->query("UPDATE stu_colonies_underground SET aktiv=0 WHERE colonies_id=".$colId);
 			$this->db->query("UPDATE stu_colonies_underground SET aktiv=0 WHERE field_id=13 AND colonies_id=".$colId);
 		}
-		if ($build['id'] == 88) $this->db->query("UPDATE stu_colonies SET cloakfield='0' WHERE id=".$colId);
-		$return['msg'] = $build['name']." auf Feld ".($field['field_id']+1)." deaktiviert";
-		$return['code'] = 1;
+		if ($build[id] == 88) $this->db->query("UPDATE stu_colonies SET cloakfield='0' WHERE id=".$colId);
+		$return[msg] = $build[name]." auf Feld ".($field[field_id]+1)." deaktiviert";
+		$return[code] = 1;
 		return $return;
 	}
 
@@ -347,74 +347,74 @@ class colony
 		$data = $this->getcolonybyid($colId);
 		if ($data == 0) return 0;
 		$field = $this->getfielddatabyid($fieldId,$colId);
-		if ($field['buildings_id'] == 0) return 0;
+		if ($field[buildings_id] == 0) return 0;
 		if ($field == 0) return 0;
-		$build = $this->getbuildbyid($field['buildings_id']);
-		if (($build['id'] == 10) || ($build['id'] == 4) || ($build['id'] == 35) || ($build['id'] == 37) || ($build['id'] == 82) || ($build['id'] == 52) || ($build['id'] == 136) || ($build['id'] == 143) || (($build['id'] >= 107) && ($build['id'] <= 134)) || ($build['id'] == 157) || ($build['id'] == 206))
+		$build = $this->getbuildbyid($field[buildings_id]);
+		if (($build[id] == 10) || ($build[id] == 4) || ($build[id] == 35) || ($build[id] == 37) || ($build[id] == 82) || ($build[id] == 52) || ($build[id] == 136) || ($build[id] == 143) || (($build[id] >= 107) && ($build[id] <= 134)) || ($build[id] == 157) || ($build[id] == 206))
 		{
-			$return['msg'] = "Das Gebï¿½ude besitzt keine Aktivierungsfunktion";
+			$return[msg] = "Das Gebäude besitzt keine Aktivierungsfunktion";
 			return $return;
 		}
-		if (($build['id'] >= 210) && ($build['id'] <= 215))
+		if (($build[id] >= 210) && ($build[id] <= 215))
 		{
-			$return['msg'] = "Das Gebï¿½ude besitzt keine Aktivierungsfunktion";
+			$return[msg] = "Das Gebäude besitzt keine Aktivierungsfunktion";
 			return $return;
 		}
-		if ($field['aktiv'] == 1)
+		if ($field[aktiv] == 1)
 		{
-			$return['msg'] = "Das Gebï¿½ude ist bereits aktiviert";
+			$return[msg] = "Das Gebäude ist bereits aktiviert";
 			return $return;
 		}
-		if ($field['buildtime'] > 0)
+		if ($field[buildtime] > 0)
 		{
-			$return['msg'] = "Dieses Gebï¿½ude kann nicht aktiviert werden, da es sich noch in Bau befindet";
+			$return[msg] = "Dieses Gebäude kann nicht aktiviert werden, da es sich noch in Bau befindet";
 			return $return;
 		}
-		if ($data['bev_free'] < $build['bev_use'] && $build['bev_pro'] == 0)
+		if ($data[bev_free] < $build[bev_use] && $build[bev_pro] == 0)
 		{
-			$return['msg'] = "Zum Aktivieren werden ".$build['bev_use']." Arbeiter benï¿½tigt - Es sind jedoch nur $return['msg']e]." Kolonisten frei";
-			$return['code'] = 0;
+			$return[msg] = "Zum Aktivieren werden ".$build[bev_use]." Arbeiter benötigt - Es sind jedoch nur ".$data[bev_free]." Kolonisten frei";
+			$return[code] = 0;
 			return $return;
 		}
 		global $myUser;
-		if ($myUser->getfield("level",$userId) < $build['level'])
+		if ($myUser->getfield("level",$userId) < $build[level])
 		{
-			$return['msg'] = "Zum aktivieren des Gebï¿½udes wird Level $return['msg']l]." benï¿½tigt";
+			$return[msg] = "Zum aktivieren des Gebäudes wird Level ".$build[level]." benötigt";
 			return $return;
 		}
-		if ($build['research_id'] > 0 && $this->getuserresearch($build['research_id'],$userId) == 0)
+		if ($build[research_id] > 0 && $this->getuserresearch($build[research_id],$userId) == 0)
 		{
-			$return['msg'] = "Du kannst dieses Gebï¿½ude nicht aktivieren, da Du es noch nicht erforscht hast";
+			$return[msg] = "Du kannst dieses Gebäude nicht aktivieren, da Du es noch nicht erforscht hast";
 			return $return;
 		}
-		if ($build['bev_use'] <= $data['bev_free'])
+		if ($build[bev_use] <= $data[bev_free])
 		{
-			if ($field['buildings_id'] != 4)
+			if ($field[buildings_id] != 4)
 			{
 				$this->db->query("UPDATE stu_colonies_fields SET aktiv=1 WHERE colonies_id='".$colId."' AND field_id='".$fieldId."'");
-				$this->db->query("UPDATE stu_colonies SET bev_free=bev_free-".$build['bev_use'].",bev_used=bev_used+".$build['bev_use']." WHERE id='".$colId."'");
+				$this->db->query("UPDATE stu_colonies SET bev_free=bev_free-".$build[bev_use].",bev_used=bev_used+".$build[bev_use]." WHERE id='".$colId."'");
 			}
 		}
-		if (($build['bev_pro'] > 0) && ($field['aktiv'] == 0))
+		if (($build[bev_pro] > 0) && ($field[aktiv] == 0))
 		{
 			$this->db->query("UPDATE stu_colonies_fields SET aktiv=1 WHERE colonies_id='".$colId."' AND field_id='".$fieldId."'");
-			$this->db->query("UPDATE stu_colonies SET max_bev=max_bev+".$build['bev_pro']." WHERE id='".$colId."'");
+			$this->db->query("UPDATE stu_colonies SET max_bev=max_bev+".$build[bev_pro]." WHERE id='".$colId."'");
 		}
-		if ($build['id'] == 38) $this->db->query("UPDATE stu_colonies_underground SET aktiv=1 WHERE field_id=13 ANd colonies_id=".$colId);
-		if ($build['id'] == 88)
+		if ($build[id] == 38) $this->db->query("UPDATE stu_colonies_underground SET aktiv=1 WHERE field_id=13 ANd colonies_id=".$colId);
+		if ($build[id] == 88)
 		{
-			$this->db->query("UPDATE stu_colonies SET cloakfield=".$field['field_id']." WHERE id=".$colId);
+			$this->db->query("UPDATE stu_colonies SET cloakfield=".$field[field_id]." WHERE id=".$colId);
 		}
-		if ($build['id'] == 51 || $build['id'] == 81) $this->db->query("UPDATE stu_colonies SET schild_freq1=".rand(10,99).",schild_freq2=".rand(1,9)." WHERE id=".$colId);
-		$return['msg'] = $build['name']." auf Feld ".($field['field_id']+1)." aktiviert";
-		$return['code'] = 1;
+		if ($build[id] == 51 || $build[id] == 81) $this->db->query("UPDATE stu_colonies SET schild_freq1=".rand(10,99).",schild_freq2=".rand(1,9)." WHERE id=".$colId);
+		$return[msg] = $build[name]." auf Feld ".($field[field_id]+1)." aktiviert";
+		$return[code] = 1;
 		return $return;
 	}
 
 	function renameCol($new_name)
 	{
 		$this->db->query("UPDATE stu_colonies SET name='".strip_tags(addslashes(str_replace("\"","",str_replace("background","",$new_name))),"<font></font>")."' WHERE id='".$this->cid."' AND user_id=".$this->user);
-		$return['msg'] = "ï¿½nderung des Namens in ".stripslashes($new_name)." erfolgreich";
+		$return[msg] = "Änderung des Namens in ".stripslashes($new_name)." erfolgreich";
 		return $return;
 	}
 
@@ -423,46 +423,46 @@ class colony
 		if ($this->cshow == 0) return 0;
 		$field = $this->getfielddatabyid($fieldId,$this->cid);
 		if ($field == 0) return -1;
-		$build = $this->getbuildbyid($field['buildings_id']);
-		if ($field['buildings_id'] == 1 || ($field['buildings_id'] >= 63 && $field['buildings_id'] <= 66))
+		$build = $this->getbuildbyid($field[buildings_id]);
+		if ($field[buildings_id] == 1 || ($field[buildings_id] >= 63 && $field[buildings_id] <= 66))
 		{
-			$return['msg'] = "Die Koloniezentrale kann nicht abgerissen werden";
+			$return[msg] = "Die Koloniezentrale kann nicht abgerissen werden";
 			return $return;
 		}
-		if ($field['buildings_id'] == 23)
+		if ($field[buildings_id] == 23)
 		{
-			$return['msg'] = "Die Basiskuppel kann nicht abgerissen werden";
+			$return[msg] = "Die Basiskuppel kann nicht abgerissen werden";
 			return $return;
 		}
-		if ($field['buildings_id'] == 218)
+		if ($field[buildings_id] == 218)
 		{
-			$return['msg'] = "Dieses Gebï¿½ude kann nicht demontiert werden";
+			$return[msg] = "Dieses Gebäude kann nicht demontiert werden";
 			return $return;
 		}
 		global $myAlly;
-		if (($build['id'] >= 210 && $build['id'] <= 215) && ($myAlly->getembassyownerbycolony($this->cid,$fieldId) != 0))
+		if (($build[id] >= 210 && $build[id] <= 215) && ($myAlly->getembassyownerbycolony($this->cid,$fieldId) != 0))
 		{
-			$return['msg'] = "Diese Botschaft wird noch von einer Allianz verwendet";
+			$return[msg] = "Diese Botschaft wird noch von einer Allianz verwendet";
 			return $return;
 		}
-		if ($field['buildings_id'] == 4) $this->db->query("UPDATE stu_colonies SET max_energie=max_energie-'30'".$energie." WHERE id=".$this->cid);
-		if ($build['lager'] > 0) $this->db->query("UPDATE stu_colonies SET max_storage=max_storage-".$build['lager']." WHERE id=".$this->cid);
-		if ($field['aktiv'] == 1)
+		if ($field[buildings_id] == 4) $this->db->query("UPDATE stu_colonies SET max_energie=max_energie-'30'".$energie." WHERE id=".$this->cid);
+		if ($build[lager] > 0) $this->db->query("UPDATE stu_colonies SET max_storage=max_storage-".$build[lager]." WHERE id=".$this->cid);
+		if ($field[aktiv] == 1)
 		{
 			$test = $this->deactivatebuilding($fieldId,$this->cid);
-			if ($test['code'] != 1) return $test;
+			if ($test[code] != 1) return $test;
 		}
-		if ($build['id'] == 38) $this->db->query("UPDATE stu_colonies_underground SET buildings_id=0,aktiv=0,integrity=0 WHERE field_id=13 ANd colonies_id=".$this->cid);
-		if ($build['id'] == 51 || $build['id'] == 81) $this->db->query("UPDATE stu_colonies SET schilde=0,max_schilde=max_schilde-".$build['schilde'].",schild_freq1=0,schild_freq2=0,schilde_aktiv=0 WHERE id=".$this->cid);
-		if ($build['schilde'] > 0)
+		if ($build[id] == 38) $this->db->query("UPDATE stu_colonies_underground SET buildings_id=0,aktiv=0,integrity=0 WHERE field_id=13 ANd colonies_id=".$this->cid);
+		if ($build[id] == 51 || $build[id] == 81) $this->db->query("UPDATE stu_colonies SET schilde=0,max_schilde=max_schilde-".$build[schilde].",schild_freq1=0,schild_freq2=0,schilde_aktiv=0 WHERE id=".$this->cid);
+		if ($build[schilde] > 0)
 		{
-			$this->db->query("UPDATE stu_colonies SET max_schilde=max_schilde-".$build['schilde']." WHERE id=".$this->cid);
-			if ($this->cschilde > $this->cmax_schilde-$build['schilde']) $this->db->query("UPDATE stu_colonies SET schilde=".($this->cmax_schilde-$build['schilde'])." WHERE id=".$this->cid);
+			$this->db->query("UPDATE stu_colonies SET max_schilde=max_schilde-".$build[schilde]." WHERE id=".$this->cid);
+			if ($this->cschilde > $this->cmax_schilde-$build[schilde]) $this->db->query("UPDATE stu_colonies SET schilde=".($this->cmax_schilde-$build[schilde])." WHERE id=".$this->cid);
 		}
-		if ($build['id'] == 88) $this->db->query("UPDATE stu_colonies SET cloakfield='0' WHERE id=".$this->cid);
+		if ($build[id] == 88) $this->db->query("UPDATE stu_colonies SET cloakfield='0' WHERE id=".$this->cid);
 		$this->db->query("UPDATE stu_colonies_fields SET buildings_id='0',integrity='0',name='',buildtime='' WHERE colonies_id='".$this->cid."' AND field_id=".$fieldId);
-		//$this->returncost($build['id'],$this->user,$this->cid);
-		$return['msg'] = $build['name']." auf Feld ".($field['field_id']+1)." demontiert";
+		//$this->returncost($build[id],$this->user,$this->cid);
+		$return[msg] = $build[name]." auf Feld ".($field[field_id]+1)." demontiert";
 		return $return;
 	}
 
@@ -491,16 +491,16 @@ class colony
 		if ($result == 0) return 1;
 		for ($i=0;$i<count($result);$i++)
 		{
-			$count = $this->db->query("SELECT count FROM stu_colonies_storage WHERE goods_id='".$result[$i]['goods_id']."' AND colonies_id=".$this->cid,1);
+			$count = $this->db->query("SELECT count FROM stu_colonies_storage WHERE goods_id='".$result[$i][goods_id]."' AND colonies_id=".$this->cid,1);
 			if ($count < $result[$i]['count'])
 			{
-				$return['code'] = 0;
-				$return['msg'] = "Zum Bau werden ".$result[$i]['count']." ".$result[$i]['name']." benï¿½tigt - Vorhanden sind aber nur ".$count;
+				$return[code] = 0;
+				$return[msg] = "Zum Bau werden ".$result[$i]['count']." ".$result[$i][name]." benötigt - Vorhanden sind aber nur ".$count;
 				return $return;
 			}
 		}
 		for ($i=0;$i<count($result);$i++) $this->lowerstoragebygoodid($result[$i]['count'],$result[$i]['goods_id'],$this->cid);
-		$return['code'] = 1;
+		$return[code] = 1;
 		return $return;
 	}
 
@@ -513,11 +513,11 @@ class colony
 		for ($i=0;$i<count($result);$i++)
 		{
 			if ($sum >= $this->cmax_storage) return 1;
-			if ($result[$i]['goods_id'] != 7)
+			if ($result[$i][goods_id] != 7)
 			{
 				$count = floor($result[$i]['count']/2);
 				if ($this->cmax_storage < $count + $sum) $count = $this->cmax_storage - $sum;
-				$this->upperstoragebygoodid($count,$result[$i]['goods_id'],$this->cid,$this->user);
+				$this->upperstoragebygoodid($count,$result[$i][goods_id],$this->cid,$this->user);
 				$sum += $count;
 			}
 		}
@@ -543,59 +543,59 @@ class colony
 		if ($data == 0) return 0;
 		$tf = $this->gettfbyid($terraform);
 		if ($tf == 0) return 0;
-		if ($tf['v_feld'] != $data['type']) return 0;
-		if ($tf['research_id'] > 0) if ($this->getuserresearch($tf['research_id'],$this->user) == 0) return 0;
+		if ($tf[v_feld] != $data[type]) return 0;
+		if ($tf[research_id] > 0) if ($this->getuserresearch($tf[research_id],$this->user) == 0) return 0;
 		if (($terraform == 16 || $terraform == 6 || $terraform == 17) && $this->db->query("SELECT aktiv FROM stu_colonies_fields WHERE (buildings_id=38 OR buildings_id=195) AND colonies_id=".$this->cid,1) == 0)
 		{
-			$return['msg'] = "Zum sprengen wird ein aktivierter Untergrundlift benï¿½tigt";
+			$return[msg] = "Zum sprengen wird ein aktivierter Untergrundlift benötigt";
 			return $return;
 		}
-		if ($fieldId == 31 && $tf['save31'] == 1)
+		if ($fieldId == 31 && $tf[save31] == 1)
 		{
-			$return['msg'] = "Dieses Feld kann aufgrund der planetaren Integritï¿½t nicht gesprengt werden";
+			$return[msg] = "Dieses Feld kann aufgrund der planetaren Integrität nicht gesprengt werden";
 			return $return;
 		}
-		if ($tf['id'] == 14 && $this->ccolonies_classes_id !=5)
+		if ($tf[id] == 14 && $this->ccolonies_classes_id !=5)
 		{
-			$return['msg'] = "Tiefenbohrungen kï¿½nnen nuf auf Klasse K Planeten durchgefï¿½hrt werden";
+			$return[msg] = "Tiefenbohrungen können nuf auf Klasse K Planeten durchgeführt werden";
 			return $return;
 		}
-		if (($tf['id'] == 7 || $tf['id'] == 18 || $tf['id'] == 19 || $tf['id'] == 20) && $this->db->query("SELECT id FROM stu_colonies_fields WHERE type=".$tf['z_feld']." AND colonies_id=".$this->cid,1) != 0)
+		if (($tf[id] == 7 || $tf[id] == 18 || $tf[id] == 19 || $tf[id] == 20) && $this->db->query("SELECT id FROM stu_colonies_fields WHERE type=".$tf[z_feld]." AND colonies_id=".$this->cid,1) != 0)
 		{
-			$return['msg'] = "Dieses Terraforming ist nur einmal mï¿½glich";
+			$return[msg] = "Dieses Terraforming ist nur einmal möglich";
 			return $return;
 		}
-		if ($tf['flimit'] > 0)
+		if ($tf[flimit] > 0)
 		{
-			if ($this->db->query("SELECT COUNT(id) FROM stu_colonies_".$field." WHERE type=".$tf['z_feld']." AND colonies_id=".$this->cid,1) >= $tf['flimit'])
+			if ($this->db->query("SELECT COUNT(id) FROM stu_colonies_".$field." WHERE type=".$tf[z_feld]." AND colonies_id=".$this->cid,1) >= $tf[flimit])
 			{
-				$return['msg'] = "Dieses Terraforming ist nur ".$tf['flimit']." mal mï¿½glich";
+				$return[msg] = "Dieses Terraforming ist nur ".$tf[flimit]." mal möglich";
 				return $return;
 			}
 		}
-		if ($data['buildings_id'] > 0)
+		if ($data[buildings_id] > 0)
 		{
-			$return['msg'] = "Terraforming nicht mï¿½glich - Das Feld ist bebaut";
+			$return[msg] = "Terraforming nicht möglich - Das Feld ist bebaut";
 			return $return;
 		}
-		if ($tf['ecost'] > $this->cenergie)
+		if ($tf[ecost] > $this->cenergie)
 		{
-			$return['msg'] = "Fï¿½r das Terraforming werden $return['msg']t]." Energie benï¿½tigt - Vorhanden ist nur ".$this->cenergie;
+			$return[msg] = "Für das Terraforming werden ".$tf[ecost]." Energie benötigt - Vorhanden ist nur ".$this->cenergie;
 			return $return;
 		}
 		$result = $this->tfmincost($terraform);
-		if ($result['code'] == 0) return $result;
-		if ($tf['id'] == 7 || $tf['id'] == 18 || $tf['id'] == 19 || $tf['id'] == 20) $this->db->query("UPDATE stu_colonies_underground SET type=15 WHERE field_id=13 AND colonies_id=".$this->cid);
-		$this->db->query("UPDATE stu_colonies_".$field." SET type=".$tf['z_feld']." WHERE field_id=".$fieldId." AND colonies_id=".$colId);
-		$this->db->query("UPDATE stu_colonies SET energie=energie-".$tf['ecost']." WHERE id=".$this->cid);
-		if ($tf['symp_min'] > 0) $this->db->query("UPDATE stu_user SET symp=symp-".$tf['symp_min']." WHERE id=".$this->user);
-		if ($tf['symp_plus'] > 0) $this->db->query("UPDATE stu_user SET symp=symp+".$tf['symp_plus']." WHERE id=".$this->user);
+		if ($result[code] == 0) return $result;
+		if ($tf[id] == 7 || $tf[id] == 18 || $tf[id] == 19 || $tf[id] == 20) $this->db->query("UPDATE stu_colonies_underground SET type=15 WHERE field_id=13 AND colonies_id=".$this->cid);
+		$this->db->query("UPDATE stu_colonies_".$field." SET type=".$tf[z_feld]." WHERE field_id=".$fieldId." AND colonies_id=".$colId);
+		$this->db->query("UPDATE stu_colonies SET energie=energie-".$tf[ecost]." WHERE id=".$this->cid);
+		if ($tf[symp_min] > 0) $this->db->query("UPDATE stu_user SET symp=symp-".$tf[symp_min]." WHERE id=".$this->user);
+		if ($tf[symp_plus] > 0) $this->db->query("UPDATE stu_user SET symp=symp+".$tf[symp_plus]." WHERE id=".$this->user);
 		global $grafik;
-		$return['msg'] = "<table cellpadding= cellspacing=1 bgcolor=#262323>
+		$return[msg] = "<table cellpadding= cellspacing=1 bgcolor=#262323>
 		<tr>
-			<td class=tdmainobg><img src=".$grafik."/fields/".$tf['v_feld'].".gif></td>
+			<td class=tdmainobg><img src=".$grafik."/fields/".$tf[v_feld].".gif></td>
 			<td class=tdmainobg>-></td>
-			<td class=tdmainobg><img src=".$grafik."/fields/".$tf['z_feld'].".gif></td>
+			<td class=tdmainobg><img src=".$grafik."/fields/".$tf[z_feld].".gif></td>
 			<td class=tdmainobg>Terraforming abgeschlossen</td>
 		</tr></table>";
 		return $return;
@@ -608,22 +608,22 @@ class colony
 		$result = $this->gettfcost($terraformId);
 		if ($result == 0)
 		{
-			$return['code'] = 1;
+			$return[code] = 1;
 			return $return;
 		}
 		while($tf=mysql_fetch_assoc($result))
 		{
-			$count = $this->db->query("SELECT a.count FROM stu_colonies_storage as a LEFT JOIN stu_goods as b ON a.goods_id=b.id WHERE a.goods_id='".$tf['goods_id']."' AND a.colonies_id=".$this->cid,1);
+			$count = $this->db->query("SELECT a.count FROM stu_colonies_storage as a LEFT JOIN stu_goods as b ON a.goods_id=b.id WHERE a.goods_id='".$tf[goods_id]."' AND a.colonies_id=".$this->cid,1);
 			if ($count < $tf['count'])
 			{
-				$return['code'] = 0;
-				$return['msg'] = "Zum Terraformen werden ".$tf['count']." ".$tf['name']." benï¿½tigt - Vorhanden sind aber nur ".$count;
+				$return[code] = 0;
+				$return[msg] = "Zum Terraformen werden ".$tf['count']." ".$tf[name]." benötigt - Vorhanden sind aber nur ".$count;
 				return $return;
 			}
 		}
 		$result = $this->gettfcost($terraformId);
-		while($t=mysql_fetch_assoc($result)) $this->lowerstoragebygoodid($t['count'],$t['goods_id'],$this->cid);
-		$return['code'] = 1;
+		while($t=mysql_fetch_assoc($result)) $this->lowerstoragebygoodid($t['count'],$t[goods_id],$this->cid);
+		$return[code] = 1;
 		return $return;
 	}
 	
@@ -631,143 +631,143 @@ class colony
 	{
 		global $myShip,$grafik,$myUser;
 		$shipdata = $myShip->getdatabyid($id);
-		if ($shipdata == 0 || $this->cshow == 0 || $shipdata['cloak'] == 1) return 0;
-		if ($this->ccoords_x != $shipdata['coords_x'] || $this->ccoords_y != $shipdata['coords_y']) return 0;
-		if ($this->cwese != $shipdata['wese']) return 0;
-		if ($shipdata['damaged'] == 1) $mpf = "d/";
-		if ($shipdata['user_id'] == $this->user)
+		if ($shipdata == 0 || $this->cshow == 0 || $shipdata[cloak] == 1) return 0;
+		if ($this->ccoords_x != $shipdata[coords_x] || $this->ccoords_y != $shipdata[coords_y]) return 0;
+		if ($this->cwese != $shipdata[wese]) return 0;
+		if ($shipdata[damaged] == 1) $mpf = "d/";
+		if ($shipdata[user_id] == $this->user)
 		{
-			$transadd = "zu der <a href=main.php?page=ship&section=showship&id=".$shipId2.">".$shipdata['name']."</a>";
-			$img = "<a href=?page=ship&section=showship&id=".$shipdata['id']."><img src=".$grafik."/ships/".$mpf.$shipdata['ships_rumps_id'].".gif border=0></a>";
+			$transadd = "zu der <a href=main.php?page=ship&section=showship&id=".$shipId2.">".$shipdata[name]."</a>";
+			$img = "<a href=?page=ship&section=showship&id=".$shipdata[id]."><img src=".$grafik."/ships/".$mpf.$shipdata[ships_rumps_id].".gif border=0></a>";
 		}
 		else
 		{
-			$transadd = "zu der ".$shipdata['name'];
-			$img = "<img src=".$grafik."/ships/".$mpf.$shipdata['ships_rumps_id'].".gif>";
+			$transadd = "zu der ".$shipdata[name];
+			$img = "<img src=".$grafik."/ships/".$mpf.$shipdata[ships_rumps_id].".gif>";
 		}
 		if ($count < 0)
 		{
-			$return['msg'] = "Es wurde eine falsche Anzahl eingegeben";
+			$return[msg] = "Es wurde eine falsche Anzahl eingegeben";
 			return $return;
 		}
-		if ($myUser->getfield("vac",$shipdata['user_id']) == 1)
+		if ($myUser->getfield("vac",$shipdata[user_id]) == 1)
 		{
 			$this->msghandle("Der User befindet sich zur Zeit im Urlaub");
 			return $this->cret($destroy);
 		}
-		if ($shipdata['c']['trumfield'] == 1)
+		if ($shipdata[c][trumfield] == 1)
 		{
-			$return['msg'] = "Das Wrack kann nicht erfasst werden.";
-			$return['code'] = -1;
+			$return[msg] = "Das Wrack kann nicht erfasst werden.";
+			$return[code] = -1;
 			return $return;
 		}
-		if ($shipdata['schilde_aktiv'] == 1)
+		if ($shipdata[schilde_aktiv] == 1)
 		{
-			$return['msg'] = "Die ".$shipdata['name']." hat die Schilde aktiviert";
-			$return['code'] == 0;
+			$return[msg] = "Die ".$shipdata[name]." hat die Schilde aktiviert";
+			$return[code] == 0;
 			return $return;
 		}
 		if ($this->user != 19 && $goodId == 301)
 		{
-			$return['msg'] = "Transportversuch fehlgeschlagen, Waren verloren";
+			$return[msg] = "Transportversuch fehlgeschlagen, Waren verloren";
 			$this->lowerstoragebygoodid($count,$goodId,$this->cid);
 			return $return;
 		}
 		if ($this->user > 100 && $goodId == 304)
 		{
-			$return['msg'] = "Der Agent verweigert den Transport";
+			$return[msg] = "Der Agent verweigert den Transport";
 			return $return;
 		}
 		if ($this->user > 100 && $goodId == 308)
 		{
-			$return['msg'] = "Ein Dï¿½mpfungsfeld schï¿½tzt das Hangardeck, Transport fehlgeschlagen";
+			$return[msg] = "Ein Dämpfungsfeld schützt das Hangardeck, Transport fehlgeschlagen";
 			return $return;
 		}
 		$stor = $this->db->query("SELECT count FROM stu_colonies_storage WHERE goods_id=".$goodId." AND colonies_id=".$this->cid,1);
 		if ($stor == 0)
 		{
-			$return['msg'] = "Ware nicht vorhanden.";
-			$return['code'] = 0;
+			$return[msg] = "Ware nicht vorhanden.";
+			$return[code] = 0;
 			return $return;
 		}
 		if ($count > $stor) $count = $stor;
 		if ($this->db->query("SELECT id FROM stu_torpedo_types WHERE goods_id=".$goodId,1) != 0)
 		{
-			if ($shipdata['c']['torps'] == 0)
+			if ($shipdata[c][torps] == 0)
 			{
-				$return['msg'] = "Dieses Schiff kann keine Torpedos an Board nehmen";
+				$return[msg] = "Dieses Schiff kann keine Torpedos an Board nehmen";
 				return $return;
 			}
 			$torp = $this->db->query("SELECT research_id,size FROM stu_torpedo_types WHERE goods_id=".$goodId,4);
-			if ($torp['size'] > $shipdata['c']['size'])
+			if ($torp[size] > $shipdata[c][size])
 			{
-				$return['msg'] = "Dieser Torpedotyp kann nicht geladen werden";
+				$return[msg] = "Dieser Torpedotyp kann nicht geladen werden";
 				return $return;
 			}
-			$tt = $myShip->gettorptypegood($shipdata['id']);
+			$tt = $myShip->gettorptypegood($shipdata[id]);
 			if ($tt != 0 && $tt != $goodId)
 			{
-				$return['msg'] = "Die Torpedoabschussrampen sind bereits belegt";
+				$return[msg] = "Die Torpedoabschussrampen sind bereits belegt";
 				return $return;
 			}
-			$torpcount = $myShip->getcountbygoodid($goodId,$shipdata['id']);
-			if ($torpcount >= $shipdata['c']['torps'])
+			$torpcount = $myShip->getcountbygoodid($goodId,$shipdata[id]);
+			if ($torpcount >= $shipdata[c][torps])
 			{
-				$return['msg'] = "Es kï¿½nnen maximal $return['msg']c]['torps']." Torpedos geladen werden";
+				$return[msg] = "Es können maximal ".$shipdata[c][torps]." Torpedos geladen werden";
 				return $return;
 			}
-			if ($torpcount + $count > $shipdata['c']['torps']) $count = $shipdata['c']['torps']-$torpcount;
-			$probes = $this->db->query("SELECT SUM(COUNT) FROM stu_ships_storage WHERE ships_id=".$shipdata['id']." AND (goods_id=35 OR goods_id=36 OR goods_id=37 OR goods_id=204)",1);
-			if ($torpcount >= ($shipdata['c']['torps']-$probes))
+			if ($torpcount + $count > $shipdata[c][torps]) $count = $shipdata[c][torps]-$torpcount;
+			$probes = $this->db->query("SELECT SUM(COUNT) FROM stu_ships_storage WHERE ships_id=".$shipdata[id]." AND (goods_id=35 OR goods_id=36 OR goods_id=37 OR goods_id=204)",1);
+			if ($torpcount >= ($shipdata[c][torps]-$probes))
 			{
-				$probes != 0 ? $return['msg'] = "Es kï¿½nnen maximal "$return['msg']c]['torps']-$probes)." Torpedos geladen werden - ".$probes." Rampen durch Sonden belegt" $return['msg']g] = "Es kï¿½nnen maxima$return['msg']a['c']['torps']." Torpedos geladen werden";
+				$probes != 0 ? $return[msg] = "Es können maximal ".($shipdata[c][torps]-$probes)." Torpedos geladen werden - ".$probes." Rampen durch Sonden belegt" : $return[msg] = "Es können maximal ".$shipdata[c][torps]." Torpedos geladen werden";
 				return $return;
 			}
-			if ($torpcount + $count + $probes > $shipdata['c']['torps']) $count = $shipdata['c']['torps']-$torpcount-$probes;
+			if ($torpcount + $count + $probes > $shipdata[c][torps]) $count = $shipdata[c][torps]-$torpcount-$probes;
 		}
 		if ($goodId == 35 || $goodId == 36 || $goodId == 37 || $goodId == 204)
 		{
-			$probes = $this->db->query("SELECT SUM(COUNT) FROM stu_ships_storage WHERE ships_id=".$shipdata['id']." AND (goods_id=35 OR goods_id=36 OR goods_id=37 OR goods_id=204)",1);
-			$tt = $myShip->gettorptypegood($shipdata['id']);
+			$probes = $this->db->query("SELECT SUM(COUNT) FROM stu_ships_storage WHERE ships_id=".$shipdata[id]." AND (goods_id=35 OR goods_id=36 OR goods_id=37 OR goods_id=204)",1);
+			$tt = $myShip->gettorptypegood($shipdata[id]);
 			$tc = 0;
-			if ($tt != 0) $tc = $myShip->getcountbygoodid($tt,$shipdata['id']);
-			if ($probes >= $shipdata['c']['probe_stor'])
+			if ($tt != 0) $tc = $myShip->getcountbygoodid($tt,$shipdata[id]);
+			if ($probes >= $shipdata[c][probe_stor])
 			{
-				$return['msg'] = "Es kï¿½nnen maximal $return['msg']c]['probe_stor']." Sonden geladen werden";
+				$return[msg] = "Es können maximal ".$shipdata[c][probe_stor]." Sonden geladen werden";
 				return $return;
 			}
-			$sonkap = $shipdata['c']['torps'] - $tc;
-			if ($sonkap > $shipdata['c']['probe_stor']) $sonkap = $shipdata['c']['probe_stor'];
+			$sonkap = $shipdata[c][torps] - $tc;
+			if ($sonkap > $shipdata[c][probe_stor]) $sonkap = $shipdata[c][probe_stor];
 			if ($probes >= $sonkap)
 			{
-				$return['msg'] = "Es kï¿½nnen keine Sonden mehr geladen werden";
+				$return[msg] = "Es können keine Sonden mehr geladen werden";
 				return $return;
 			}
 			if ($count > ($sonkap-$probes)) $count = ($sonkap-$probes);
 		}
 		if ($count < 1)
 		{
-			$return['msg'] = "Keine Waren zum beamen.";
-			$return['code'] = 0;
+			$return[msg] = "Keine Waren zum beamen.";
+			$return[code] = 0;
 			return $return;
 		}
 		if ($this->cenergie == 0)
 		{
-			$return['msg'] = "Keine Energie auf der Kolonie vorhanden.";
-			$return['code'] = 0;
+			$return[msg] = "Keine Energie auf der Kolonie vorhanden.";
+			$return[code] = 0;
 			return $return;
 		}
-		$sum = $this->db->query("SELECT SUM(count) FROM stu_ships_storage WHERE ships_id=".$shipdata['id'],1);
-		if ($sum >= $shipdata['c']['storage'])
+		$sum = $this->db->query("SELECT SUM(count) FROM stu_ships_storage WHERE ships_id=".$shipdata[id],1);
+		if ($sum >= $shipdata[c][storage])
 		{
-			$return['msg'] = "Kein Lagerraum vorhanden";
+			$return[msg] = "Kein Lagerraum vorhanden";
 			return $return;
 		}
-		$sum + $count > $shipdata['c']['storage'] ? $beam = $shipdata['c']['storage']-$sum : $beam = $count;
+		$sum + $count > $shipdata[c][storage] ? $beam = $shipdata[c][storage]-$sum : $beam = $count;
 		if ($beam < 1)
 		{
-			$return['msg'] = "Kein Platz auf dem Schiff vorhanden.";
-			$return['code'] = 0;
+			$return[msg] = "Kein Platz auf dem Schiff vorhanden.";
+			$return[code] = 0;
 			return $return;
 		}
 		$faktor = 30;
@@ -779,16 +779,16 @@ class colony
 			$beam = $this->cenergie * $faktor;
 		}
 		if ($energie < 1) return 0;
-		$myShip->upperstoragebygoodid($beam,$goodId,$shipdata['id'],$shipdata['user_id']);
+		$myShip->upperstoragebygoodid($beam,$goodId,$shipdata[id],$shipdata[user_id]);
 		$this->lowerstoragebygoodid($beam,$goodId,$this->cid);
 		$this->db->query("UPDATE stu_colonies SET energie=energie-".$energie." WHERE id=".$this->cid);
 		$this->cenergie -= $energie;
-		$return['beamed'] = $beam;
-		$return['msg'] = "<table bgcolor=#262323><tr><td class=tdmainobg><img src=".$grafik."/planets/".$this->ccolonies_classes_id.".gif></td>
+		$return[beamed] = $beam;
+		$return[msg] = "<table bgcolor=#262323><tr><td class=tdmainobg><img src=".$grafik."/planets/".$this->ccolonies_classes_id.".gif></td>
 			<td class=tdmainobg width=20 align=Center><img src=".$grafik."/buttons/b_to2.gif></td>
 			<td class=tdmainobg align=center>".$img."</td>
 			<td class=tdmainobg>".$beam." ".$this->db->query("SELECT name FROM stu_goods WHERE id=".$goodId,1)." ".$transadd." gebeamt - ".$energie." Energie verbraucht</td></tr></table>";
-		$return['code'] = 1;
+		$return[code] = 1;
 		return $return;
 	}
 	
@@ -796,90 +796,90 @@ class colony
 	{
 		global $myShip,$grafik,$myUser;
 		$shipdata = $myShip->getdatabyid($id);
-		if ($shipdata == 0 || $this->cshow == 0 || $shipdata['cloak'] == 1) return 0;
-		if ($this->cwese != $shipdata['wese']) return 0;
-		if ($this->ccoords_x != $shipdata['coords_x'] || $this->ccoords_y != $shipdata['coords_y']) return 0;
-		if ($this->cwese != $shipdata['wese']) return 0;
-		if ($myUser->getfield("level",$shipdata['user_id']) == 1)
+		if ($shipdata == 0 || $this->cshow == 0 || $shipdata[cloak] == 1) return 0;
+		if ($this->cwese != $shipdata[wese]) return 0;
+		if ($this->ccoords_x != $shipdata[coords_x] || $this->ccoords_y != $shipdata[coords_y]) return 0;
+		if ($this->cwese != $shipdata[wese]) return 0;
+		if ($myUser->getfield("level",$shipdata[user_id]) == 1)
 		{
-			$return['msg'] = "Das beamen von Schiffen von Siedlern mit Level 1 ist untersagt";
+			$return[msg] = "Das beamen von Schiffen von Siedlern mit Level 1 ist untersagt";
 			return $return;
 		}
 		if ($this->cenergie == 0)
 		{
-			$return['msg'] = "Keine Energie vorhanden.";
-			$return['code'] = 0;
+			$return[msg] = "Keine Energie vorhanden.";
+			$return[code] = 0;
 			return $return;
 		}
-		if ($shipdata['damaged'] == 1) $mpf = "d/";
-		if ($shipdata['user_id'] == $this->user)
+		if ($shipdata[damaged] == 1) $mpf = "d/";
+		if ($shipdata[user_id] == $this->user)
 		{
-			$transadd = "von der <a href=main.php?page=ship&section=showship&id=".$shipId2.">".$shipdata['name']."</a>";
-			$img = "<a href=?page=ship&section=showship&id=".$shipdata['id']."><img src=".$grafik."/ships/".$mpf.$shipdata['ships_rumps_id'].".gif border=0></a>";
+			$transadd = "von der <a href=main.php?page=ship&section=showship&id=".$shipId2.">".$shipdata[name]."</a>";
+			$img = "<a href=?page=ship&section=showship&id=".$shipdata[id]."><img src=".$grafik."/ships/".$mpf.$shipdata[ships_rumps_id].".gif border=0></a>";
 		}
 		else
 		{
-			$transadd = "von der ".$shipdata['name'];
-			$img = "<img src=".$grafik."/ships/".$mpf.$shipdata['ships_rumps_id'].".gif>";
+			$transadd = "von der ".$shipdata[name];
+			$img = "<img src=".$grafik."/ships/".$mpf.$shipdata[ships_rumps_id].".gif>";
 		}
 		if ($count < 0)
 		{
-			$return['msg'] = "Es wurde eine falsche Anzahl eingegeben";
+			$return[msg] = "Es wurde eine falsche Anzahl eingegeben";
 			return $return;
 		}
-		if ($shipdata['ships_rumps_id'] == 111)
+		if ($shipdata[ships_rumps_id] == 111)
 		{
-			$return['msg'] = "Von einem Konstrukt kann nicht gebeamt werden";
+			$return[msg] = "Von einem Konstrukt kann nicht gebeamt werden";
 			return $return;
 		}
-		if ($shipdata['ships_rumps_id'] == 213)
+		if ($shipdata[ships_rumps_id] == 213)
 		{
-			$return['msg'] = "Transporterstrahl wird vom Ziel geblockt";
+			$return[msg] = "Transporterstrahl wird vom Ziel geblockt";
 			return $return;
 		}
-		if ($myUser->getfield("vac",$shipdata['user_id']) == 1)
+		if ($myUser->getfield("vac",$shipdata[user_id]) == 1)
 		{
 			$this->msghandle("Der User befindet sich zur Zeit im Urlaub");
 			return $this->cret($destroy);
 		}
-		if ($this->db->query("SELECT id FROM stu_torpedo_types WHERE goods_id=".$goodId,1) != 0 && $shipdata['c']['trumfield'] != 1 && $shipdata['user_id'] != $this->user)
+		if ($this->db->query("SELECT id FROM stu_torpedo_types WHERE goods_id=".$goodId,1) != 0 && $shipdata[c][trumfield] != 1 && $shipdata[user_id] != $this->user)
 		{
-			$return['msg'] = "Du kannst keine Torpedos von anderen Schiffe beamen";
+			$return[msg] = "Du kannst keine Torpedos von anderen Schiffe beamen";
 			return $return;
 		}
-		if ($shipdata['schilde_aktiv'] == 1)
+		if ($shipdata[schilde_aktiv] == 1)
 		{
-			$return['msg'] = "Die ".$shipdata['name']." hat die Schilde aktiviert";
+			$return[msg] = "Die ".$shipdata[name]." hat die Schilde aktiviert";
 			return $return;
 		}
 		if ($this->user != 19 && $goodId == 301)
 		{
-			$return['msg'] = "Transportversuch fehlgeschlagen, Waren verloren";
+			$return[msg] = "Transportversuch fehlgeschlagen, Waren verloren";
 			$this->lowerstoragebygoodid($count,$goodId,$id);
 			return $return;
 		}
 		if ($this->user > 100 && $goodId == 304)
 		{
-			$return['msg'] = "Der Agent verweigert den Transport";
+			$return[msg] = "Der Agent verweigert den Transport";
 			return $return;
 		}
 		if ($this->user > 100 && $goodId == 308)
 		{
-			$return['msg'] = "Ein Dï¿½mpfungsfeld schï¿½tzt das Hangardeck, Transport fehlgeschlagen";
+			$return[msg] = "Ein Dämpfungsfeld schützt das Hangardeck, Transport fehlgeschlagen";
 			return $return;
 		}
-		$stor = $this->db->query("SELECT count FROM stu_ships_storage WHERE goods_id=".$goodId." AND ships_id=".$shipdata['id'],1);
+		$stor = $this->db->query("SELECT count FROM stu_ships_storage WHERE goods_id=".$goodId." AND ships_id=".$shipdata[id],1);
 		if ($stor == 0)
 		{
-			$return['msg'] = "Ware nicht vorhanden.";
-			$return['code'] = 0;
+			$return[msg] = "Ware nicht vorhanden.";
+			$return[code] = 0;
 			return $return;
 		}
 		if ($stor < $count) $count = $stor;
 		$sum = $this->db->query("SELECT SUM(count) FROM stu_colonies_storage WHERE colonies_id=".$this->cid,1);
 		if ($sum > $this->cmax_storage)
 		{
-			$return['msg'] = "Kein Lagerraum vorhanden";
+			$return[msg] = "Kein Lagerraum vorhanden";
 			return $return;
 		}
 		$this->cmax_storage < $sum + $count ? $beam = $this->cmax_storage-$sum : $beam = $count;
@@ -893,20 +893,20 @@ class colony
 		}
 		if ($beam < 1)
 		{
-			$return['msg'] = "Kein Lagerraum vorhanden.";
-			$return['code'] = 0;
+			$return[msg] = "Kein Lagerraum vorhanden.";
+			$return[code] = 0;
 			return $return;
 		}
-		$myShip->lowerstoragebygoodid($beam,$goodId,$shipdata['id']);
+		$myShip->lowerstoragebygoodid($beam,$goodId,$shipdata[id]);
 		$this->upperstoragebygoodid($beam,$goodId,$this->cid,$this->user);
 		$this->db->query("UPDATE stu_colonies SET energie=energie-".$energie." WHERE id=".$this->cid);
 		$this->cenergie -= $energie;
-		$return['beamed'] = $beam;
-		$return['msg'] = "<table bgcolor=#262323><tr><td class=tdmainobg><img src=".$grafik."/planets/".$this->ccolonies_classes_id.".gif></td>
+		$return[beamed] = $beam;
+		$return[msg] = "<table bgcolor=#262323><tr><td class=tdmainobg><img src=".$grafik."/planets/".$this->ccolonies_classes_id.".gif></td>
 			<td class=tdmainobg width=20 align=Center><img src=".$grafik."/buttons/b_from2.gif></td>
 			<td class=tdmainobg align=center>".$img."</td>
 			<td class=tdmainobg>".$beam." ".$this->db->query("SELECT name FROM stu_goods WHERE id=".$goodId,1)." ".$transadd." gebeamt - ".$energie." Energie verbraucht</td></tr></table>";
-		$return['code'] = 1;
+		$return[code] = 1;
 		return $return;
 	}
 	
@@ -929,46 +929,46 @@ class colony
 		global $myShip;
 		$shipdata = $myShip->getdatabyid($shipid);
 		if ($shipdata == 0) return 0;
-		if ($this->ccoords_x != $shipdata['coords_x'] || $this->ccoords_y != $shipdata['coords_y']) return 0;
-		if ($this->cwese != $shipdata['wese']) return 0;
+		if ($this->ccoords_x != $shipdata[coords_x] || $this->ccoords_y != $shipdata[coords_y]) return 0;
+		if ($this->cwese != $shipdata[wese]) return 0;
 		if ($this->cenergie == 0)
 		{
-			$return['msg'] = "Keine Energie vorhanden";
+			$return[msg] = "Keine Energie vorhanden";
 			return $return;
 		}
-		if ($shipdata['schilde_aktiv'] == 1)
+		if ($shipdata[schilde_aktiv] == 1)
 		{
-			$return['msg'] = "Die Schilde der ".stripslashes($shipdata['name'])." sind aktiviert";
+			$return[msg] = "Die Schilde der ".stripslashes($shipdata[name])." sind aktiviert";
 			return $return;
 		}
 		if ($way == "to")
 		{
 			if ($this->cbev_free == 0)
 			{
-				$return['msg'] = "Es befinden sich keine freien Einwohner auf dem Planeten";
+				$return[msg] = "Es befinden sich keine freien Einwohner auf dem Planeten";
 				return $return;
 			}
-			if ($shipdata['c']['crew'] <= $shipdata['crew'])
+			if ($shipdata[c][crew] <= $shipdata[crew])
 			{
-				$return['msg'] = "Alle Crewquartiere der ".stripslashes($shipdata['name'])." sind belegt";
+				$return[msg] = "Alle Crewquartiere der ".stripslashes($shipdata[name])." sind belegt";
 				return $return;
 			}
 			if ($crew > $this->cbev_free) $crew = $this->cbev_free;
-			if ($crew > $shipdata['c']['crew'] - $shipdata['crew']) $crew = $shipdata['c']['crew'] - $shipdata['crew'];
+			if ($crew > $shipdata[c][crew] - $shipdata[crew]) $crew = $shipdata[c][crew] - $shipdata[crew];
 		}
 		elseif ($way == "from")
 		{
-			if ($shipdata['crew'] == 0)
+			if ($shipdata[crew] == 0)
 			{
-				$return['msg'] = "Es befinden sich keine Crewmitglieder auf dem Schiff";
+				$return[msg] = "Es befinden sich keine Crewmitglieder auf dem Schiff";
 				return $return;
 			}
 			if ($this->cbev_free+$this->cbev_used >= $this->cmax_bev)
 			{
-				$return['msg'] = "Es ist kein freier Wohnraum auf der Kolonie vorhanden";
+				$return[msg] = "Es ist kein freier Wohnraum auf der Kolonie vorhanden";
 				return $return;
 			}
-			if ($crew > $shipdata['crew']) $crew = $shipdata['crew'];
+			if ($crew > $shipdata[crew]) $crew = $shipdata[crew];
 			if ($crew > $this->cmax_bev-$this->cbev_used-$this->cbev_free) $crew = $this->cmax_bev-$this->cbev_used-$this->cbev_free;
 		}
 		if ($crew == 0) return 0;
@@ -993,12 +993,12 @@ class colony
 		$this->db->query("UPDATE stu_ships SET ".$part2." WHERE id=".$shipid);
 		global $grafik;
 		$way == "to" ? $img = "<img src=".$grafik."/buttons/b_to2.gif>" : $img = "<img src=".$grafik."/buttons/b_from2.gif>";
-		if ($shipdata['damaged'] == 1) $mpf = "d/";
-		$return['msg'] = "<table bgcolor=#262323><tr><td class=tdmainobg><a href=main.php?page=colony&section=showcolony&id=".$colId."><img src=".$grafik."/planets/".$this->ccolonies_classes_id.".gif border=0></a></td>
+		if ($shipdata[damaged] == 1) $mpf = "d/";
+		$return[msg] = "<table bgcolor=#262323><tr><td class=tdmainobg><a href=main.php?page=colony&section=showcolony&id=".$colId."><img src=".$grafik."/planets/".$this->ccolonies_classes_id.".gif border=0></a></td>
 						<td class=tdmainobg width=20 align=Center>".$img."</td>
-						<td class=tdmainobg align=center><a href=main.php?page=ship&section=showship&id=".$shipid."><img src=".$grafik."/ships/".$mpf.$shipdata['ships_rumps_id'].".gif border=0></a></td>
+						<td class=tdmainobg align=center><a href=main.php?page=ship&section=showship&id=".$shipid."><img src=".$grafik."/ships/".$mpf.$shipdata[ships_rumps_id].".gif border=0></a></td>
 						<td class=tdmainobg>".$crew." Crewmitglieder gebeamt - ".$energie." Energie verbraucht</td></tr></table>";
-		$return['code'] = 1;
+		$return[code] = 1;
 		$this->cenergie -= $energie;
 		return $return;
 	}
@@ -1009,34 +1009,34 @@ class colony
 		global $myShip,$grafik,$myUser;
 		$shipdata = $myShip->getdatabyid($id);
 		if ($shipdata == 0 || $this->cshow == 0) return 0;
-		if ($shipdata['c']['probe'] == 1)
+		if ($shipdata[c][probe] == 1)
 		{
-			$return['msg'] = "Die Sonde kann nicht erfasst werden";
+			$return[msg] = "Die Sonde kann nicht erfasst werden";
 			return $return;
 		}
-		if ($myUser->getfield("vac",$shipdata['user_id']) == 1)
+		if ($myUser->getfield("vac",$shipdata[user_id]) == 1)
 		{
-			$return['msg'] = "Der User befindet sich zur Zeit im Urlaub";
+			$return[msg] = "Der User befindet sich zur Zeit im Urlaub";
 			return $return;
 		}
-		if ($shipdata['damaged'] == 1) $mpf = "d/";
-		$shipdata['user_id'] == $this->user ? $img = "<a href=main.php?page=ship&section=showship&id=".$id."><img src=".$grafik."/ships/".$mpf.$shipdata['ships_rumps_id'].".gif border=0></a>" : $img = "<img src=".$grafik."/ships/".$mpf.$shipdata['ships_rumps_id'].".gif border=0>";
-		if (($this->ccoords_x != $shipdata['coords_x']) || ($this->ccoords_y != $shipdata['coords_y'])) return 0;
+		if ($shipdata[damaged] == 1) $mpf = "d/";
+		$shipdata[user_id] == $this->user ? $img = "<a href=main.php?page=ship&section=showship&id=".$id."><img src=".$grafik."/ships/".$mpf.$shipdata[ships_rumps_id].".gif border=0></a>" : $img = "<img src=".$grafik."/ships/".$mpf.$shipdata[ships_rumps_id].".gif border=0>";
+		if (($this->ccoords_x != $shipdata[coords_x]) || ($this->ccoords_y != $shipdata[coords_y])) return 0;
 		if ($count == "max") $count = $this->cenergie;
 		if ($this->cenergie < $count) $count = $this->cenergie;
-		if ($shipdata['energie'] + $count > $shipdata['maxeps']) $count = $shipdata['maxeps'] - $shipdata['energie'];
+		if ($shipdata[energie] + $count > $shipdata[maxeps]) $count = $shipdata[maxeps] - $shipdata[energie];
 		$this->db->query("UPDATE stu_colonies SET energie=energie-".$count." WHERE id='".$colId."'");
 		$this->db->query("UPDATE stu_ships SET energie=energie+".$count." WHERE id='".$id."'");
-		if ($this->user != $shipdata['user_id'])
+		if ($this->user != $shipdata[user_id])
 		{
 			global $myComm;
-			$myComm->sendpm($shipdata['user_id'],$this->user,"Die ".$this->cname." transferiert in Sektor ".$this->ccoords_x."/".$this->ccoords_y." ".$count." Energie zu der ".$shipdata['name']."",3);
+			$myComm->sendpm($shipdata[user_id],$this->user,"Die ".$this->cname." transferiert in Sektor ".$this->ccoords_x."/".$this->ccoords_y." ".$count." Energie zu der ".$shipdata[name]."",3);
 		}
-		$return['msg'] = "<table bgcolor=#262323><tr><td class=tdmainobg><img src=".$grafik."/planets/".$this->ccolonies_classes_id.".gif border=0></td>
+		$return[msg] = "<table bgcolor=#262323><tr><td class=tdmainobg><img src=".$grafik."/planets/".$this->ccolonies_classes_id.".gif border=0></td>
 						<td class=tdmainobg width=20 align=Center><img src=".$grafik."/buttons/b_to2.gif></td>
 						<td class=tdmainobg align=center>".$img."</td>
-						<td class=tdmainobg>".$count." Energie zur ".$shipdata['name']." transferiert</td></tr></table>";
-		$return['code'] = 1;
+						<td class=tdmainobg>".$count." Energie zur ".$shipdata[name]." transferiert</td></tr></table>";
+		$return[code] = 1;
 		return $return;
 	}
 	
@@ -1047,140 +1047,140 @@ class colony
 		if ($this->cshow == 0) return 0;
 		$data = $this->getfielddatabyid($fieldId,$colId);
 		if ($data == 0) return 0;
-		if ($data['buildtime'] != 0)
+		if ($data[buildtime] != 0)
 		{
-			$return['msg'] = "Das Gebï¿½ude wurde noch nicht fertiggestellt";
+			$return[msg] = "Das Gebäude wurde noch nicht fertiggestellt";
 			return $return;
 		}
 		global $myUser;
-		if ($data['buildings_id'] == 3)
+		if ($data[buildings_id] == 3)
 		{
-			if ($data['aktiv'] == 0)
+			if ($data[aktiv] == 0)
 			{
-				$return['msg'] = "Die Hï¿½user auf diesem Feld sind nicht aktiviert";
+				$return[msg] = "Die Häuser auf diesem Feld sind nicht aktiviert";
 				return $return;
 			}
 			$build1 = $this->getbuildbyid(3);
 			$build2 = $this->getbuildbyid(16);
-			if ($build2['level'] > $myUser->ulevel)
+			if ($build2[level] > $myUser->ulevel)
 			{
-				$return['msg'] = "Stï¿½dte kï¿½nnen erst ab Leve$return['msg']vel]." errichtet werden";
-				$return['code'] = -1;
+				$return[msg] = "Städte können erst ab Level ".$build2[level]." errichtet werden";
+				$return[code] = -1;
 				return $return;
 			}
-			if ($this->cenergie - $build2['eps_cost'] < 0)
+			if ($this->cenergie - $build2[eps_cost] < 0)
 			{
-				$return['msg'] = "Es wird ".$build2['eps_cost']." Energie benï¿½tigt - Vorhanden ist aber nur ".$this->cenergie;
-				$return['code'] = 0;
+				$return[msg] = "Es wird ".$build2[eps_cost]." Energie benötigt - Vorhanden ist aber nur ".$this->cenergie;
+				$return[code] = 0;
 				return $return;
 			}
-			if ($data['buildings_id'] == 3) $result = $this->mincost(16,$this->user,$colId);
-			if ($result['code'] == 0) return $result;
-			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2['eps_cost'].",max_bev=max_bev-".$build1['bev_pro']." WHERE id='".$colId."' ANd user_id=".$this->user);
-			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='16',integrity=".$build2['integrity'].",aktiv=0,buildtime=".(time()+$build2['buildtime'])." WHERE field_id='".$data['field_id']."' AND colonies_id='".$colId."'");
-			$return['msg'] = "Der Bau des Gebï¿½udes ($return['msg']e].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time($return['msg']e]))." beendet sein";
+			if ($data[buildings_id] == 3) $result = $this->mincost(16,$this->user,$colId);
+			if ($result[code] == 0) return $result;
+			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2[eps_cost].",max_bev=max_bev-".$build1[bev_pro]." WHERE id='".$colId."' ANd user_id=".$this->user);
+			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='16',integrity=".$build2[integrity].",aktiv=0,buildtime=".(time()+$build2[buildtime])." WHERE field_id='".$data[field_id]."' AND colonies_id='".$colId."'");
+			$return[msg] = "Der Bau des Gebäudes (".$build2[name].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time()+$build2[buildtime]))." beendet sein";
 			return $return;
 		}
-		elseif ($data['buildings_id'] == 21)
+		elseif ($data[buildings_id] == 21)
 		{
 			$build1 = $this->getbuildbyid(21);
 			$build2 = $this->getbuildbyid(168);
 			$coldata = $this->getcolonybyid($colId);
 			if ($this->ccolonies_classes_id == 9)
 			{
-				$return['msg'] = "Auf dieser Planetenklasse kann kein Interstellarer Raumhafen gebaut werden";
+				$return[msg] = "Auf dieser Planetenklasse kann kein Interstellarer Raumhafen gebaut werden";
 				return $return;
 			}
 			if ($this->getuserresearch(211,$this->user) == 0)
 			{
-				$return['msg'] = "Du hast den interstellaren Raumhafen noch nicht erforscht";
+				$return[msg] = "Du hast den interstellaren Raumhafen noch nicht erforscht";
 				return $return;
 			}
-			if ($this->cenergie - $build2['eps_cost'] < 0)
+			if ($this->cenergie - $build2[eps_cost] < 0)
 			{
-				$return['msg'] = "Es wird ".$build2['eps_cost']." Energie benï¿½tigt - Vorhanden ist aber nur ".$this->cenergie." Energie";
+				$return[msg] = "Es wird ".$build2[eps_cost]." Energie benötigt - Vorhanden ist aber nur ".$this->cenergie." Energie";
 				return $return;
 			}
 			if ($this->db->query("SELECT COUNT(a.id) FROM stu_colonies_fields as a LEFT JOIN stu_colonies as b ON a.colonies_id=b.id WHERE b.user_id=".$this->user." AND a.buildings_id=168",1) >= 2)
 			{
-				$return['msg'] = "Es kï¿½nnen maximal 2 interstellare Raumhï¿½fen gebaut werden";
+				$return[msg] = "Es können maximal 2 interstellare Raumhäfen gebaut werden";
 				return $return;
 			}
 			$result = $this->mincost(168,$this->user,$this->cid);
-			if ($result['code'] == 0)
+			if ($result[code] == 0)
 			{
-				$return['msg'] = $result['msg'];
+				$return[msg] = $result[msg];
 				return $return;
 			}
-			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2['eps_cost']." WHERE id=".$this->cid);
+			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2[eps_cost]." WHERE id=".$this->cid);
 			$this->deactivatebuilding($fieldId,$colId,$userId);
-			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='168',integrity=".$build2['integrity'].",buildtime=".(time()+$build2['buildtime'])." WHERE field_id='".$data['field_id']."' AND colonies_id=".$this->cid);
-			$return['msg'] = "Der Bau des Gebï¿½udes ($return['msg']e].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time($return['msg']e]))." beendet sein";
+			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='168',integrity=".$build2[integrity].",buildtime=".(time()+$build2[buildtime])." WHERE field_id='".$data[field_id]."' AND colonies_id=".$this->cid);
+			$return[msg] = "Der Bau des Gebäudes (".$build2[name].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time()+$build2[buildtime]))." beendet sein";
 			return $return;
 		}
-		elseif ($data['buildings_id'] == 14)
+		elseif ($data[buildings_id] == 14)
 		{
 			$build1 = $this->getbuildbyid(14);
 			$build2 = $this->getbuildbyid(15);
-			if ($this->cenergie - $build2['eps_cost'] < 0)
+			if ($this->cenergie - $build2[eps_cost] < 0)
 			{
-				$return['msg'] = "Es wird ".$build2['eps_cost']." Energie benï¿½tigt - Vorhanden ist aber nur ".$this->cenergie;
-				$return['code'] = 0;
+				$return[msg] = "Es wird ".$build2[eps_cost]." Energie benötigt - Vorhanden ist aber nur ".$this->cenergie;
+				$return[code] = 0;
 				return $return;
 			}
 			$result = $this->mincost(15,$this->user,$colId);
-			if ($result['code'] == 0) return $result;
-			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2['eps_cost']." WHERE id='".$colId."' ANd user_id=".$this->user);
+			if ($result[code] == 0) return $result;
+			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2[eps_cost]." WHERE id='".$colId."' ANd user_id=".$this->user);
 			$this->deactivatebuilding($fieldId,$colId,$this->user);
-			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='15',integrity=".$build2['integrity'].",buildtime=".(time()+$build2['buildtime'])." WHERE field_id='".$data['field_id']."' AND colonies_id='".$colId."'");
-			$return['msg'] = "Der Bau des Gebï¿½udes ($return['msg']e].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time($return['msg']e]))." beendet sein";
+			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='15',integrity=".$build2[integrity].",buildtime=".(time()+$build2[buildtime])." WHERE field_id='".$data[field_id]."' AND colonies_id='".$colId."'");
+			$return[msg] = "Der Bau des Gebäudes (".$build2[name].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time()+$build2[buildtime]))." beendet sein";
 			return $return;
 		}
-		elseif ($data['buildings_id'] == 36)
+		elseif ($data[buildings_id] == 36)
 		{
 			$build1 = $this->getbuildbyid(36);
 			$build2 = $this->getbuildbyid(78);
 			if ($this->getuserresearch(88,$this->user) == 0)
 			{
-				$return['msg'] = "Du hast den Doppelkonverter noch nicht erforscht";
+				$return[msg] = "Du hast den Doppelkonverter noch nicht erforscht";
 				return $return;
 			}
-			if ($this->cenergie - $build2['eps_cost'] < 0)
+			if ($this->cenergie - $build2[eps_cost] < 0)
 			{
-				$return['msg'] = "Es wird ".$build2['eps_cost']." Energie benï¿½tigt - Vorhanden ist aber nur ".$this->cenergie;
+				$return[msg] = "Es wird ".$build2[eps_cost]." Energie benötigt - Vorhanden ist aber nur ".$this->cenergie;
 				return $return;
 			}
 			$result = $this->mincost(78,$this->user,$colId);
-			if ($result['code'] == 0) return $result;
-			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2['eps_cost']." WHERE id='".$colId."' ANd user_id=".$this->user);
+			if ($result[code] == 0) return $result;
+			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2[eps_cost]." WHERE id='".$colId."' ANd user_id=".$this->user);
 			$this->deactivatebuilding($fieldId,$colId,$this->user);
-			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='78',integrity=".$build2['integrity'].",buildtime=".(time()+$build2['buildtime'])." WHERE field_id='".$data['field_id']."' AND colonies_id='".$colId."'");
-			$return['msg'] = "Der Bau des Gebï¿½udes ($return['msg']e].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time($return['msg']e]))." beendet sein";
+			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='78',integrity=".$build2[integrity].",buildtime=".(time()+$build2[buildtime])." WHERE field_id='".$data[field_id]."' AND colonies_id='".$colId."'");
+			$return[msg] = "Der Bau des Gebäudes (".$build2[name].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time()+$build2[buildtime]))." beendet sein";
 			return $return;
 		}
-		elseif ($data['buildings_id'] == 51)
+		elseif ($data[buildings_id] == 51)
 		{
 			$build1 = $this->getbuildbyid(51);
 			$build2 = $this->getbuildbyid(81);
 			if ($research = $this->getuserresearch(114,$this->user) == 0)
 			{
-				$return['msg'] = "Modulation noch nicht erforscht!";
+				$return[msg] = "Modulation noch nicht erforscht!";
 				return $return;
 			}
-			if ($this->cenergie - $build2['eps_cost'] < 0)
+			if ($this->cenergie - $build2[eps_cost] < 0)
 			{
-				$return['msg'] = "Es wird ".$build2['eps_cost']." Energie benï¿½tigt - Vorhanden ist aber nur ".$this->cenergie;
+				$return[msg] = "Es wird ".$build2[eps_cost]." Energie benötigt - Vorhanden ist aber nur ".$this->cenergie;
 				return $return;
 			}
 			$result = $this->mincost(81,$this->user,$colId);
-			if ($result['code'] == 0) return $result;
-			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2['eps_cost']." WHERE id='".$colId."' AND user_id=".$this->user);
+			if ($result[code] == 0) return $result;
+			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2[eps_cost]." WHERE id='".$colId."' AND user_id=".$this->user);
 			$this->deactivatebuilding($fieldId,$colId,$this->user);
-			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='81',integrity=".$build2['integrity'].",buildtime=".(time()+$build2['buildtime'])." WHERE field_id='".$data['field_id']."' AND colonies_id='".$colId."'");
-			$return['msg'] = "Der Bau des Gebï¿½udes ($return['msg']e].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time($return['msg']e]))." beendet sein";
+			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='81',integrity=".$build2[integrity].",buildtime=".(time()+$build2[buildtime])." WHERE field_id='".$data[field_id]."' AND colonies_id='".$colId."'");
+			$return[msg] = "Der Bau des Gebäudes (".$build2[name].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time()+$build2[buildtime]))." beendet sein";
 			return $return;
 		}
-		elseif ($data['buildings_id'] == 1)
+		elseif ($data[buildings_id] == 1)
 		{
 			if ($myUser->urasse == 1) $newbuild = 63;
 			if ($myUser->urasse == 2) $newbuild = 64;
@@ -1191,28 +1191,28 @@ class colony
 			$build2 = $this->getbuildbyid($newbuild);
 			if ($this->getuserresearch(81,$this->user) == 0)
 			{
-				$return['msg'] = "Dieses Gebï¿½ude muss erst erforscht werden";
+				$return[msg] = "Dieses Gebäude muss erst erforscht werden";
 				return $return;
 			}
 			if ($this->ccolonies_classes_id != 1)
 			{
-				$return['msg'] = "Dieses Gebï¿½ude ist auf diesem Planeten nicht baubar";
+				$return[msg] = "Dieses Gebäude ist auf diesem Planeten nicht baubar";
 				return $return;
 			}
-			if ($this->cenergie - $build2['eps_cost'] < 0)
+			if ($this->cenergie - $build2[eps_cost] < 0)
 			{
-				$return['msg'] = "Es wird ".$build2['eps_cost']." Energie benï¿½tigt - Vorhanden ist aber nur ".$this->cenergie;
-				$return['code'] = 0;
+				$return[msg] = "Es wird ".$build2[eps_cost]." Energie benötigt - Vorhanden ist aber nur ".$this->cenergie;
+				$return[code] = 0;
 				return $return;
 			}
 			$result = $this->mincost(63,$this->user,$colId);
-			if ($result['code'] == 0) return $result;
-			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2['eps_cost'].",bev_used=bev_used-".$build2['bev_use']." WHERE id='".$colId."' AND user_id=".$this->user);
-			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='".$newbuild."',integrity=".$build2['integrity'].",buildtime=".(time()+$build2['buildtime'])." WHERE field_id='".$data['field_id']."' AND colonies_id='".$colId."'");
-			$return['msg'] = "Upgrade auf ".$build2['name']." erfolgreich";
+			if ($result[code] == 0) return $result;
+			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2[eps_cost].",bev_used=bev_used-".$build2[bev_use]." WHERE id='".$colId."' AND user_id=".$this->user);
+			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='".$newbuild."',integrity=".$build2[integrity].",buildtime=".(time()+$build2[buildtime])." WHERE field_id='".$data[field_id]."' AND colonies_id='".$colId."'");
+			$return[msg] = "Upgrade auf ".$build2[name]." erfolgreich";
 			return $return;
 		}
-		elseif ($data['buildings_id'] == 107)
+		elseif ($data[buildings_id] == 107)
 		{
 			if ($myUser->urasse == 1) $newbuild = 108;
 			if ($myUser->urasse == 2) $newbuild = 109;
@@ -1223,23 +1223,23 @@ class colony
 			$build2 = $this->getbuildbyid($newbuild);
 			if ($this->getuserresearch(161,$this->user) == 0)
 			{
-				$return['msg'] = "Dieses Gebï¿½ude muss erst erforscht werden";
+				$return[msg] = "Dieses Gebäude muss erst erforscht werden";
 				return $return;
 			}
-			if ($this->cenergie - $build2['eps_cost'] < 0)
+			if ($this->cenergie - $build2[eps_cost] < 0)
 			{
-				$return['msg'] = "Es wird ".$build2['eps_cost']." Energie benï¿½tigt - Vorhanden ist aber nur ".$this->cenergie;
-				$return['code'] = 0;
+				$return[msg] = "Es wird ".$build2[eps_cost]." Energie benötigt - Vorhanden ist aber nur ".$this->cenergie;
+				$return[code] = 0;
 				return $return;
 			}
 			$result = $this->mincost(108,$this->user,$colId);
-			if ($result['code'] == 0) return $result;
-			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2['eps_cost']." WHERE id='".$colId."' ANd user_id=".$this->user);
-			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='".$newbuild."',integrity=".$build2['integrity'].",buildtime=".(time()+$build2['buildtime'])." WHERE field_id='".$data['field_id']."' AND colonies_id='".$colId."'");
-			$return['msg'] = "Der Bau des Gebï¿½udes ($return['msg']e].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time($return['msg']e]))." beendet sein";
+			if ($result[code] == 0) return $result;
+			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2[eps_cost]." WHERE id='".$colId."' ANd user_id=".$this->user);
+			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='".$newbuild."',integrity=".$build2[integrity].",buildtime=".(time()+$build2[buildtime])." WHERE field_id='".$data[field_id]."' AND colonies_id='".$colId."'");
+			$return[msg] = "Der Bau des Gebäudes (".$build2[name].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time()+$build2[buildtime]))." beendet sein";
 			return $return;
 		}
-		elseif ($data['buildings_id'] == 114)
+		elseif ($data[buildings_id] == 114)
 		{
 			if ($myUser->urasse == 1) $newbuild = 115;
 			if ($myUser->urasse == 2) $newbuild = 116;
@@ -1250,23 +1250,23 @@ class colony
 			$build2 = $this->getbuildbyid($newbuild);
 			if ($this->getuserresearch(162,$this->user) == 0)
 			{
-				$return['msg'] = "Dieses Gebï¿½ude muss erst erforscht werden";
+				$return[msg] = "Dieses Gebäude muss erst erforscht werden";
 				return $return;
 			}
-			if ($this->cenergie - $build2['eps_cost'] < 0)
+			if ($this->cenergie - $build2[eps_cost] < 0)
 			{
-				$return['msg'] = "Es wird ".$build2['eps_cost']." Energie benï¿½tigt - Vorhanden ist aber nur ".$this->cenergie;
-				$return['code'] = 0;
+				$return[msg] = "Es wird ".$build2[eps_cost]." Energie benötigt - Vorhanden ist aber nur ".$this->cenergie;
+				$return[code] = 0;
 				return $return;
 			}
 			$result = $this->mincost(115,$this->user,$colId);
-			if ($result['code'] == 0) return $result;
-			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2['eps_cost']." WHERE id='".$colId."' ANd user_id=".$this->user);
-			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='".$newbuild."',integrity=".$build2['integrity'].",buildtime=".(time()+$build2['buildtime'])." WHERE field_id='".$data['field_id']."' AND colonies_id='".$colId."'");
-			$return['msg'] = "Der Bau des Gebï¿½udes ($return['msg']e].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time($return['msg']e]))." beendet sein";
+			if ($result[code] == 0) return $result;
+			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2[eps_cost]." WHERE id='".$colId."' ANd user_id=".$this->user);
+			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='".$newbuild."',integrity=".$build2[integrity].",buildtime=".(time()+$build2[buildtime])." WHERE field_id='".$data[field_id]."' AND colonies_id='".$colId."'");
+			$return[msg] = "Der Bau des Gebäudes (".$build2[name].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time()+$build2[buildtime]))." beendet sein";
 			return $return;
 		}
-		elseif ($data['buildings_id'] == 121)
+		elseif ($data[buildings_id] == 121)
 		{
 			if ($myUser->urasse == 1) $newbuild = 122;
 			if ($myUser->urasse == 2) $newbuild = 123;
@@ -1277,23 +1277,23 @@ class colony
 			$build2 = $this->getbuildbyid($newbuild);
 			if ($this->getuserresearch(163,$this->user) == 0)
 			{
-				$return['msg'] = "Dieses Gebï¿½ude muss erst erforscht werden";
+				$return[msg] = "Dieses Gebäude muss erst erforscht werden";
 				return $return;
 			}
-			if ($this->cenergie - $build2['eps_cost'] < 0)
+			if ($this->cenergie - $build2[eps_cost] < 0)
 			{
-				$return['msg'] = "Es wird ".$build2['eps_cost']." Energie benï¿½tigt - Vorhanden ist aber nur ".$this->cenergie;
-				$return['code'] = 0;
+				$return[msg] = "Es wird ".$build2[eps_cost]." Energie benötigt - Vorhanden ist aber nur ".$this->cenergie;
+				$return[code] = 0;
 				return $return;
 			}
 			$result = $this->mincost(122,$this->user,$colId);
-			if ($result['code'] == 0) return $result;
-			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2['eps_cost']." WHERE id='".$colId."' ANd user_id=".$this->user);
-			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='".$newbuild."',integrity=".$build2['integrity'].",buildtime=".(time()+$build2['buildtime'])." WHERE field_id='".$data['field_id']."' AND colonies_id='".$colId."'");
-			$return['msg'] = "Der Bau des Gebï¿½udes ($return['msg']e].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time($return['msg']e]))." beendet sein";
+			if ($result[code] == 0) return $result;
+			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2[eps_cost]." WHERE id='".$colId."' ANd user_id=".$this->user);
+			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='".$newbuild."',integrity=".$build2[integrity].",buildtime=".(time()+$build2[buildtime])." WHERE field_id='".$data[field_id]."' AND colonies_id='".$colId."'");
+			$return[msg] = "Der Bau des Gebäudes (".$build2[name].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time()+$build2[buildtime]))." beendet sein";
 			return $return;
 		}
-		elseif ($data['buildings_id'] == 128)
+		elseif ($data[buildings_id] == 128)
 		{
 			if ($myUser->urasse == 1) $newbuild = 129;
 			if ($myUser->urasse == 2) $newbuild = 130;
@@ -1304,20 +1304,20 @@ class colony
 			$build2 = $this->getbuildbyid($newbuild);
 			if ($this->getuserresearch(164,$this->user) == 0)
 			{
-				$return['msg'] = "Dieses Gebï¿½ude muss erst erforscht werden";
+				$return[msg] = "Dieses Gebäude muss erst erforscht werden";
 				return $return;
 			}
-			if ($this->cenergie - $build2['eps_cost'] < 0)
+			if ($this->cenergie - $build2[eps_cost] < 0)
 			{
-				$return['msg'] = "Es wird ".$build2['eps_cost']." Energie benï¿½tigt - Vorhanden ist aber nur ".$this->cenergie;
-				$return['code'] = 0;
+				$return[msg] = "Es wird ".$build2[eps_cost]." Energie benötigt - Vorhanden ist aber nur ".$this->cenergie;
+				$return[code] = 0;
 				return $return;
 			}
 			$result = $this->mincost(129,$this->user,$colId);
-			if ($result['code'] == 0) return $result;
-			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2['eps_cost']." WHERE id='".$colId."' ANd user_id=".$this->user);
-			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='".$newbuild."',integrity=".$build2['integrity'].",buildtime=".(time()+$build2['buildtime'])." WHERE field_id='".$data['field_id']."' AND colonies_id='".$colId."'");
-			$return['msg'] = "Der Bau des Gebï¿½udes ($return['msg']e].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time($return['msg']e]))." beendet sein";
+			if ($result[code] == 0) return $result;
+			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2[eps_cost]." WHERE id='".$colId."' ANd user_id=".$this->user);
+			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='".$newbuild."',integrity=".$build2[integrity].",buildtime=".(time()+$build2[buildtime])." WHERE field_id='".$data[field_id]."' AND colonies_id='".$colId."'");
+			$return[msg] = "Der Bau des Gebäudes (".$build2[name].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time()+$build2[buildtime]))." beendet sein";
 			return $return;
 		}
 	}
@@ -1327,12 +1327,12 @@ class colony
 		if ($this->cshow == 0) return 0;
 		$data = $this->getorbitfielddatabyid($fieldId,$colId);
 		if ($data == 0) return 0;
-		if ($data['buildtime'] != 0)
+		if ($data[buildtime] != 0)
 		{
-			$return['msg'] = "Das Gebï¿½ude wurde noch nicht fertiggestellt";
+			$return[msg] = "Das Gebäude wurde noch nicht fertiggestellt";
 			return $return;
 		}
-		if ($data['buildings_id'] == 26)
+		if ($data[buildings_id] == 26)
 		{
 			$build1 = $this->getbuildbyid(26);
 			global $myUser;
@@ -1344,27 +1344,27 @@ class colony
 			$build2 = $this->getbuildbyid($building);
 			if ($this->getuserresearch(5,$this->user) != 1)
 			{
-				$return['msg'] = "Die erweiterte Werft wurde noch nicht erforscht";
+				$return[msg] = "Die erweiterte Werft wurde noch nicht erforscht";
 				return $return;
 			}
-			if ($data['buildings_id'] != 26)
+			if ($data[buildings_id] != 26)
 			{
-				$return['msg'] = "Es kann nur eine Werft zu einer erweiterten Werft upgegradet werden";
-				$return['code'] = -1;
+				$return[msg] = "Es kann nur eine Werft zu einer erweiterten Werft upgegradet werden";
+				$return[code] = -1;
 				return $return;
 			}
-			if ($this->cenergie - $build2['eps_cost'] < 0)
+			if ($this->cenergie - $build2[eps_cost] < 0)
 			{
-				$return['msg'] = "Es wird ".$build2['eps_cost']." Energie benï¿½tigt - Vorhanden ist aber nur ".$this->cenergie;
-				$return['code'] = 0;
+				$return[msg] = "Es wird ".$build2[eps_cost]." Energie benötigt - Vorhanden ist aber nur ".$this->cenergie;
+				$return[code] = 0;
 				return $return;
 			}
 			$result = $this->mincost($building,$this->user,$colId);
-			if ($result['code'] == 0) return $result;
-			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2['eps_cost']." WHERE id='".$colId."' ANd user_id=".$this->user);
-			$this->db->query("UPDATE stu_colonies_orbit SET buildings_id='".$building."',integrity=".$build2['integrity'].",buildtime=".(time()+$build2['buildtime'])." WHERE field_id='".$data['field_id']."' AND colonies_id='".$colId."'");
+			if ($result[code] == 0) return $result;
+			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2[eps_cost]." WHERE id='".$colId."' ANd user_id=".$this->user);
+			$this->db->query("UPDATE stu_colonies_orbit SET buildings_id='".$building."',integrity=".$build2[integrity].",buildtime=".(time()+$build2[buildtime])." WHERE field_id='".$data[field_id]."' AND colonies_id='".$colId."'");
 		}
-		$return['msg'] = "Der Bau des Gebï¿½udes ($return['msg']e].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time($return['msg']e]))." beendet sein";
+		$return[msg] = "Der Bau des Gebäudes (".$build2[name].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time()+$build2[buildtime]))." beendet sein";
 		return $return;
 	}
 	
@@ -1373,34 +1373,34 @@ class colony
 		if ($this->cshow == 0) return 0;
 		$data = $this->getgroundfielddatabyid($fieldId,$colId);
 		if ($data == 0) return 0;
-		if ($data['buildtime'] != 0)
+		if ($data[buildtime] != 0)
 		{
-			$return['msg'] = "Gebï¿½ude noch nicht fertiggestellt!";
+			$return[msg] = "Gebäude noch nicht fertiggestellt!";
 			return $return;
 		}
-		if ($data['buildings_id'] == 36)
+		if ($data[buildings_id] == 36)
 		{
 			$build1 = $this->getbuildbyid(36);
 			$building = 78;
 			$build2 = $this->getbuildbyid($building);
 			if ($this->getuserresearch(88,$this->user) != 1)
 			{
-				$return['msg'] = "Der Doppelkonverter wurde noch nicht erforscht";
+				$return[msg] = "Der Doppelkonverter wurde noch nicht erforscht";
 				return $return;
 			}
 			$coldata = $this->getcolonybyid($colId);
-			if ($this->cenergie - $build2['eps_cost'] < 0)
+			if ($this->cenergie - $build2[eps_cost] < 0)
 			{
-				$return['msg'] = "Es ist nicht genï¿½gend Energie vorhanden";
-				$return['code'] = 0;
+				$return[msg] = "Es ist nicht genügend Energie vorhanden";
+				$return[code] = 0;
 				return $return;
 			}
 			$result = $this->mincost($building,$this->user,$colId);
-			if ($result['code'] == 0) return $result;
+			if ($result[code] == 0) return $result;
 			$this->deactivategroundbuilding($fieldId,$colId,$this->user);
-			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2['eps_cost']." WHERE id='".$colId."' ANd user_id=".$this->user);
-			$this->db->query("UPDATE stu_colonies_underground SET buildings_id='".$building."',integrity=".$build2['integrity'].",buildtime=".(time()+$build2['buildtime'])." WHERE field_id='".$data['field_id']."' AND colonies_id='".$colId."'");
-			$return['msg'] = "Der Bau des Gebï¿½udes ($return['msg']e].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time($return['msg']e]))." beendet sein";
+			$this->db->query("UPDATE stu_colonies SET energie=energie-".$build2[eps_cost]." WHERE id='".$colId."' ANd user_id=".$this->user);
+			$this->db->query("UPDATE stu_colonies_underground SET buildings_id='".$building."',integrity=".$build2[integrity].",buildtime=".(time()+$build2[buildtime])." WHERE field_id='".$data[field_id]."' AND colonies_id='".$colId."'");
+			$return[msg] = "Der Bau des Gebäudes (".$build2[name].") auf Feld ".($fieldId+1)." wird am ".date("d.m.Y H:i",(time()+$build2[buildtime]))." beendet sein";
 			return $return;
 		}
 	}
@@ -1418,74 +1418,74 @@ class colony
 		$field = $this->getorbitfielddatabyid($fieldId,$colId);
 		if ($field == 0)
 		{
-			$return['msg'] = "Dieses Feld kann nicht bebaut werden";
+			$return[msg] = "Dieses Feld kann nicht bebaut werden";
 			return $return;
 		}
 		$building = $this->getbuildbyid($buildingId);
-		if ($field['buildings_id'] > 0)
+		if ($field[buildings_id] > 0)
 		{
-			$return['msg'] = "Dieses Feld ist bereits bebaut";
+			$return[msg] = "Dieses Feld ist bereits bebaut";
 			return $return;
 		}
-		if ($this->db->query("SELECT id FROM stu_field_build WHERE type='".$field['type']."' AND buildings_id='".$buildingId."'",1) == 0) return 0;
+		if ($this->db->query("SELECT id FROM stu_field_build WHERE type='".$field[type]."' AND buildings_id='".$buildingId."'",1) == 0) return 0;
 		if ($this->db->query("SELECT id FROM stu_colonies_fields WHERE (buildings_id=21 OR buildings_id=168 OR buildings_id=192) AND colonies_id=".$colId." AND aktiv=1",1) == 0)
 		{
-			$return['msg'] = "Zum Orbitbau wird ein aktivierter Raumbahnhof benï¿½tigt";
+			$return[msg] = "Zum Orbitbau wird ein aktivierter Raumbahnhof benötigt";
 			return $return;
 		}
 		if ($buildingId == 26 && $this->db->query("SELECT id FROM stu_colonies_orbit WHERE ((buildings_id>25 AND buildings_id<31) OR  buildings_id=135) AND colonies_id=".$colId,1) > 0)
 		{
-			$return['msg'] = "Es ist bereits eine Werft vorhanden";
+			$return[msg] = "Es ist bereits eine Werft vorhanden";
 			return $return;
 		}
 		if ($buildingId == 47 && $this->db->query("SELECT id FROM stu_colonies_orbit WHERE buildings_id=47 AND colonies_id=".$colId,1) > 0)
 		{
-			$return['msg'] = "Es ist bereits eine Wetterkontrollstation vorhanden";
+			$return[msg] = "Es ist bereits eine Wetterkontrollstation vorhanden";
 			return $return;
 		}
 		if ($buildingId == 84 && $this->db->query("SELECT id FROM stu_colonies_orbit WHERE buildings_id=84 AND colonies_id=".$colId,1) > 0)
 		{
-			$return['msg'] = "Es ist bereits ein Sensornetz vorhanden";
+			$return[msg] = "Es ist bereits ein Sensornetz vorhanden";
 			return $return;
 		}
 		if ($buildingId == 102 && $this->db->query("SELECT id FROM stu_colonies_orbit WHERE buildings_id=102 AND colonies_id=".$colId,1) > 0)
 		{
-			$return['msg'] = "Es ist bereits ein Horchposten vorhanden";
+			$return[msg] = "Es ist bereits ein Horchposten vorhanden";
 			return $return;
 		}
 		if ($buildingId == 156 && $this->db->query("SELECT COUNT(id) FROM stu_colonies_orbit WHERE buildings_id=156 AND colonies_id=".$colId,1) == 3)
 		{
-			$return['msg'] = "Es kï¿½nnen maximal 3 Materie-Extraktoren gebaut werden";
+			$return[msg] = "Es können maximal 3 Materie-Extraktoren gebaut werden";
 			return $return;
 		}
-		if ($building['id'] == 87 && $this->db->query("SELECT COUNT(a.id) from stu_colonies_orbit as a LEFT JOIN stu_colonies as b ON a.colonies_id=b.id WHERE b.user_id=".$this->user." AND a.buildings_id=87",1) == 2)
+		if ($building[id] == 87 && $this->db->query("SELECT COUNT(a.id) from stu_colonies_orbit as a LEFT JOIN stu_colonies as b ON a.colonies_id=b.id WHERE b.user_id=".$this->user." AND a.buildings_id=87",1) == 2)
 		{
-			$return['msg'] = "Es kï¿½nnen maximal 2 Genesis-Forschungsstationen gebaut werden";
+			$return[msg] = "Es können maximal 2 Genesis-Forschungsstationen gebaut werden";
 			return $return;
 		}
-		if ($building['id'] == 165 && $this->db->query("SELECT COUNT(a.id) from stu_colonies_orbit as a LEFT JOIN stu_colonies as b ON a.colonies_id=b.id WHERE b.user_id=".$this->user." AND a.buildings_id=165",1) == 4)
+		if ($building[id] == 165 && $this->db->query("SELECT COUNT(a.id) from stu_colonies_orbit as a LEFT JOIN stu_colonies as b ON a.colonies_id=b.id WHERE b.user_id=".$this->user." AND a.buildings_id=165",1) == 4)
 		{
-			$return['msg'] = "Es kï¿½nnen maximal 4 Verarbeitungsstationen gebaut werden";
+			$return[msg] = "Es können maximal 4 Verarbeitungsstationen gebaut werden";
 			return $return;
 		}
-		if ($building['research_id'] > 0 && $this->getuserresearch($building['research_id'],$this->user) == 0)
+		if ($building[research_id] > 0 && $this->getuserresearch($building[research_id],$this->user) == 0)
 		{
-			$return['msg'] = "Dieses Gebï¿½ude wurde noch nicht erforscht";
+			$return[msg] = "Dieses Gebäude wurde noch nicht erforscht";
 			return $return;
 		}
-		if ($this->cenergie - $building['eps_cost'] < 0)
+		if ($this->cenergie - $building[eps_cost] < 0)
 		{
-			$return['msg'] = "Zum Bau werden ".$building['eps_cost']." Energie benï¿½tigt - Vorhanden ist aber nur ".$this->cenergie;
+			$return[msg] = "Zum Bau werden ".$building[eps_cost]." Energie benötigt - Vorhanden ist aber nur ".$this->cenergie;
 			return $return;
 		}
 		$cost = $this->mincost($buildingId,$this->user,$colId);
-		if ($cost['code'] == 0) return $cost;
-		$this->db->query("UPDATE stu_colonies_orbit SET buildings_id='".$buildingId."',integrity='".$building['integrity']."',buildtime='".(time()+$building['buildtime'])."' WHERE field_id='".$fieldId."' AND colonies_id='".$colId."'");
-		$this->db->query("UPDATE stu_colonies SET energie=energie-".$building['eps_cost']." WHERE id='".$colId."'");
-		if ($building['eps'] > 0) $this->db->query("UPDATE stu_colonies SET max_energie=max_energie+".$building['eps']." WHERE id='".$colId."' AND user_id=".$this->user);
-		if ($building['lager'] > 0) $this->db->query("UPDATE stu_colonies SET max_storage=max_storage+".$building['lager']." WHERE id='".$colId."' AND user_id=".$this->user);
-		$return['msg'] = "Der Bau des Gebï¿½udes ($return['msg']e].") auf Feld "$return['msg']d]+1)." wird am ".date("d.m.Y H:i",(time($return['msg']e]))." beendet sein";
-		$return['code'] = 1;
+		if ($cost[code] == 0) return $cost;
+		$this->db->query("UPDATE stu_colonies_orbit SET buildings_id='".$buildingId."',integrity='".$building[integrity]."',buildtime='".(time()+$building[buildtime])."' WHERE field_id='".$fieldId."' AND colonies_id='".$colId."'");
+		$this->db->query("UPDATE stu_colonies SET energie=energie-".$building[eps_cost]." WHERE id='".$colId."'");
+		if ($building[eps] > 0) $this->db->query("UPDATE stu_colonies SET max_energie=max_energie+".$building[eps]." WHERE id='".$colId."' AND user_id=".$this->user);
+		if ($building[lager] > 0) $this->db->query("UPDATE stu_colonies SET max_storage=max_storage+".$building[lager]." WHERE id='".$colId."' AND user_id=".$this->user);
+		$return[msg] = "Der Bau des Gebäudes (".$building[name].") auf Feld ".($field[field_id]+1)." wird am ".date("d.m.Y H:i",(time()+$building[buildtime]))." beendet sein";
+		$return[code] = 1;
 		return $return;
 	}
 
@@ -1497,56 +1497,56 @@ class colony
 		$field = $this->getorbitfielddatabyid($fieldId,$colId);
 		if ($data == 0) return 0;
 		if ($field == 0) return 0;
-		if ($data['user_id'] != $userId) return 0;
-		if ($field['buildings_id'] == 0) return 0;
-		if ($field['aktiv'] == 1)
+		if ($data[user_id] != $userId) return 0;
+		if ($field[buildings_id] == 0) return 0;
+		if ($field[aktiv] == 1)
 		{
-			$return['msg'] = "Das Gebï¿½ude ist bereits aktiviert";
+			$return[msg] = "Das Gebäude ist bereits aktiviert";
 			return $return;
 		}
 		if ($this->db->query("SELECT id FROM stu_colonies_fields WHERE (buildings_id=21 OR buildings_id=168 OR buildings_id=192) AND colonies_id=".$colId." AND aktiv=1",1) == 0)
 		{
-			$return['msg'] = "Zum Aktivieren wird ein aktivierter Raumbahnhof benï¿½tigt";
+			$return[msg] = "Zum Aktivieren wird ein aktivierter Raumbahnhof benötigt";
 			return $return;
 		}
-		if ($field['buildtime'] > 0)
+		if ($field[buildtime] > 0)
 		{
-			$return['msg'] = "Dieses Gebï¿½ude kann nicht aktiviert werden, da es sich noch in Bau befindet";
+			$return[msg] = "Dieses Gebäude kann nicht aktiviert werden, da es sich noch in Bau befindet";
 			return $return;
 		}
-		$build = $this->getbuildbyid($field['buildings_id']);
-		if (($build['id'] == 26) || ($build['id'] == 27) || ($build['id'] == 28) || ($build['id'] == 29) || ($build['id'] == 30) || ($build['id'] == 53) || ($build['id'] == 52) || ($build['id'] == 84) || ($build['id'] == 102) || ($build['id'] == 135))
+		$build = $this->getbuildbyid($field[buildings_id]);
+		if (($build[id] == 26) || ($build[id] == 27) || ($build[id] == 28) || ($build[id] == 29) || ($build[id] == 30) || ($build[id] == 53) || ($build[id] == 52) || ($build[id] == 84) || ($build[id] == 102) || ($build[id] == 135))
 		{
-			$return['msg'] = "Das Gebï¿½ude besitzt keine Aktivierungsfunktion";
+			$return[msg] = "Das Gebäude besitzt keine Aktivierungsfunktion";
 			return $return;
 		}
-		if ($data['bev_free'] < $build['bev_use'])
+		if ($data[bev_free] < $build[bev_use])
 		{
-			$return['msg'] = "Es werden ".$build['bev_use']." freie Arbeiter benï¿½tigt";
+			$return[msg] = "Es werden ".$build[bev_use]." freie Arbeiter benötigt";
 			return $return;
 		}
 		global $myUser;
-		if ($myUser->getfield("level",$userId) < $build['level'])
+		if ($myUser->getfield("level",$userId) < $build[level])
 		{
-			$return['msg'] = "Zum aktivieren des Gebï¿½udes wird Level $return['msg']l]." benï¿½tigt";
+			$return[msg] = "Zum aktivieren des Gebäudes wird Level ".$build[level]." benötigt";
 			return $return;
 		}
-		if ($build['research_id'] > 0 && $this->getuserresearch($build['research_id'],$userId) == 0)
+		if ($build[research_id] > 0 && $this->getuserresearch($build[research_id],$userId) == 0)
 		{
-			$return['msg'] = "Du kannst dieses Gebï¿½ude nicht aktivieren, da Du es noch nicht erforscht hast";
+			$return[msg] = "Du kannst dieses Gebäude nicht aktivieren, da Du es noch nicht erforscht hast";
 			return $return;
 		}
-		$this->db->query("UPDATE stu_colonies SET bev_free=bev_free-".$build['bev_use'].",bev_used=bev_used+".$build['bev_use'].",max_bev=max_bev+".$build['bev_pro']." WHERE id='".$data['id']."'");
-		$this->db->query("UPDATE stu_colonies_orbit SET aktiv=1 WHERE colonies_id='".$data['id']."' AND field_id='".$fieldId."'");
-		$return['msg'] = $build['name']." auf Feld ".($field['field_id']+1)." aktiviert";
-		$return['code'] = 1;
+		$this->db->query("UPDATE stu_colonies SET bev_free=bev_free-".$build[bev_use].",bev_used=bev_used+".$build[bev_use].",max_bev=max_bev+".$build[bev_pro]." WHERE id='".$data[id]."'");
+		$this->db->query("UPDATE stu_colonies_orbit SET aktiv=1 WHERE colonies_id='".$data[id]."' AND field_id='".$fieldId."'");
+		$return[msg] = $build[name]." auf Feld ".($field[field_id]+1)." aktiviert";
+		$return[code] = 1;
 		return $return;
 	}
 	
 	function getorbitfieldbyid($fieldId,$colId)
 	{
-		$field['data'] = $this->getorbitfielddatabyid($fieldId,$colId);
-		$field['build'] = $this->getbuildbyid($field['data']['buildings_id']);
+		$field[data] = $this->getorbitfielddatabyid($fieldId,$colId);
+		$field[build] = $this->getbuildbyid($field[data][buildings_id]);
 		return $field;
 	}
 
@@ -1555,17 +1555,17 @@ class colony
 		$data = $this->getcolonybyid($colId);
 		if ($data == 0) return 0;
 		$field = $this->getorbitfielddatabyid($fieldId,$colId);
-		if ($field['aktiv'] == 0) return 0;
-		$build = $this->getbuildbyid($field['buildings_id']);
-		if (($build['bev_pro'] > 0) && ($data['bev_used'] > $data['max_bev']-$build['bev_pro']))
+		if ($field[aktiv] == 0) return 0;
+		$build = $this->getbuildbyid($field[buildings_id]);
+		if (($build[bev_pro] > 0) && ($data[bev_used] > $data[max_bev]-$build[bev_pro]))
 		{
-			$return['msg'] = "Das Gebï¿½ude konnte nicht deaktiviert werden, da sonst einige Arbeiter obdachlos wï¿½ren";
+			$return[msg] = "Das Gebäude konnte nicht deaktiviert werden, da sonst einige Arbeiter obdachlos wären";
 			return $return;
 		}
-		$this->db->query("UPDATE stu_colonies_orbit SET aktiv=0 WHERE colonies_id='".$data['id']."' AND field_id='".$fieldId."' AND aktiv=1");
-		$this->db->query("UPDATE stu_colonies SET bev_free=bev_free+".$build['bev_use'].",bev_used=bev_used-".$build['bev_use'].",max_bev=max_bev-".$build['bev_pro']." WHERE id=".$data['id']);
-		$return['msg'] = $build['name']." auf Feld ".($field['field_id']+1)." deaktiviert";
-		$return['code'] = 1;
+		$this->db->query("UPDATE stu_colonies_orbit SET aktiv=0 WHERE colonies_id='".$data[id]."' AND field_id='".$fieldId."' AND aktiv=1");
+		$this->db->query("UPDATE stu_colonies SET bev_free=bev_free+".$build[bev_use].",bev_used=bev_used-".$build[bev_use].",max_bev=max_bev-".$build[bev_pro]." WHERE id=".$data[id]);
+		$return[msg] = $build[name]." auf Feld ".($field[field_id]+1)." deaktiviert";
+		$return[code] = 1;
 		return $return;
 	}
 
@@ -1574,17 +1574,17 @@ class colony
 		if ($this->cshow == 0) return 0;
 		$field = $this->getorbitfielddatabyid($fieldId,$colId);
 		if ($field == 0) return 0;
-		if ($field['aktiv'] == 1)
+		if ($field[aktiv] == 1)
 		{
 			$test = $this->deactivateorbitbuilding($fieldId,$colId,$userId);
-			if ($test['code'] != 1) return $test;
+			if ($test[code] != 1) return $test;
 		}
-		$build = $this->getbuildbyid($field['buildings_id']);
-		//$this->returncost($build['id'],$userId,$colId);
+		$build = $this->getbuildbyid($field[buildings_id]);
+		//$this->returncost($build[id],$userId,$colId);
 		$this->db->query("UPDATE stu_colonies_orbit SET buildings_id='0',integrity='0',name='',buildtime='' WHERE colonies_id='".$colId."' AND field_id='".$fieldId."'");
-		$build = $this->getbuildbyid($field['buildings_id']);
-		if (($build['id'] > 25 && $build['id'] < 32) || $build['id'] == 135) $this->db->query("DELETE FROM stu_ships_buildprogress WHERE colonies_id=".$colId);
-		$return['msg'] = $build['name']." auf Feld ".($field['field_id']+1)." wurde demontiert";
+		$build = $this->getbuildbyid($field[buildings_id]);
+		if (($build[id] > 25 && $build[id] < 32) || $build[id] == 135) $this->db->query("DELETE FROM stu_ships_buildprogress WHERE colonies_id=".$colId);
+		$return[msg] = $build[name]." auf Feld ".($field[field_id]+1)." wurde demontiert";
 		return $return;
 	}
 
@@ -1597,65 +1597,65 @@ class colony
 		if ($this->cshow == 0) return 0;
 		$field = $this->getgroundfielddatabyid($fieldId,$this->cid);
 		if ($field == 0) return 0;
-		if ($field['buildings_id'] > 0) return 0;
-		if ($this->db->query("SELECT type FROM stu_field_build WHERE type='".$field['type']."' AND buildings_id='".$buildingId."'",1) == 0) return 0;
+		if ($field[buildings_id] > 0) return 0;
+		if ($this->db->query("SELECT type FROM stu_field_build WHERE type='".$field[type]."' AND buildings_id='".$buildingId."'",1) == 0) return 0;
 		if ($this->db->query("SELECT field_id FROM stu_colonies_fields WHERE (buildings_id=38 OR buildings_id=195) AND colonies_id=".$this->cid." AND aktiv=1",1) == 0)
 		{
-			$return['msg'] = "Zum Bau im Untergrund wird ein aktivierter Untergrundlift benï¿½tigt";
+			$return[msg] = "Zum Bau im Untergrund wird ein aktivierter Untergrundlift benötigt";
 			return $return;
 		}
 		if ($buildingId == 39 && $this->db->query("SELECT field_id FROM stu_colonies_underground WHERE buildings_id=39 AND colonies_id=".$this->cid,1) != 0)
 		{
-			$return['msg'] = "Es ist bereits ein Untergrundlift vorhanden";
+			$return[msg] = "Es ist bereits ein Untergrundlift vorhanden";
 			return $return;
 		}
 		$building = $this->getbuildbyid($buildingId);
-		if ($building['blimit'] > 0)
+		if ($building[blimit] > 0)
 		{
-			if ($this->db->query("SELECT COUNT(id) FROM stu_colonies_underground WHERE buildings_id=".$building['id']." AND colonies_id=".$this->cid,1) >= $building['blimit'])
+			if ($this->db->query("SELECT COUNT(id) FROM stu_colonies_underground WHERE buildings_id=".$building[id]." AND colonies_id=".$this->cid,1) >= $building[blimit])
 			{
-				$return['msg'] = $building['name']." kann maximal ".$building['blimit']." mal pro Kolonie gebaut werden";
+				$return[msg] = $building[name]." kann maximal ".$building[blimit]." mal pro Kolonie gebaut werden";
 				return $return;
 			}
 		}
-		if ($this->cenergie - $building['eps_cost'] < 0)
+		if ($this->cenergie - $building[eps_cost] < 0)
 		{
-			$return['msg'] = "Zum Bau werden ".$building['eps_cost']." Energie benï¿½tigt - Vorhanden ist aber nur ".$this->cenergie;
-			$return['code'] = 0;
+			$return[msg] = "Zum Bau werden ".$building[eps_cost]." Energie benötigt - Vorhanden ist aber nur ".$this->cenergie;
+			$return[code] = 0;
 			return $return;
 		}
-		if (($building['id'] == 7) || ($building['id'] == 17) || ($building['id'] == 33) || ($building['id'] == 34))
+		if (($building[id] == 7) || ($building[id] == 17) || ($building[id] == 33) || ($building[id] == 34))
 		{
 			$class = $this->getclassbyid($this->ccolonies_classes_id);
-			$count = $this->db->query("SELECT COUNT(id) FROM stu_colonies_fields WHERE buildings_id=".$building['id']." AND colonies_id=".$this->cid,1);
-			$count += $this->db->query("SELECT COUNT(id) FROM stu_colonies_underground WHERE buildings_id=".$building['id']." AND colonies_id=".$this->cid,1);
-			if ($count >= $class["mine".$building['id']])
+			$count = $this->db->query("SELECT COUNT(id) FROM stu_colonies_fields WHERE buildings_id=".$building[id]." AND colonies_id=".$this->cid,1);
+			$count += $this->db->query("SELECT COUNT(id) FROM stu_colonies_underground WHERE buildings_id=".$building[id]." AND colonies_id=".$this->cid,1);
+			if ($count >= $class["mine".$building[id]])
 			{
-				if ($class["mine".$building['id']] == 0) $return['msg'] = $building['name']." ist auf diesem Planeten nicht baubar";
-				else $return['msg'] = "Es kï¿½nnen keine weiteren Gebï¿½ude von diesem Typ$return['msg']ame].") errichtet werden";
+				if ($class["mine".$building[id]] == 0) $return[msg] = $building[name]." ist auf diesem Planeten nicht baubar";
+				else $return[msg] = "Es können keine weiteren Gebäude von diesem Typ (".$building[name].") errichtet werden";
 				return $return;
 			}
 		}
-		if ($building['id'] == 82)
+		if ($building[id] == 82)
 		{
 			$count = $this->db->query("SELECT COUNT(id) FROM stu_colonies_fields WHERE buildings_id=82 AND colonies_id=".$this->cid,1);
 			$count += $this->db->query("SELECT COUNT(id) FROM stu_colonies_underground WHERE buildings_id=82 AND colonies_id=".$this->cid,1);
 			if ($count == 3)
 			{
-				$return['msg'] = "Es kï¿½nnen nur maximal 3 Schildbatterien gebaut werden";
+				$return[msg] = "Es können nur maximal 3 Schildbatterien gebaut werden";
 				return $return;
 			}
 		}
-		if ($building['research_id'] > 0 && $this->getuserresearch($building['research_id'],$this->user) == 0)
+		if ($building[research_id] > 0 && $this->getuserresearch($building[research_id],$this->user) == 0)
 		{
-			$return['msg'] = "Dieses Gebï¿½ude wurde noch nicht erforscht";
+			$return[msg] = "Dieses Gebäude wurde noch nicht erforscht";
 			return $return;
 		}
 		$cost = $this->mincost($buildingId,$this->user,$this->cid);
-		if ($cost['code'] == 0) return $cost;
-		$this->db->query("UPDATE stu_colonies_underground SET buildings_id='".$buildingId."',integrity='".$building['integrity']."',buildtime=".(time()+$building['buildtime'])." WHERE field_id='".$fieldId."' AND colonies_id=".$this->cid);
-		$this->db->query("UPDATE stu_colonies SET energie=energie-".$building['eps_cost'].",max_energie=max_energie+".$building['eps'].",max_storage=max_storage+".$building['lager'].",max_schilde=max_schilde+".$building['schilde']." WHERE id=".$this->cid);
-		$return['msg'] = "Der Bau des Gebï¿½udes ($return['msg']e].") auf Feld "$return['msg']d]+1)." wird am ".date("d.m.Y H:i",(time($return['msg']e]))." beendet sein";
+		if ($cost[code] == 0) return $cost;
+		$this->db->query("UPDATE stu_colonies_underground SET buildings_id='".$buildingId."',integrity='".$building[integrity]."',buildtime=".(time()+$building[buildtime])." WHERE field_id='".$fieldId."' AND colonies_id=".$this->cid);
+		$this->db->query("UPDATE stu_colonies SET energie=energie-".$building[eps_cost].",max_energie=max_energie+".$building[eps].",max_storage=max_storage+".$building[lager].",max_schilde=max_schilde+".$building[schilde]." WHERE id=".$this->cid);
+		$return[msg] = "Der Bau des Gebäudes (".$building[name].") auf Feld ".($field[field_id]+1)." wird am ".date("d.m.Y H:i",(time()+$building[buildtime]))." beendet sein";
 		return $return;
 	}
 
@@ -1667,61 +1667,61 @@ class colony
 		if ($data == 0) return 0;
 		$field = $this->getgroundfielddatabyid($fieldId,$colId);
 		if ($field == 0) return 0;
-		if ($field['buildings_id'] == 0) return 0;
-		if ($field['aktiv'] == 1)
+		if ($field[buildings_id] == 0) return 0;
+		if ($field[aktiv] == 1)
 		{
-			$return['msg'] = "Das Gebï¿½ude ist bereits aktiviert";
+			$return[msg] = "Das Gebäude ist bereits aktiviert";
 			return $return;
 		}
-		if ($field['buildtime'] > 0)
+		if ($field[buildtime] > 0)
 		{
-			$return['msg'] = "Dieses Gebï¿½ude kann nicht aktiviert werden, da es sich noch in Bau befindet";
+			$return[msg] = "Dieses Gebäude kann nicht aktiviert werden, da es sich noch in Bau befindet";
 			return $return;
 		}
-		$build = $this->getbuildbyid($field['buildings_id']);
-		if (($this->db->query("SELECT id FROM stu_colonies_fields WHERE (buildings_id=38 OR buildings_id=195) AND colonies_id=".$colId." AND aktiv=1",1) == 0) && ($build['id'] != 39))
+		$build = $this->getbuildbyid($field[buildings_id]);
+		if (($this->db->query("SELECT id FROM stu_colonies_fields WHERE (buildings_id=38 OR buildings_id=195) AND colonies_id=".$colId." AND aktiv=1",1) == 0) && ($build[id] != 39))
 		{
-			$return['msg'] = "Zum Aktivieren wird ein aktivierter Untergrundlift benï¿½tigt";
+			$return[msg] = "Zum Aktivieren wird ein aktivierter Untergrundlift benötigt";
 			return $return;
 		}
-		if (($build['id'] == 26) || ($build['id'] == 35) || ($build['id'] == 37) || ($build['id'] == 52) || ($build['lager']> 100) || ($build['id'] == 82))
+		if (($build[id] == 26) || ($build[id] == 35) || ($build[id] == 37) || ($build[id] == 52) || ($build[lager]> 100) || ($build[id] == 82))
 		{
-			$return['msg'] = "Das Gebï¿½ude besitzt keine Aktivierungsfunktion";
+			$return[msg] = "Das Gebäude besitzt keine Aktivierungsfunktion";
 			return $return;
 		}
-		if ($data['bev_free'] < $build['bev_use'])
+		if ($data[bev_free] < $build[bev_use])
 		{
-			$return['msg'] = "Zum Aktivieren des Gebï¿½udes werden $return['msg']e]." Arbeiter benï¿½tigt";
+			$return[msg] = "Zum Aktivieren des Gebäudes werden ".$build[bev_use]." Arbeiter benötigt";
 			return $return;
 		}
 		global $myUser;
-		if ($myUser->getfield("level",$userId) < $build['level'])
+		if ($myUser->getfield("level",$userId) < $build[level])
 		{
-			$return['msg'] = "Zum aktivieren des Gebï¿½udes wird Level $return['msg']l]." benï¿½tigt";
+			$return[msg] = "Zum aktivieren des Gebäudes wird Level ".$build[level]." benötigt";
 			return $return;
 		}
-		if ($build['research_id'] > 0 && $this->getuserresearch($build['research_id'],$userId) == 0)
+		if ($build[research_id] > 0 && $this->getuserresearch($build[research_id],$userId) == 0)
 		{
-			$return['msg'] = "Du kannst dieses Gebï¿½ude nicht aktivieren, da Du es noch nicht erforscht hast";
+			$return[msg] = "Du kannst dieses Gebäude nicht aktivieren, da Du es noch nicht erforscht hast";
 			return $return;
 		}
-		if ($build['id'] == 39) $act = $this->activateBuilding(31,$colId,$userId);
-		if ($build['id'] == 39 && $act['code'] != 1) return $act;
-		if ($build['bev_use'] <= $data['bev_free'])
+		if ($build[id] == 39) $act = $this->activateBuilding(31,$colId,$userId);
+		if ($build[id] == 39 && $act[code] != 1) return $act;
+		if ($build[bev_use] <= $data[bev_free])
 		{
-			if ($field['buildings_id'] != 4) $this->db->query("UPDATE stu_colonies_underground SET aktiv=1 WHERE colonies_id='".$data['id']."' AND field_id='".$fieldId."'");
-			$this->db->query("UPDATE stu_colonies SET bev_free=bev_free-".$build['bev_use'].",bev_used=bev_used+".$build['bev_use']." WHERE id=".$data['id']);
+			if ($field[buildings_id] != 4) $this->db->query("UPDATE stu_colonies_underground SET aktiv=1 WHERE colonies_id='".$data[id]."' AND field_id='".$fieldId."'");
+			$this->db->query("UPDATE stu_colonies SET bev_free=bev_free-".$build[bev_use].",bev_used=bev_used+".$build[bev_use]." WHERE id=".$data[id]);
 		}
-		if ($build['bev_pro'] > 0) $this->db->query("UPDATE stu_colonies SET max_bev=max_bev+".$build['bev_pro']." WHERE id=".$colId);
-		$return['msg'] = $build['name']." auf Feld ".($field['field_id']+1)." aktiviert";
-		$return['code'] = 1;
+		if ($build[bev_pro] > 0) $this->db->query("UPDATE stu_colonies SET max_bev=max_bev+".$build[bev_pro]." WHERE id=".$colId);
+		$return[msg] = $build[name]." auf Feld ".($field[field_id]+1)." aktiviert";
+		$return[code] = 1;
 		return $return;
 	}
 	
 	function getgroundfieldbyid($fieldId,$colId)
 	{
-		$field['data'] = $this->getgroundfielddatabyid($fieldId,$colId);
-		$field['build'] = $this->getbuildbyid($field['data']['buildings_id']);
+		$field[data] = $this->getgroundfielddatabyid($fieldId,$colId);
+		$field[build] = $this->getbuildbyid($field[data][buildings_id]);
 		return $field;
 	}
 	
@@ -1731,27 +1731,27 @@ class colony
 		if ($data == 0) return -1;
 		$field = $this->getgroundfielddatabyid($fieldId,$colId);
 		if ($field == 0) return 0;
-		if ($field['aktiv'] == 0) return 0;
-		$build = $this->getbuildbyid($field['buildings_id']);
-		if (($build['bev_pro'] > 0) && ($data['max_bev'] - $build['bev_pro'] < $data['bev_used']))
+		if ($field[aktiv] == 0) return 0;
+		$build = $this->getbuildbyid($field[buildings_id]);
+		if (($build[bev_pro] > 0) && ($data[max_bev] - $build[bev_pro] < $data[bev_used]))
 		{
-			$return['msg'] = "Das Gebï¿½ude konnte nicht deaktiviert werden da, sonst einige Arbeiter obdachlos wï¿½ren";
-			$return['code'] = 0;
+			$return[msg] = "Das Gebäude konnte nicht deaktiviert werden da, sonst einige Arbeiter obdachlos wären";
+			$return[code] = 0;
 			return $return;
 		}
-		$this->db->query("UPDATE stu_colonies_underground SET aktiv=0 WHERE colonies_id='".$data['id']."' AND field_id='".$fieldId."' AND aktiv=1");
-		$this->db->query("UPDATE stu_colonies SET bev_free=bev_free+".$build['bev_use'].",bev_used=bev_used-".$build['bev_use'].",max_bev=max_bev-".$build['bev_pro']." WHERE id=".$data['id']);
-		if ($build['id'] == 39)
+		$this->db->query("UPDATE stu_colonies_underground SET aktiv=0 WHERE colonies_id='".$data[id]."' AND field_id='".$fieldId."' AND aktiv=1");
+		$this->db->query("UPDATE stu_colonies SET bev_free=bev_free+".$build[bev_use].",bev_used=bev_used-".$build[bev_use].",max_bev=max_bev-".$build[bev_pro]." WHERE id=".$data[id]);
+		if ($build[id] == 39)
 		{
 			$grou = $this->db->query("SELECT SUM(a.bev_use) as usum,SUM(a.bev_pro) as besum FROM stu_buildings as a LEFT JOIN stu_colonies_underground as b ON a.id=b.buildings_id WHERE b.aktiv=1 AND colonies_id=".$colId,4);
-			if ($grou['usum'] != "") $this->db->query("UPDATE stu_colonies SET bev_used=bev_used-".$grou['usum'].",bev_free=bev_free+".$grou['usum'].",max_bev=max_bev-".$grou['besum']." WHERE id=".$colId);
+			if ($grou[usum] != "") $this->db->query("UPDATE stu_colonies SET bev_used=bev_used-".$grou[usum].",bev_free=bev_free+".$grou[usum].",max_bev=max_bev-".$grou[besum]." WHERE id=".$colId);
 			$this->db->query("UPDATE stu_colonies_underground SET aktiv=0 WHERE colonies_id=".$colId);
 			$liftbuild = $this->getbuildbyid(38);
-			$this->db->query("UPDATE stu_colonies SET bev_used=bev_used-".$liftbuild['bev_use'].",bev_free=bev_free+".$liftbuild['bev_use']." WHERE id=".$colId);
+			$this->db->query("UPDATE stu_colonies SET bev_used=bev_used-".$liftbuild[bev_use].",bev_free=bev_free+".$liftbuild[bev_use]." WHERE id=".$colId);
 			$this->db->query("UPDATE stu_colonies_fields SET aktiv=0 WHERE field_id=31 AND colonies_id=".$colId);
 		}
-		$return['msg'] = $build['name']." auf Feld ".($field['field_id']+1)." deaktiviert";
-		$return['code'] = 1;
+		$return[msg] = $build[name]." auf Feld ".($field[field_id]+1)." deaktiviert";
+		$return[code] = 1;
 		return $return;
 	}
 	
@@ -1762,29 +1762,29 @@ class colony
 		if ($field == 0) return 0;
 		if ($this->db->query("SELECT id FROM stu_colonies_fields WHERE buildings_id=38 AND colonies_id=".$this->cid." AND aktiv=1",1) == 0)
 		{
-			$return['msg'] = "Zum demontieren wird ein aktivierter Untergrundlift benï¿½tigt";
+			$return[msg] = "Zum demontieren wird ein aktivierter Untergrundlift benötigt";
 			return $return;
 		}
-		$build = $this->getbuildbyid($field['buildings_id']);
-		if ($field['aktiv'] == 1)
+		$build = $this->getbuildbyid($field[buildings_id]);
+		if ($field[aktiv] == 1)
 		{
 			$act = $this->deactivategroundbuilding($fieldId,$this->cid,$this->user);
-			if ($act['code'] != 1) return $act;
+			if ($act[code] != 1) return $act;
 		}
 		$this->db->query("UPDATE stu_colonies_underground SET buildings_id='0',integrity='0',name='',buildtime='' WHERE colonies_id='".$this->cid."' AND field_id='".$fieldId."'");
-		if ($build['id'] == 39)
+		if ($build[id] == 39)
 		{
 			$this->db->query("UPDATE stu_colonies SET max_storage=max_storage-'150' WHERE id=".$this->cid);
 			$this->deletebuilding(31,$this->cid,$this->user);
 		}
-		if ($build['lager'] > 0) $this->db->query("UPDATE stu_colonies SET max_storage=max_storage-".$build['lager']." WHERE id=".$this->cid);
-		if ($build['schilde'] > 0)
+		if ($build[lager] > 0) $this->db->query("UPDATE stu_colonies SET max_storage=max_storage-".$build[lager]." WHERE id=".$this->cid);
+		if ($build[schilde] > 0)
 		{
-			$this->db->query("UPDATE stu_colonies SET max_schilde=max_schilde-".$build['schilde']." WHERE id=".$this->cid);
-			if ($this->cschilde > $this->cmax_schilde-$build['schilde']) $this->db->query("UPDATE stu_colonies SET schilde=".($this->cmax_schilde-$build['schilde'])." WHERE id=".$this->cid);
+			$this->db->query("UPDATE stu_colonies SET max_schilde=max_schilde-".$build[schilde]." WHERE id=".$this->cid);
+			if ($this->cschilde > $this->cmax_schilde-$build[schilde]) $this->db->query("UPDATE stu_colonies SET schilde=".($this->cmax_schilde-$build[schilde])." WHERE id=".$this->cid);
 		}
-		//$this->returncost($build['id'],$this->user,$this->cid);
-		$return['msg'] = $build['name']." auf Feld ".($field['field_id']+1)." wurde demontiert";
+		//$this->returncost($build[id],$this->user,$this->cid);
+		$return[msg] = $build[name]." auf Feld ".($field[field_id]+1)." wurde demontiert";
 		return $return;
 	}
 	
@@ -1802,114 +1802,114 @@ class colony
 
 		if ($this->db->query("SELECT id FROM stu_ships_build WHERE user_id='".$this->user."' AND ships_rumps_id='".$classId."'",1) == 0)
 		{
-			$return['msg'] = "Du darfst diesen Schiffstyp nicht bauen";
+			$return[msg] = "Du darfst diesen Schiffstyp nicht bauen";
 			return $return;
 		}
 		if ($this->db->query("SELECT id FROM stu_colonies_fields WHERE (buildings_id=21 OR buildings_id=168) AND colonies_id=".$this->cid." AND aktiv=1",1) == 0)
 		{
-			$return['msg'] = "Zum Bau eines Schiffes wird ein aktivierter Raumbahnhof benï¿½tigt";
+			$return[msg] = "Zum Bau eines Schiffes wird ein aktivierter Raumbahnhof benötigt";
 			return $return;
 		}
 		global $myShip;
 		$class = $myShip->getclassbyid($classId);
-		if ($class['slots'] > 0)
+		if ($class[slots] > 0)
 		{
-			$return['msg'] = "Stationen kï¿½nnen nicht in Werften gebaut werden";
+			$return[msg] = "Stationen können nicht in Werften gebaut werden";
 			return $return;
 		}
-		if (($this->db->query("SELECT id FROM stu_colonies_orbit WHERE ((buildings_id > 25 AND buildings_id < 31) OR buildings_id = 135) AND colonies_id=".$this->cid." AND buildtime=0",1) == 0) && ($class['ewerft'] == 0))
+		if (($this->db->query("SELECT id FROM stu_colonies_orbit WHERE ((buildings_id > 25 AND buildings_id < 31) OR buildings_id = 135) AND colonies_id=".$this->cid." AND buildtime=0",1) == 0) && ($class[ewerft] == 0))
 		{
-			$return['msg'] = "Zum Bau dieses Schiffes wird eine Werft benï¿½tigt";
+			$return[msg] = "Zum Bau dieses Schiffes wird eine Werft benötigt";
 			return $return;
 		}
-		if (($this->db->query("SELECT id FROM stu_colonies_orbit WHERE ((buildings_id > 26 AND buildings_id < 31) OR buildings_id = 135) AND colonies_id=".$this->cid." AND buildtime=0",1) == 0) && ($class['ewerft'] == 1))
+		if (($this->db->query("SELECT id FROM stu_colonies_orbit WHERE ((buildings_id > 26 AND buildings_id < 31) OR buildings_id = 135) AND colonies_id=".$this->cid." AND buildtime=0",1) == 0) && ($class[ewerft] == 1))
 		{
-			$return['msg'] = "Zum Bau dieses Schiffes wird eine erweiterte Werft benï¿½tigt";
+			$return[msg] = "Zum Bau dieses Schiffes wird eine erweiterte Werft benötigt";
 			return $return;
 		}
 		if ($this->db->query("SELECT id FROM stu_ships_buildprogress WHERE colonies_id=".$this->cid,1) > 0)
 		{
-			$return['msg'] = "In dieser Werft wird bereits ein Schiff gebaut";
+			$return[msg] = "In dieser Werft wird bereits ein Schiff gebaut";
 			return $return;
 		}
 		$result = $this->checkModules($huellmod,$schildmod,$waffenmod,$epsmod,$computermod,$antriebmod,$sensormod,$reaktormod,$classId,$this->cid,$this->user);
-		if ($result['code'] == 0) return $result;
-		$buildtime = $class['buildtime'];
-		$points = $class['points'];
+		if ($result[code] == 0) return $result;
+		$buildtime = $class[buildtime];
+		$points = $class[points];
 		$module = $this->getmodulebyid($huellmod);
-		$huelle = $module['huell']*$class['huellmod'];
-		$buildtime = $buildtime + ($module['buildtime']*$class['huellmod']);
-		$points = $points + ($module['wirt']*$class['huellmod']);
+		$huelle = $module[huell]*$class[huellmod];
+		$buildtime = $buildtime + ($module[buildtime]*$class[huellmod]);
+		$points = $points + ($module[wirt]*$class[huellmod]);
 		$module = $this->getmodulebyid($schildmod);
-		$buildtime = $buildtime + ($module['buildtime']*$class['schildmod']);
-		$points = $points + ($module['wirt']*$class['schildmod']);
+		$buildtime = $buildtime + ($module[buildtime]*$class[schildmod]);
+		$points = $points + ($module[wirt]*$class[schildmod]);
 		if ($waffenmod != 0)
 		{
 			$module = $this->getmodulebyid($waffenmod);
-			$buildtime = $buildtime + ($module['buildtime']*$class['waffenmod']);
-			$points = $points + ($module['wirt']*$class['waffenmod']);
+			$buildtime = $buildtime + ($module[buildtime]*$class[waffenmod]);
+			$points = $points + ($module[wirt]*$class[waffenmod]);
 		}
 		$module = $this->getmodulebyid($epsmod);
-		$buildtime = $buildtime + ($module['buildtime']*$class['epsmod']);
-		$points = $points + ($module['wirt']*$class['epsmod']);
+		$buildtime = $buildtime + ($module[buildtime]*$class[epsmod]);
+		$points = $points + ($module[wirt]*$class[epsmod]);
 		$module = $this->getmodulebyid($computermod);
-		$buildtime = $buildtime + $module['buildtime'];
-		$points = $points + $module['wirt'];
+		$buildtime = $buildtime + $module[buildtime];
+		$points = $points + $module[wirt];
 		$module = $this->getmodulebyid($sensormod);
-		$buildtime = $buildtime + ($module['buildtime']*$class['sensormod']);
-		$points = $points + ($module['wirt']*$class['sensormod']);
+		$buildtime = $buildtime + ($module[buildtime]*$class[sensormod]);
+		$points = $points + ($module[wirt]*$class[sensormod]);
 		$module = $this->getmodulebyid($antriebmod);
-		$buildtime = $buildtime + $module['buildtime'];
-		$points = $points + $module['wirt'];
+		$buildtime = $buildtime + $module[buildtime];
+		$points = $points + $module[wirt];
 		$module = $this->getmodulebyid($reaktormod);
-		$buildtime = $buildtime + $module['buildtime'];
-		$points = round(($points + $module['wirt']),2);
+		$buildtime = $buildtime + $module[buildtime];
+		$points = round(($points + $module[wirt]),2);
 		global $myUser;
 		if ($myUser->uwirtmin > 0)
 		{
-			$return['msg'] = "Du musst zuerst noch ".$userdata['wirtmin']." Wirtschaftspunkte aufholen";
+			$return[msg] = "Du musst zuerst noch ".$userdata[wirtmin]." Wirtschaftspunkte aufholen";
 			return $return;
 		}
 		$wirtsum = $this->db->query("SELECT SUM(wirtschaft) FROM stu_colonies WHERE user_id=".$this->user,1) + floor($myUser->usymp/2500);
 		$wirtdata = $this->db->query("SELECT SUM(points) FROM stu_ships WHERE user_id=".$this->user,1);
 		if (round($wirtsum,2) < round($wirtdata,2) + round($points,2))
 		{
-			$return['msg'] = "Es sind ".round($wirtsum,2)." Punkte vorhanden - Zum Bau werden ".round(($points+$wirtdata),2)." benï¿½tigt";
+			$return[msg] = "Es sind ".round($wirtsum,2)." Punkte vorhanden - Zum Bau werden ".round(($points+$wirtdata),2)." benötigt";
 			return $return;
 		}
-		if ($this->cenergie - $class['eps_cost'] < 0)
+		if ($this->cenergie - $class[eps_cost] < 0)
 		{
-			$return['msg'] = "Es wird ".$class['eps_cost']." Energie benï¿½tigt - Vorhanden ist aber nur ".$this->cenergie;
+			$return[msg] = "Es wird ".$class[eps_cost]." Energie benötigt - Vorhanden ist aber nur ".$this->cenergie;
 			return $return;
 		}
 		$result = $this->shipmincost($classId,$this->user,$this->cid);
-		if ($result['code'] == 0) return $result;
+		if ($result[code] == 0) return $result;
 		$module = $this->getmodulebyid($huellmod);
-		$this->lowerstoragebygoodid($class['huellmod'],$module['goods_id'],$this->cid);
+		$this->lowerstoragebygoodid($class[huellmod],$module[goods_id],$this->cid);
 		$module = $this->getmodulebyid($schildmod);
-		$this->lowerstoragebygoodid($class['schildmod'],$module['goods_id'],$this->cid);
+		$this->lowerstoragebygoodid($class[schildmod],$module[goods_id],$this->cid);
 		if ($waffenmod != 0)
 		{
 			$module = $this->getmodulebyid($waffenmod);
-			$waffenmodlvl = $module['lvl'];
-			$this->lowerstoragebygoodid($class['waffenmod'],$module['goods_id'],$this->cid);
+			$waffenmodlvl = $module[lvl];
+			$this->lowerstoragebygoodid($class[waffenmod],$module[goods_id],$this->cid);
 		}
 		$module = $this->getmodulebyid($epsmod);
-		$this->lowerstoragebygoodid($class['epsmod'],$module['goods_id'],$this->cid);
+		$this->lowerstoragebygoodid($class[epsmod],$module[goods_id],$this->cid);
 		$module = $this->getmodulebyid($computermod);
-		$this->lowerstoragebygoodid(1,$module['goods_id'],$this->cid);
+		$this->lowerstoragebygoodid(1,$module[goods_id],$this->cid);
 		$module = $this->getmodulebyid($sensormod);
-		$this->lowerstoragebygoodid($class['sensormod'],$module['goods_id'],$this->cid);
+		$this->lowerstoragebygoodid($class[sensormod],$module[goods_id],$this->cid);
 		$module = $this->getmodulebyid($antriebmod);
-		$this->lowerstoragebygoodid(1,$module['goods_id'],$this->cid);
+		$this->lowerstoragebygoodid(1,$module[goods_id],$this->cid);
 		if ($reaktormod != 0)
 		{
 			$module = $this->getmodulebyid($reaktormod);
-			$this->lowerstoragebygoodid(1,$module['goods_id'],$this->cid);
+			$this->lowerstoragebygoodid(1,$module[goods_id],$this->cid);
 		}
-		$this->db->query("UPDATE stu_colonies SET energie=energie-".$class['eps_cost']." WHERE id=".$this->cid);
-		$this->db->query("INSERT INTO stu_ships_buildprogress (user_id,colonies_id,ships_rumps_id,huelle,huellmodlvl,sensormodlvl,waffenmodlvl,schildmodlvl,reaktormodlvl,antriebmodlvl,computermodlvl,epsmodlvl,buildtime,points,wese) VALUES ('".$this->user."','".$this->cid."','".$class['id']."','".$huelle."','".$huellmod."','".$sensormod."','".$waffenmod."','".$schildmod."','".$reaktormod."','".$antriebmod."','".$computermod."','".$epsmod."','".(time()+$buildtime)."','".$points."','".$this->cwese."')");
-		$return['msg'] = $class['name']." wird gebaut - Fertigstellung am ".date("d.m.Y H:i:s",(time()+$buildtime));
+		$this->db->query("UPDATE stu_colonies SET energie=energie-".$class[eps_cost]." WHERE id=".$this->cid);
+		$this->db->query("INSERT INTO stu_ships_buildprogress (user_id,colonies_id,ships_rumps_id,huelle,huellmodlvl,sensormodlvl,waffenmodlvl,schildmodlvl,reaktormodlvl,antriebmodlvl,computermodlvl,epsmodlvl,buildtime,points,wese) VALUES ('".$this->user."','".$this->cid."','".$class[id]."','".$huelle."','".$huellmod."','".$sensormod."','".$waffenmod."','".$schildmod."','".$reaktormod."','".$antriebmod."','".$computermod."','".$epsmod."','".(time()+$buildtime)."','".$points."','".$this->cwese."')");
+		$return[msg] = $class[name]." wird gebaut - Fertigstellung am ".date("d.m.Y H:i:s",(time()+$buildtime));
 		return $return;
 	}
 	
@@ -1917,22 +1917,22 @@ class colony
 	{
 		include_once("inc/shipcost.inc.php");
 		//$result = getcostbyclass($classId);
-		$result[0]['goods_id'] = 3;
+		$result[0][goods_id] = 3;
 		$result[0]['count'] = 1;
-		$result[0]['name'] = "Baumaterial";
+		$result[0][name] = "Baumaterial";
 		if ($result == 0) return 1;
 		for ($i=0;$i<count($result);$i++)
 		{
-			$r_ress = $this->db->query("SELECT count FROM stu_colonies_storage WHERE goods_id='".$result[$i]['goods_id']."' AND colonies_id='".$colId."' AND user_id='".$userId."'",1);
+			$r_ress = $this->db->query("SELECT count FROM stu_colonies_storage WHERE goods_id='".$result[$i][goods_id]."' AND colonies_id='".$colId."' AND user_id='".$userId."'",1);
 			if ($result[$i]['count'] > $r_ress)
 			{
-				$return['msg'] = "Es werden ".$result[$i]['count']." ".$result[$i]['name']." benï¿½tigt - Vorhanden sind nur ".$r_ress;
-				$return['code'] = 0;
+				$return[msg] = "Es werden ".$result[$i]['count']." ".$result[$i][name]." benötigt - Vorhanden sind nur ".$r_ress;
+				$return[code] = 0;
 				return $return;
 			}
 		}
-		for ($i=0;$i<count($result);$i++) $this->lowerstoragebygoodid($result[$i]['count'],$result[$i]['goods_id'],$colId);
-		$return['code'] = 1;
+		for ($i=0;$i<count($result);$i++) $this->lowerstoragebygoodid($result[$i]['count'],$result[$i][goods_id],$colId);
+		$return[code] = 1;
 		return $return;
 	}
 	
@@ -1953,9 +1953,9 @@ class colony
 		for ($i=0;$i<mysql_num_rows($rdepencies);$i++)
 		{
 			$tmp = mysql_fetch_assoc($rdepencies);
-			$data['depenc'][$i] = $this->getresearchbyid($tmp['depency_id']);
-			if ($this->db->query("SELECT COUNT(id) FROM stu_research_user WHERE research_id='".$tmp['depency_id']."' AND user_id=".$this->user,1) == 1) $data['depenc'][$i]['done'] = 1;
-			else $data['depenc'][$i]['done'] = 0;
+			$data[depenc][$i] = $this->getresearchbyid($tmp[depency_id]);
+			if ($this->db->query("SELECT COUNT(id) FROM stu_research_user WHERE research_id='".$tmp[depency_id]."' AND user_id=".$this->user,1) == 1) $data[depenc][$i][done] = 1;
+			else $data[depenc][$i][done] = 0;
 		}
 		return $data;
 	}
@@ -1967,9 +1967,9 @@ class colony
 		for ($i=0;$i<mysql_num_rows($rdepencies);$i++)
 		{
 			$tmp = mysql_fetch_assoc($rdepencies);
-			$data['depenc'][$i] = $this->getresearchbyid($tmp['depency_id']);
-			if ($this->db->query("SELECT COUNT(id) FROM stu_research_user WHERE research_id='".$tmp['depency_id']."' AND user_id=".$this->user,1) == 1) $data['depenc'][$i]['done'] = 1;
-			else $data['depenc'][$i]['done'] = 0;
+			$data[depenc][$i] = $this->getresearchbyid($tmp[depency_id]);
+			if ($this->db->query("SELECT COUNT(id) FROM stu_research_user WHERE research_id='".$tmp[depency_id]."' AND user_id=".$this->user,1) == 1) $data[depenc][$i][done] = 1;
+			else $data[depenc][$i][done] = 0;
 		}
 		return $data;
 	}
@@ -1991,27 +1991,27 @@ class colony
 		if ($this->db->query("SELECT level FROM stu_user WHERE id=".$this->user,1) < 8) return 0;
 		if ($this->db->query("SELECT id FROM stu_research_user WHERE research_id='".$researchId."' AND user_id=".$this->user,1) != 0)
 		{
-			$return['msg'] = $research['name']." wurde bereits erforscht";
+			$return[msg] = $research[name]." wurde bereits erforscht";
 			return $return;
 		}
 		$count = $this->getcountbygoodid(10,$this->cid);
-		if ($count < $research['cost'])
+		if ($count < $research[cost])
 		{
-			$return['msg'] = "Nicht genï¿½gend Iso-Chips vorhanden";
+			$return[msg] = "Nicht genügend Iso-Chips vorhanden";
 			return $return;
 		}
 		$rdepencies = $this->db->query("SELECT * FROM stu_research_depencies WHERE research_id='".$researchId."'");
 		for ($i=0;$i<mysql_num_rows($rdepencies);$i++)
 		{
 			$tmp = mysql_fetch_assoc($rdepencies);
-			$data = $this->getresearchbyid($tmp['depency_id']);
-			if ($this->db->query("SELECT id FROM stu_research_user WHERE research_id='".$tmp['depency_id']."' AND user_id=".$this->user,1) == 0)
+			$data = $this->getresearchbyid($tmp[depency_id]);
+			if ($this->db->query("SELECT id FROM stu_research_user WHERE research_id='".$tmp[depency_id]."' AND user_id=".$this->user,1) == 0)
 			{
-				$return['msg'] = "Vorraussetzung wurde noch nicht erforscht";
+				$return[msg] = "Vorraussetzung wurde noch nicht erforscht";
 				return $return;
 			}
 		}
-		$this->lowerstoragebygoodid($research['cost'],10,$this->cid);
+		$this->lowerstoragebygoodid($research[cost],10,$this->cid);
 		$this->db->query("INSERT INTO stu_research_user (research_id,user_id) VALUES ('".$researchId."','".$this->user."')");
 		if ($researchId == 5)
 		{
@@ -2023,8 +2023,8 @@ class colony
 			if ($myUser->urasse == 5) $this->db->query("INSERT INTO stu_ships_build (user_id,ships_rumps_id) VALUES ('".$this->user."','113')");
 		}
 		if ($researchId == 62) $this->db->query("INSERT INTO stu_ships_build (user_id,ships_rumps_id) VALUES (".$this->user.",'7')");
-		if ($research['ships_id'] > 0) $this->db->query("INSERT INTO stu_ships_build (user_id,ships_rumps_id) VALUES ('".$this->user."','".$research['ships_id']."')");
-		$return['msg'] = $research['name']." wurde erforscht";
+		if ($research[ships_id] > 0) $this->db->query("INSERT INTO stu_ships_build (user_id,ships_rumps_id) VALUES ('".$this->user."','".$research[ships_id]."')");
+		$return[msg] = $research[name]." wurde erforscht";
 		return $return;
 	}
 	
@@ -2035,50 +2035,50 @@ class colony
 		$shipdata = $myShip->getdatabyid($id);
 		if ($shipdata == 0)
 		{
-			$return['msg'] = "Schiff nicht vorhanden.";
+			$return[msg] = "Schiff nicht vorhanden.";
 			return $return;
 		}
 		if ($this->db->query("SELECT id FROM stu_colonies_orbit WHERE colonies_id=".$this->cid." AND buildtime=0 AND ((buildings_id=26) OR (buildings_id=27) OR (buildings_id=28) OR (buildings_id=29) OR (buildings_id=30) OR (buildings_id=135))",1) == 0)
 		{
-			$return['msg'] = "Es befindet sich keine fertiggestellte Werft auf der Kolonie";
+			$return[msg] = "Es befindet sich keine fertiggestellte Werft auf der Kolonie";
 			return $return;
 		}
 		if ($this->db->query("SELECT id FROM stu_colonies_fields WHERE (buildings_id=21 OR buildings_id=168) AND colonies_id=".$this->cid." AND aktiv=1",1) == 0)
 		{
-			$return['msg'] = "Zum Aufladen der Ersatzbatterie wird ein aktivierter Raumbahnhof benï¿½tigt";
+			$return[msg] = "Zum Aufladen der Ersatzbatterie wird ein aktivierter Raumbahnhof benötigt";
 			return $return;
 		}
-		if (($this->ccoords_x != $shipdata['coords_x']) || ($this->ccoords_y != $shipdata['coords_y']))
+		if (($this->ccoords_x != $shipdata[coords_x]) || ($this->ccoords_y != $shipdata[coords_y]))
 		{
-			$return['msg'] = "Schiff und Kolonie mï¿½ssen sich im selben Sektor befinden.";
+			$return[msg] = "Schiff und Kolonie müssen sich im selben Sektor befinden.";
 			return $return;
 		}
-		if ($shipdata['batt'] == $shipdata['c']['max_batt'])
+		if ($shipdata[batt] == $shipdata[c][max_batt])
 		{
-			$return['msg'] = "Die Reservebatterie der ".$shipdata['name']." ist bereits vollstï¿½ndig aufgeladen";
+			$return[msg] = "Die Reservebatterie der ".$shipdata[name]." ist bereits vollständig aufgeladen";
 			return $return;
 		}
-		if ($shipdata['c']['slots'] != 0)
+		if ($shipdata[c][slots] != 0)
 		{
-			$return['msg'] = "Die Reservebatterien von Stationen kï¿½nnen nicht in einer Werft aufgeladen werden";
+			$return[msg] = "Die Reservebatterien von Stationen können nicht in einer Werft aufgeladen werden";
 			return $return;
 		}
 		if ($count == "max") $count = $this->cenergie;
 		if ($this->cenergie < $count) $count = $this->cenergie;
-		if ($shipdata['batt'] + $count > $shipdata['c']['max_batt']) $count = $shipdata['c']['max_batt'] - $shipdata['batt'];
+		if ($shipdata[batt] + $count > $shipdata[c][max_batt]) $count = $shipdata[c][max_batt] - $shipdata[batt];
 		$this->db->query("UPDATE stu_colonies SET energie=energie-".$count." WHERE id=".$this->cid);
 		$this->db->query("UPDATE stu_ships SET batt=batt+".$count." WHERE id='".$id."'");
-		if ($this->user != $shipdata['user_id'])
+		if ($this->user != $shipdata[user_id])
 		{
 			global $myComm;
-			$myComm->sendpm($shipdata['user_id'],$this->user,"Die Kolonie ".$this->cname." hat die Reserverbatterien der ".$shipdata['name']." um ".$count." Energie aufgeladen",3);
+			$myComm->sendpm($shipdata[user_id],$this->user,"Die Kolonie ".$this->cname." hat die Reserverbatterien der ".$shipdata[name]." um ".$count." Energie aufgeladen",3);
 		}
 		global $grafik;
-		if ($this->user == $shipdata['user_id']) $add = "<a href=main.php?page=ship&section=showship&id=".$id."><img src=".$grafik."/ships/".$shipdata['ships_rumps_id'].".gif border=0></a>";
-		else $add = "<img src=".$grafik."/ships/".$shipdata['ships_rumps_id'].".gif>";
-		$return['msg'] = "<table bgcolor=#262323><tr><td class=tdmainobg width=20 align=Center><img src=".$grafik."/buttons/battp2.gif></td>
+		if ($this->user == $shipdata[user_id]) $add = "<a href=main.php?page=ship&section=showship&id=".$id."><img src=".$grafik."/ships/".$shipdata[ships_rumps_id].".gif border=0></a>";
+		else $add = "<img src=".$grafik."/ships/".$shipdata[ships_rumps_id].".gif>";
+		$return[msg] = "<table bgcolor=#262323><tr><td class=tdmainobg width=20 align=Center><img src=".$grafik."/buttons/battp2.gif></td>
 						<td class=tdmainobg align=center>".$add."</td>
-						<td class=tdmainobg>Die Ersatzbatterie der ".$shipdata['name']." wurde um ".$count." Energie aufgeladen</td></tr></table>";
+						<td class=tdmainobg>Die Ersatzbatterie der ".$shipdata[name]." wurde um ".$count." Energie aufgeladen</td></tr></table>";
 		return $return;
 	}
 	
@@ -2088,12 +2088,12 @@ class colony
 		$storcount = $this->getcountbygoodid(3,$this->cid);
 		if ($storcount == 0)
 		{
-			$return['msg'] = "Ausgangs-Ressource Baumaterial nicht vorhanden";
+			$return[msg] = "Ausgangs-Ressource Baumaterial nicht vorhanden";
 			return $return;
 		}
 		if ($this->cenergie == 0)
 		{
-			$return['msg'] = "Keine Energie vorhanden";
+			$return[msg] = "Keine Energie vorhanden";
 			return $return;
 		}
 		if ($storcount < $count) $count = $storcount;			
@@ -2102,7 +2102,7 @@ class colony
 		$this->lowerstoragebygoodid($count,3,$this->cid);
 		$this->upperstoragebygoodid($count,$end,$this->cid,$this->user);
 		$this->db->query("UPDATE stu_colonies SET energie=energie-".$count." WHERE id=".$this->cid);
-		$return['msg'] = "Replikation: ".$count." Torpedos hergestellt - ".$count." Energie verbraucht";
+		$return[msg] = "Replikation: ".$count." Torpedos hergestellt - ".$count." Energie verbraucht";
 		return $return;
 	}
 
@@ -2111,7 +2111,7 @@ class colony
 		if ($this->cshow == 0) return 0;
 		if ($end <= 49)
 		{
-			$return['msg'] = "Dies ist kein Schiffsmodul";
+			$return[msg] = "Dies ist kein Schiffsmodul";
 			return $return;
 		}
 		if ($end == 51 && $this->db->query("SELECT id FROM stu_research_user WHERE research_id=135 AND user_id=".$this->user,1) == 0) $ferror = 1;
@@ -2244,42 +2244,42 @@ class colony
 		elseif ($end == 70) if ($this->db->query("SELECT id FROM stu_user WHERE rasse=4 AND id=".$this->user,1) == 0) $ferror = 1;
 		if ($this->db->query("SELECT id FROM stu_colonies_fields WHERE colonies_id=".$this->cid." AND buildings_id=".$buildID." ANd buildtime=0",1) == 0)
 		{
-			$return['msg'] = "Es befindet sich keine fertiggestellte geeignete Fabrik fï¿½r dieses Modul auf der Kolonie";
+			$return[msg] = "Es befindet sich keine fertiggestellte geeignete Fabrik für dieses Modul auf der Kolonie";
 			return $return;
 		}
 		if ($ferror == 1)
 		{
-			$return['msg'] = "Du kannst dieses Modul nicht bauen";
+			$return[msg] = "Du kannst dieses Modul nicht bauen";
 			return $return;
 		}
 		if ($faerror == 1)
 		{
-			$return['msg'] = "Dieses Modul kann in dieser Fabrik nicht hergestellt werden";
+			$return[msg] = "Dieses Modul kann in dieser Fabrik nicht hergestellt werden";
 			return $return;
 		}
 		$modId = $this->db->query("SELECT id FROM stu_ships_modules WHERE goods_id=".$end,1);
 		$module = $this->getmodulebyid($modId);
-		$ecost = $module['ecost'] * $count;
+		$ecost = $module[ecost] * $count;
 		if ($this->cenergie < $ecost)
 		{
-			$return['msg'] = "Nicht genug Energie vorhanden";
+			$return[msg] = "Nicht genug Energie vorhanden";
 			return $return;
 		}
 		$modcost = $this->getmodulecostbyid($modId);
 		for ($i=0;$i<count($modcost);$i++)
 		{
-			$modcost[$i]['gesamt'] = $modcost[$i]['count'] * $count;
-			$storcount = $this->getcountbygoodid($modcost[$i]['goods_id'],$this->cid);
-			if ($storcount < $modcost[$i]['gesamt'])
+			$modcost[$i][gesamt] = $modcost[$i]['count'] * $count;
+			$storcount = $this->getcountbygoodid($modcost[$i][goods_id],$this->cid);
+			if ($storcount < $modcost[$i][gesamt])
 			{
-				$return['msg'] = "Es werden ".($count*$modcost[$i]['count'])." ".$modcost[$i]['name']." benï¿½tigt - Vorhanden sind nur ".$storcount;
+				$return[msg] = "Es werden ".($count*$modcost[$i]['count'])." ".$modcost[$i][name]." benötigt - Vorhanden sind nur ".$storcount;
 				return $return;
 			}
 		}
-		for ($i=0;$i<count($modcost);$i++) $this->lowerstoragebygoodid($modcost[$i]['gesamt'],$modcost[$i]['goods_id'],$this->cid);
+		for ($i=0;$i<count($modcost);$i++) $this->lowerstoragebygoodid($modcost[$i][gesamt],$modcost[$i][goods_id],$this->cid);
 		$this->db->query("UPDATE stu_colonies SET energie=energie-".$ecost." WHERe id='".$this->cid."' AND user_id=".$this->user);
 		$this->upperstoragebygoodid($count,$end,$this->cid,$this->user);
-		$return['msg'] = "Leite Produktion ein... ".$count." Module hergestellt";
+		$return[msg] = "Leite Produktion ein... ".$count." Module hergestellt";
 		return $return;
 	}
 	
@@ -2288,24 +2288,24 @@ class colony
 		if ($this->cshow == 0) return 0;
 		if ($this->db->query("SELECT id FROM stu_colonies_fields WHERE buildings_id=35 ANd colonies_id=".$this->cid." AND buildtime=0",1) == 0)
 		{
-			$return['msg'] = "Es befindet sich keine aktivierte Raffinerie auf dem Planeten";
+			$return[msg] = "Es befindet sich keine aktivierte Raffinerie auf dem Planeten";
 			return $return;
 		}
 		if (($source != 11) && ($source != 13))
 		{
-			$return['msg'] = "Es kï¿½nnen nur Kelbonit-Erz und Nitrum-Erz veredelt werden";
+			$return[msg] = "Es können nur Kelbonit-Erz und Nitrum-Erz veredelt werden";
 			return $return;
 		}
 		$source == 11 ? $end = 12 : $end = 14;
 		$storcount = $this->getcountbygoodid($source,$this->cid);
 		if ($storcount < 3)
 		{
-			$return['msg'] = "Ausgangs-Ressourcen nicht vorhanden";
+			$return[msg] = "Ausgangs-Ressourcen nicht vorhanden";
 			return $return;
 		}
 		if ($this->cenergie == 0)
 		{
-			$return['msg'] = "Keine Energie vorhanden";
+			$return[msg] = "Keine Energie vorhanden";
 			return $return;
 		}
 		if ($storcount < $count*3) $count = floor($storcount/3);
@@ -2313,7 +2313,7 @@ class colony
 		$this->lowerstoragebygoodid(($count*3),$source,$this->cid);
 		$this->upperstoragebygoodid($count,$end,$this->cid,$this->user);
 		$this->db->query("UPDATE stu_colonies SET energie=energie-".$count." WHERE id=".$this->cid);
-		$return['msg'] = "Leite Veredelung ein...".(3*$count)." ".$this->db->query("SELECT name FROM stu_goods WHERE id='".$source."'",1)." zu ".$count." ".$this->db->query("SELECT name FROM stu_goods WHERE id='".$end."'",1)." umgewandelt - ".$count." Energie verbraucht";
+		$return[msg] = "Leite Veredelung ein...".(3*$count)." ".$this->db->query("SELECT name FROM stu_goods WHERE id='".$source."'",1)." zu ".$count." ".$this->db->query("SELECT name FROM stu_goods WHERE id='".$end."'",1)." umgewandelt - ".$count." Energie verbraucht";
 		return $return;
 	}
 	
@@ -2329,25 +2329,25 @@ class colony
 		for ($i=0;$i<mysql_num_rows($result);$i++)
 		{
 			$tpdata = mysql_fetch_assoc($result);
-			if ($data[$tpdata['user']]) $data[$tpdata['user']]['latinum'] += $tpdata['count'];
-			else $data[$tpdata['user']]['latinum'] = $tpdata['count'];
-			$data[$tpdata['user']]['user'] = $tpdata['user'];
+			if ($data[$tpdata[user]]) $data[$tpdata[user]][latinum] += $tpdata['count'];
+			else $data[$tpdata[user]][latinum] = $tpdata['count'];
+			$data[$tpdata[user]][user] = $tpdata[user];
 		}
 		$result = $this->db->query("SELECT a.count,b.user FROM stu_colonies_storage as a LEFT JOIN stu_user as b ON a.user_id=b.id WHERE a.goods_id=24 AND a.user_id>100");
 		for ($i=0;$i<mysql_num_rows($result);$i++)
 		{
 			$tpdata = mysql_fetch_assoc($result);
-			if ($data[$tpdata['user']]) $data[$tpdata['user']]['latinum'] += $tpdata['count'];
-			else $data[$tpdata['user']]['latinum'] = $tpdata['count'];
-			$data[$tpdata['user']]['user'] = $tpdata['user'];
+			if ($data[$tpdata[user]]) $data[$tpdata[user]][latinum] += $tpdata['count'];
+			else $data[$tpdata[user]][latinum] = $tpdata['count'];
+			$data[$tpdata[user]][user] = $tpdata[user];
 		}
 		$result = $this->db->query("SELECT a.count,b.user FROM stu_trade_goods as a LEFT JOIN stu_user as b ON a.user_id=b.id WHERE a.goods_id=24 AND a.status<2 AND a.user_id>100");
 		for ($i=0;$i<mysql_num_rows($result);$i++)
 		{
 			$tpdata = mysql_fetch_assoc($result);
-			if ($data[$tpdata['user']]) $data[$tpdata['user']]['latinum'] += $tpdata['count'];
-			else $data[$tpdata['user']]['latinum'] = $tpdata['count'];
-			$data[$tpdata['user']]['user'] = $tpdata['user'];
+			if ($data[$tpdata[user]]) $data[$tpdata[user]][latinum] += $tpdata['count'];
+			else $data[$tpdata[user]][latinum] = $tpdata['count'];
+			$data[$tpdata[user]][user] = $tpdata[user];
 		}
 		return $data;
 	}
@@ -2362,55 +2362,55 @@ class colony
 	{
 		global $myShip;
 		$shipdata = $myShip->getdatabyid($shipId);
-		$huelldam = $shipdata['maxhuell'] - $shipdata['huelle'];
-		$huellfak = $huelldam / $shipdata['maxhuell'];
-		$cost = $this->getshipcostbyid($shipdata['ships_rumps_id']);
+		$huelldam = $shipdata[maxhuell] - $shipdata[huelle];
+		$huellfak = $huelldam / $shipdata[maxhuell];
+		$cost = $this->getshipcostbyid($shipdata[ships_rumps_id]);
 		for ($i=0;$i<19;$i++) $kosten[$i] = 0;
 		for ($i=0;$i<count($cost);$i++) {
-			if ($cost[$i]['goods_id'] > 9) $kosten[$cost[$i]['goods_id']] = floor($cost[$i]['count'] * $huellfak);
-			else $kosten[$cost[$i]['goods_id']] = ceil($cost[$i]['count'] * $huellfak);
+			if ($cost[$i][goods_id] > 9) $kosten[$cost[$i][goods_id]] = floor($cost[$i]['count'] * $huellfak);
+			else $kosten[$cost[$i][goods_id]] = ceil($cost[$i]['count'] * $huellfak);
 		}
-		$kosten[0] = ceil($shipdata['c']['eps_cost'] * $huellfak);
-		$cst = round($shipdata['c']['huellmod']*$huellfak);
-		$module = $myShip->getmodulebyid($shipdata['huellmodlvl']);
-		$kosten['modules']['huellec'] = $cst;
-		$kosten['modules']['huellem'] = $shipdata['huellmodlvl'];
-		$kosten['modules']['huelleg'] = $module['goods_id'];
-		$cst = round($shipdata['c']['schildmod']*$huellfak);
-		$module = $myShip->getmodulebyid($shipdata['schildmodlvl']);
-		$kosten['modules']['schildec'] = $cst;
-		$kosten['modules']['schildem'] = $shipdata['schildmodlvl'];
-		$kosten['modules']['schildeg'] = $module['goods_id'];
-		$cst = round($shipdata['c']['sensormod']*$huellfak);
-		$module = $myShip->getmodulebyid($shipdata['sensormodlvl']);
-		$kosten['modules']['sensorc'] = $cst;
-		$kosten['modules']['sensorm'] = $shipdata['sensormodlvl'];
-		$kosten['modules']['sensorg'] = $module['goods_id'];
-		$cst = round($shipdata['c']['waffenmod']*$huellfak);
-		$module = $myShip->getmodulebyid($shipdata['waffenmodlvl']);
-		$kosten['modules']['waffenc'] = $cst;
-		$kosten['modules']['waffenm'] = $shipdata['waffenmodlvl'];
-		$kosten['modules']['waffeng'] = $module['goods_id'];
+		$kosten[0] = ceil($shipdata[c][eps_cost] * $huellfak);
+		$cst = round($shipdata[c][huellmod]*$huellfak);
+		$module = $myShip->getmodulebyid($shipdata[huellmodlvl]);
+		$kosten[modules][huellec] = $cst;
+		$kosten[modules][huellem] = $shipdata[huellmodlvl];
+		$kosten[modules][huelleg] = $module[goods_id];
+		$cst = round($shipdata[c][schildmod]*$huellfak);
+		$module = $myShip->getmodulebyid($shipdata[schildmodlvl]);
+		$kosten[modules][schildec] = $cst;
+		$kosten[modules][schildem] = $shipdata[schildmodlvl];
+		$kosten[modules][schildeg] = $module[goods_id];
+		$cst = round($shipdata[c][sensormod]*$huellfak);
+		$module = $myShip->getmodulebyid($shipdata[sensormodlvl]);
+		$kosten[modules][sensorc] = $cst;
+		$kosten[modules][sensorm] = $shipdata[sensormodlvl];
+		$kosten[modules][sensorg] = $module[goods_id];
+		$cst = round($shipdata[c][waffenmod]*$huellfak);
+		$module = $myShip->getmodulebyid($shipdata[waffenmodlvl]);
+		$kosten[modules][waffenc] = $cst;
+		$kosten[modules][waffenm] = $shipdata[waffenmodlvl];
+		$kosten[modules][waffeng] = $module[goods_id];
 		$cst = round(1*$huellfak);
-		$module = $myShip->getmodulebyid($shipdata['reaktormodlvl']);
-		$kosten['modules']['reaktorc'] = $cst;
-		$kosten['modules']['reaktorm'] = $shipdata['reaktormodlvl'];
-		$kosten['modules']['reaktorg'] = $module['goods_id'];
+		$module = $myShip->getmodulebyid($shipdata[reaktormodlvl]);
+		$kosten[modules][reaktorc] = $cst;
+		$kosten[modules][reaktorm] = $shipdata[reaktormodlvl];
+		$kosten[modules][reaktorg] = $module[goods_id];
 		$cst = round(1*$huellfak);
-		$module = $myShip->getmodulebyid($shipdata['antriebmodlvl']);
-		$kosten['modules']['antriebc'] = $cst;
-		$kosten['modules']['antriebm'] = $shipdata['antriebmodlvl'];
-		$kosten['modules']['antriebg'] = $module['goods_id'];
+		$module = $myShip->getmodulebyid($shipdata[antriebmodlvl]);
+		$kosten[modules][antriebc] = $cst;
+		$kosten[modules][antriebm] = $shipdata[antriebmodlvl];
+		$kosten[modules][antriebg] = $module[goods_id];
 		$cst = round(1*$huellfak);
-		$module = $myShip->getmodulebyid($shipdata['computermodlvl']);
-		$kosten['modules']['computerc'] = $cst;
-		$kosten['modules']['computerm'] = $shipdata['computermodlvl'];
-		$kosten['modules']['computerg'] = $module['goods_id'];
-		$cst = round($shipdata['c']['epsmod']*$huellfak);
-		$module = $myShip->getmodulebyid($shipdata['epsmodlvl']);
-		$kosten['modules']['epsc'] = $cst;
-		$kosten['modules']['epsm'] = $shipdata['epsmodlvl'];
-		$kosten['modules']['epsg'] = $module['goods_id'];
+		$module = $myShip->getmodulebyid($shipdata[computermodlvl]);
+		$kosten[modules][computerc] = $cst;
+		$kosten[modules][computerm] = $shipdata[computermodlvl];
+		$kosten[modules][computerg] = $module[goods_id];
+		$cst = round($shipdata[c][epsmod]*$huellfak);
+		$module = $myShip->getmodulebyid($shipdata[epsmodlvl]);
+		$kosten[modules][epsc] = $cst;
+		$kosten[modules][epsm] = $shipdata[epsmodlvl];
+		$kosten[modules][epsg] = $module[goods_id];
 		return $kosten;
 	}
 
@@ -2420,163 +2420,163 @@ class colony
 		$shipdata = $myShip->getdatabyid($shipId);
 		if ($shipdata == 0)
 		{
-			$return['msg'] = "Schiff nicht vorhanden";
+			$return[msg] = "Schiff nicht vorhanden";
 			return $return;
 		}
-		if ($shipdata['c']['trumfield'] == 1)
+		if ($shipdata[c][trumfield] == 1)
 		{
-			$return['msg'] = "Wracks kï¿½nnen nicht repariert werden";
+			$return[msg] = "Wracks können nicht repariert werden";
 			return $return;
 		}
-		if ($shipdata['c']['slots'] != 0)
+		if ($shipdata[c][slots] != 0)
 		{
-			$return['msg'] = "Stationen kï¿½nnen nicht in einer Werft repariert werden";
+			$return[msg] = "Stationen können nicht in einer Werft repariert werden";
 			return $return;
 		}
-		if (($shipdata['coords_x'] != $this->ccoords_x) || ($shipdata['coords_y'] != $this->ccoords_y))
+		if (($shipdata[coords_x] != $this->ccoords_x) || ($shipdata[coords_y] != $this->ccoords_y))
 		{
-			$return['msg'] = "Das Schiff muss sich im selben Sektor wie die Kolonie befinden";
+			$return[msg] = "Das Schiff muss sich im selben Sektor wie die Kolonie befinden";
 			return $return;
 		}
-		if ($shipdata['cloak'] == 1)
+		if ($shipdata[cloak] == 1)
 		{
-			$return['msg'] = "Das Schiff ist getarnt";
+			$return[msg] = "Das Schiff ist getarnt";
 			return $return;
 		}
-		if ($shipdata['schilde_aktiv'] == 1)
+		if ($shipdata[schilde_aktiv] == 1)
 		{
-			$return['msg'] = "Das Schiff hat die Schilde aktiviert";
+			$return[msg] = "Das Schiff hat die Schilde aktiviert";
 			return $return;
 		}
-		if ($shipdata['maxhuell'] == $shipdata['huelle'])
+		if ($shipdata[maxhuell] == $shipdata[huelle])
 		{
-			$return['msg'] = "Das Schiff ist nicht beschï¿½digt";
+			$return[msg] = "Das Schiff ist nicht beschädigt";
 			return $return;
 		}
 		if ($this->db->query("SELECT id FROM stu_colonies_fields WHERE (buildings_id=21 OR buildings_id=168) AND colonies_id=".$this->cid,1) == 0)
 		{
-			$return['msg'] = "Zur Reparatur wird ein aktivierter Raumbahnhof benï¿½tigt";
+			$return[msg] = "Zur Reparatur wird ein aktivierter Raumbahnhof benötigt";
 			return $return;
 		}
 		if ($this->db->query("SELECT id FROM stu_colonies_orbit WHERE (buildings_id>25 AND buildings_id<31) OR buildings_id = 135 AND colonies_id=".$this->cid,1) == 0)
 		{
-			$return['msg'] = "Zur Reparatur wird eine Werft benï¿½tigt";
+			$return[msg] = "Zur Reparatur wird eine Werft benötigt";
 			return $return;
 		}
 		$cost = $this->getrepaircost($shipId,$this->cid);
 		if ($cost[0] > $this->cenergie)
 		{
-			$return['msg'] = "Zur Reparatur wird ".$cost[0]." Energie benï¿½tigt - Vorhanden ist nur ".$this->cenergie;
+			$return[msg] = "Zur Reparatur wird ".$cost[0]." Energie benötigt - Vorhanden ist nur ".$this->cenergie;
 			return $return;
 		}
 		$count = $this->getcountbygoodid(3,$this->cid);
 		if ($cost[3] > $count)
 		{
-			$return['msg'] = "Zur Reparatur werden ".$cost[3]." Baumaterial benï¿½tigt - Vorhanden sind nur ".$count;
+			$return[msg] = "Zur Reparatur werden ".$cost[3]." Baumaterial benötigt - Vorhanden sind nur ".$count;
 			return $return;
 		}
 		$count = $this->getcountbygoodid(6,$this->cid);
 		if ($cost[6] > $count)
 		{
-			$return['msg'] = "Zur Reparatur werden ".$cost[6]." Duranium benï¿½tigt - Vorhanden sind nur ".$count;
+			$return[msg] = "Zur Reparatur werden ".$cost[6]." Duranium benötigt - Vorhanden sind nur ".$count;
 			return $return;
 		}
 		$count = $this->getcountbygoodid(9,$this->cid);
 		if ($cost[9] > $count)
 		{
-			$return['msg'] = "Zur Reparatur werden ".$cost[9]." Tritanium benï¿½tigt - Vorhanden sind nur ".$count;
+			$return[msg] = "Zur Reparatur werden ".$cost[9]." Tritanium benötigt - Vorhanden sind nur ".$count;
 			return $return;
 		}
 		$count = $this->getcountbygoodid(12,$this->cid);
 		if ($cost[12] > $count)
 		{
-			$return['msg'] = "Zur Reparatur werden ".$cost[12]." Kelbonit benï¿½tigt - Vorhanden sind nur ".$count;
+			$return[msg] = "Zur Reparatur werden ".$cost[12]." Kelbonit benötigt - Vorhanden sind nur ".$count;
 			return $return;
 		}
 		$count = $this->getcountbygoodid(14,$this->cid);
 		if ($cost[14] > $count)
 		{
-			$return['msg'] = "Zur Reparatur werden ".$cost[14]." Nitrium benï¿½tigt - Vorhanden sind nur ".$count;
+			$return[msg] = "Zur Reparatur werden ".$cost[14]." Nitrium benötigt - Vorhanden sind nur ".$count;
 			return $return;
 		}
 		$count = $this->getcountbygoodid(15,$this->cid);
 		if ($cost[15] > $count)
 		{
-			$return['msg'] = "Zur Reparatur werden ".$cost[15]." Plasma benï¿½tigt - Vorhanden sind nur ".$count;
+			$return[msg] = "Zur Reparatur werden ".$cost[15]." Plasma benötigt - Vorhanden sind nur ".$count;
 			return $return;
 		}
 		$count = $this->getcountbygoodid(19,$this->cid);
 		if ($cost[19] > $count)
 		{
-			$return['msg'] = "Zur Reparatur werden ".$cost[19]." Gel-Packs benï¿½tigt - Vorhanden sind nur ".$count;
+			$return[msg] = "Zur Reparatur werden ".$cost[19]." Gel-Packs benötigt - Vorhanden sind nur ".$count;
 			return $return;
 		}
-		$count = $this->getcountbygoodid($cost['modules']['huelleg'],$this->cid);
-		if ($cost['modules']['huellec'] > $count)
+		$count = $this->getcountbygoodid($cost[modules][huelleg],$this->cid);
+		if ($cost[modules][huellec] > $count)
 		{
-			$return['msg'] = "Zur Reparatur werden ".$cost['modules']['huellec']." Hï¿½llenmodule benï¿½tigt - Vorhanden sind nur ".$count;
+			$return[msg] = "Zur Reparatur werden ".$cost[modules][huellec]." Hüllenmodule benötigt - Vorhanden sind nur ".$count;
 			return $return;
 		}
-		$count = $this->getcountbygoodid($cost['modules']['schildeg'],$this->cid);
-		if ($cost['modules']['schildec'] > $count)
+		$count = $this->getcountbygoodid($cost[modules][schildeg],$this->cid);
+		if ($cost[modules][schildec] > $count)
 		{
-			$return['msg'] = "Zur Reparatur werden ".$cost['modules']['schildec']." Schildmodule benï¿½tigt - Vorhanden sind nur ".$count;
+			$return[msg] = "Zur Reparatur werden ".$cost[modules][schildec]." Schildmodule benötigt - Vorhanden sind nur ".$count;
 			return $return;
 		}
-		$count = $this->getcountbygoodid($cost['modules']['antriebg'],$this->cid);
-		if ($cost['modules']['antriebc'] > $count)
+		$count = $this->getcountbygoodid($cost[modules][antriebg],$this->cid);
+		if ($cost[modules][antriebc] > $count)
 		{
-			$return['msg'] = "Zur Reparatur werden ".$cost['modules']['antriebc']." Antriebsmodule benï¿½tigt - Vorhanden sind nur ".$count;
+			$return[msg] = "Zur Reparatur werden ".$cost[modules][antriebc]." Antriebsmodule benötigt - Vorhanden sind nur ".$count;
 			return $return;
 		}
-		if ($shipdata['reaktormodlvl'] > 0)
+		if ($shipdata[reaktormodlvl] > 0)
 		{
-			$count = $this->getcountbygoodid($cost['modules']['reaktorg'],$this->cid);
-			if ($cost['modules']['reaktorc'] > $count)
+			$count = $this->getcountbygoodid($cost[modules][reaktorg],$this->cid);
+			if ($cost[modules][reaktorc] > $count)
 			{
-				$return['msg'] = "Zur Reparatur werden ".$cost['modules']['reaktorc']." Reaktormodule benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[modules][reaktorc]." Reaktormodule benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 		}
-		$count = $this->getcountbygoodid($cost['modules']['sensorg'],$this->cid);
-		if ($cost['modules']['sensorc'] > $count)
+		$count = $this->getcountbygoodid($cost[modules][sensorg],$this->cid);
+		if ($cost[modules][sensorc] > $count)
 		{
-			$return['msg'] = "Zur Reparatur werden ".$cost['modules']['sensorc']." Sensormodule benï¿½tigt - Vorhanden sind nur ".$count;
+			$return[msg] = "Zur Reparatur werden ".$cost[modules][sensorc]." Sensormodule benötigt - Vorhanden sind nur ".$count;
 			return $return;
 		}
-		$count = $this->getcountbygoodid($cost['modules']['computerg'],$this->cid);
-		if ($cost['modules']['computerc'] > $count)
+		$count = $this->getcountbygoodid($cost[modules][computerg],$this->cid);
+		if ($cost[modules][computerc] > $count)
 		{
-			$return['msg'] = "Zur Reparatur werden ".$cost['modules']['computerc']." Computermodule benï¿½tigt - Vorhanden sind nur ".$count;
+			$return[msg] = "Zur Reparatur werden ".$cost[modules][computerc]." Computermodule benötigt - Vorhanden sind nur ".$count;
 			return $return;
 		}
-		if ($shipdata['waffenmodlvl'] > 0)
+		if ($shipdata[waffenmodlvl] > 0)
 		{
-			$count = $this->getcountbygoodid($cost['modules']['waffeng'],$this->cid);
-			if ($cost['modules']['waffenc'] > $count)
+			$count = $this->getcountbygoodid($cost[modules][waffeng],$this->cid);
+			if ($cost[modules][waffenc] > $count)
 			{
-				$return['msg'] = "Zur Reparatur werden ".$cost['modules']['waffenc']." Waffenmodule benï¿½tigt - Vorhanden sind nur ".$count;
+				$return[msg] = "Zur Reparatur werden ".$cost[modules][waffenc]." Waffenmodule benötigt - Vorhanden sind nur ".$count;
 				return $return;
 			}
 		}
-		$count = $this->getcountbygoodid($cost['modules']['epsg'],$this->cid);
-		if ($cost['modules']['epsc'] > $count)
+		$count = $this->getcountbygoodid($cost[modules][epsg],$this->cid);
+		if ($cost[modules][epsc] > $count)
 		{
-			$return['msg'] = "Zur Reparatur werden ".$cost['modules']['epsc']." EPS-Gittermodule benï¿½tigt - Vorhanden sind nur ".$count;
+			$return[msg] = "Zur Reparatur werden ".$cost[modules][epsc]." EPS-Gittermodule benötigt - Vorhanden sind nur ".$count;
 			return $return;
 		}
-		if ($cost['modules']['huellec'] > 0) $this->lowerstoragebygoodid($cost['modules']['huellec'],$cost['modules']['huelleg'],$this->cid);
-		if ($cost['modules']['schildec'] > 0) $this->lowerstoragebygoodid($cost['modules']['schildec'],$cost['modules']['schildeg'],$this->cid);
-		if ($cost['modules']['antriebm'] > 0 && $cost['modules']['antriebc'] > 0) $this->lowerstoragebygoodid($cost['modules']['antriebc'],$cost['modules']['antriebg'],$this->cid);
-		if ($cost['modules']['reaktorm'] > 0 && $cost['modules']['reaktorc'] > 0)
+		if ($cost[modules][huellec] > 0) $this->lowerstoragebygoodid($cost[modules][huellec],$cost[modules][huelleg],$this->cid);
+		if ($cost[modules][schildec] > 0) $this->lowerstoragebygoodid($cost[modules][schildec],$cost[modules][schildeg],$this->cid);
+		if ($cost[modules][antriebm] > 0 && $cost[modules][antriebc] > 0) $this->lowerstoragebygoodid($cost[modules][antriebc],$cost[modules][antriebg],$this->cid);
+		if ($cost[modules][reaktorm] > 0 && $cost[modules][reaktorc] > 0)
 		{
-			$this->lowerstoragebygoodid($cost['modules']['reaktorc'],$cost['modules']['reaktorg'],$this->cid);
+			$this->lowerstoragebygoodid($cost[modules][reaktorc],$cost[modules][reaktorg],$this->cid);
 			$wka = ",warpcore=0";
 		}
-		if ($cost['modules']['waffenm'] > 0 && $cost['modules']['waffenc'] > 0) $this->lowerstoragebygoodid($cost['modules']['waffenc'],$cost['modules']['waffeng'],$this->cid);
-		if ($cost['modules']['computerc'] > 0) $this->lowerstoragebygoodid($cost['modules']['computerc'],$cost['modules']['computerg'],$this->cid);
-		if ($cost['modules']['epsc'] > 0) $this->lowerstoragebygoodid($cost['modules']['epsc'],$cost['modules']['epsg'],$this->cid);
-		if ($cost['modules']['sensorc'] > 0) $this->lowerstoragebygoodid($cost['modules']['sensorc'],$cost['modules']['sensorg'],$this->cid);
+		if ($cost[modules][waffenm] > 0 && $cost[modules][waffenc] > 0) $this->lowerstoragebygoodid($cost[modules][waffenc],$cost[modules][waffeng],$this->cid);
+		if ($cost[modules][computerc] > 0) $this->lowerstoragebygoodid($cost[modules][computerc],$cost[modules][computerg],$this->cid);
+		if ($cost[modules][epsc] > 0) $this->lowerstoragebygoodid($cost[modules][epsc],$cost[modules][epsg],$this->cid);
+		if ($cost[modules][sensorc] > 0) $this->lowerstoragebygoodid($cost[modules][sensorc],$cost[modules][sensorg],$this->cid);
 		if ($cost[0] > 0) $this->db->query("UPDATE stu_colonies SET energie=energie-".$cost[0]." WHERE id=".$this->cid);
 		if ($cost[3] > 0) $this->lowerstoragebygoodid($cost[3],3,$this->cid);
 		if ($cost[6] > 0) $this->lowerstoragebygoodid($cost[6],6,$this->cid);
@@ -2585,9 +2585,9 @@ class colony
 		if ($cost[14] > 0) $this->lowerstoragebygoodid($cost[14],14,$this->cid);
 		if ($cost[15] > 0) $this->lowerstoragebygoodid($cost[15],15,$this->cid);
 		if ($cost[19] > 0) $this->lowerstoragebygoodid($cost[19],19,$this->cid);
-		$this->db->query("UPDATE stu_ships SET huelle=".$shipdata['maxhuell'].$wka." WHERE id='".$shipId."'");
-		$this->db->query("DELETE FROM stu_ships_action WHERE (mode='impdef' OR mode='waffdef' OR mode='cloakdef' OR mode='readef' OR mode='ksendef' OR mode='lsendef' OR mode='shidef') AND ships_id=".$shipdata['id']);
-		$return['msg'] = "Das Schiff wurde repariert";
+		$this->db->query("UPDATE stu_ships SET huelle=".$shipdata[maxhuell].$wka." WHERE id='".$shipId."'");
+		$this->db->query("DELETE FROM stu_ships_action WHERE (mode='impdef' OR mode='waffdef' OR mode='cloakdef' OR mode='readef' OR mode='ksendef' OR mode='lsendef' OR mode='shidef') AND ships_id=".$shipdata[id]);
+		$return[msg] = "Das Schiff wurde repariert";
 		return $return;
 	}
 	
@@ -2604,7 +2604,7 @@ class colony
 		$this->db->query("DELETE FROM stu_ships_buildprogress WHERE colonies_id=".$this->cid);
 		$this->db->query("DELETE FROM stu_sector_flights WHERE colonies_id=".$this->cid);
 		if ($bev > 0) $msg = "<br>".($bev*5)." Sympathie abgezogen";
-		$return['msg'] = "Die Kolonie wurde aufgegeben".$msg;
+		$return[msg] = "Die Kolonie wurde aufgegeben".$msg;
 		return $return;
 	}
 	
@@ -2612,7 +2612,7 @@ class colony
 	{
 		if ($this->cid == 6014) 
 		{
-			$return['msg'] = "Diese Kolonie kann nicht gesprengt werden (Denkmalschutz)";
+			$return[msg] = "Diese Kolonie kann nicht gesprengt werden (Denkmalschutz)";
 			return $return;
 		}
 		$bev = $this->cbev_used + $this->cbev_free;
@@ -2645,7 +2645,7 @@ class colony
 		for ($i=0;$i<count($fields);$i++) $this->db->query("UPDATE stu_colonies_underground SET type=".$fields[$i].",buildings_id=0,integrity=0,aktiv=0 WHERE field_id=".$i." AND colonies_id=".$this->cid);
 		if ($bev > 0) $msg = "<br>".($bev*5)." Sympathie abgezogen";
 		$this->db->query("DELETE FROM stu_sector_flights WHERE colonies_id=".$this->cid);
-		$return['msg'] = "Die Kolonie wurde gesprengt".$msg;
+		$return[msg] = "Die Kolonie wurde gesprengt".$msg;
 		return $return;
 	}
 	
@@ -2653,125 +2653,125 @@ class colony
 	{
 		if (($mode != 1) && ($mode != 0))
 		{
-			$return['msg'] = "Parameterfehler";
+			$return[msg] = "Parameterfehler";
 			return $return;
 		}
 		$this->db->query("UPDATE stu_colonies SET ewopt=".$mode." WHERE id=".$this->cid." AND user_id=".$this->user);
-		$return['msg'] = "Einwanderungseinstellung geï¿½ndert";
+		$return[msg] = "Einwanderungseinstellung geändert";
 		return $return;
 	}
 	
 	function beammsg($goods,$shipId,$way)
 	{
 		$shipdata = $this->db->query("SELECT name,user_id FROM stu_ships WHERE id='".$shipId."'",4);
-		if ($shipdata['user_id'] == $this->user) return 0;
-		foreach($goods as $key => $value) if ($value['id']) $dummygood .= $value['count']."&nbsp;".$this->db->query("SELECT name FROM stu_goods WHERE id='".$value['id']."'",1)."<br>";
+		if ($shipdata[user_id] == $this->user) return 0;
+		foreach($goods as $key => $value) if ($value[id]) $dummygood .= $value['count']."&nbsp;".$this->db->query("SELECT name FROM stu_goods WHERE id='".$value[id]."'",1)."<br>";
 		$way == "to" ? $way = "zu" : $way = "von";
-		$message = "Die Kolonie ".$this->cname." beamt in Sektor ".$this->ccoords_x."/".$this->ccoords_y." ".$way." der ".$shipdata['name'].": ".$dummygood;
+		$message = "Die Kolonie ".$this->cname." beamt in Sektor ".$this->ccoords_x."/".$this->ccoords_y." ".$way." der ".$shipdata[name].": ".$dummygood;
 		global $myComm;
-		$myComm->sendpm($shipdata['user_id'],$this->user,$message,3);
+		$myComm->sendpm($shipdata[user_id],$this->user,$message,3);
 	}
 	
 	function demontship($shipId)
 	{
 		global $myShip;
 		$shipdata = $myShip->getdatabyid($shipId);
-		if ($shipdata['user_id'] != $this->user) return 0;
-		if ($shipdata['coords_x'] != $this->ccoords_x || $shipdata['coords_y'] != $this->ccoords_y) return 0;
-		$cost = $this->getshipcostbyid($shipdata['ships_rumps_id']);
-		$pro = @(100/$shipdata['maxhuell'])*$shipdata['huelle'];
-		/*if ($shipdata['ships_rumps_id'] != 111)
+		if ($shipdata[user_id] != $this->user) return 0;
+		if ($shipdata[coords_x] != $this->ccoords_x || $shipdata[coords_y] != $this->ccoords_y) return 0;
+		$cost = $this->getshipcostbyid($shipdata[ships_rumps_id]);
+		$pro = @(100/$shipdata[maxhuell])*$shipdata[huelle];
+		/*if ($shipdata[ships_rumps_id] != 111)
 		{
-			$msg = "Die ".$shipdata['name']." wird demontiert... Es wurden folgende Ressourcen dabei gewonnen<br>";
+			$msg = "Die ".$shipdata[name]." wird demontiert... Es wurden folgende Ressourcen dabei gewonnen<br>";
 			for ($i=0;$i<count($cost);$i++)
 			{
-				if ((($cost[$i]['goods_id'] == 3) || ($cost[$i]['goods_id'] == 6) || ($cost[$i]['goods_id'] == 9)) && (floor(($cost[$i]['count']/100)*$pro) > 0))
+				if ((($cost[$i][goods_id] == 3) || ($cost[$i][goods_id] == 6) || ($cost[$i][goods_id] == 9)) && (floor(($cost[$i]['count']/100)*$pro) > 0))
 				{
-					$this->upperstoragebygoodid(floor(($cost[$i]['count']/100)*$pro),$cost[$i]['goods_id'],$this->cid,$this->user);
-					$msg .= floor(($cost[$i]['count']/100)*$pro)." ".$cost[$i]['name']."<br>";
+					$this->upperstoragebygoodid(floor(($cost[$i]['count']/100)*$pro),$cost[$i][goods_id],$this->cid,$this->user);
+					$msg .= floor(($cost[$i]['count']/100)*$pro)." ".$cost[$i][name]."<br>";
 				}
 			}
 			$mod = 0;
-			$module = $myShip->getmodulebyid($shipdata['huellmodlvl']);
-			for ($i=0;$i<floor(($shipdata['c']['huellmod']/100)*$pro);$i++)
+			$module = $myShip->getmodulebyid($shipdata[huellmodlvl]);
+			for ($i=0;$i<floor(($shipdata[c][huellmod]/100)*$pro);$i++)
 			{
-				if (rand(1,100) <= $module['demontchg'])
+				if (rand(1,100) <= $module[demontchg])
 				{
-					$this->upperstoragebygoodid(1,$module['goods_id'],$this->cid,$this->user);
+					$this->upperstoragebygoodid(1,$module[goods_id],$this->cid,$this->user);
 					$mod++;
 				}
 			}
-			if ($mod > 0) $msg .= $mod." ".$module['name']."<br>";
+			if ($mod > 0) $msg .= $mod." ".$module[name]."<br>";
 			$mod = 0;
-			$module = $myShip->getmodulebyid($shipdata['schildmodlvl']);
-			for ($i=0;$i<floor(($shipdata['c']['schilmod']/100)*$pro);$i++)
+			$module = $myShip->getmodulebyid($shipdata[schildmodlvl]);
+			for ($i=0;$i<floor(($shipdata[c][schilmod]/100)*$pro);$i++)
 			{
-				if (rand(1,100) <= $module['demontchg'])
+				if (rand(1,100) <= $module[demontchg])
 				{
-					$this->upperstoragebygoodid(1,$module['goods_id'],$this->cid,$this->user);
+					$this->upperstoragebygoodid(1,$module[goods_id],$this->cid,$this->user);
 					$mod++;
 				}
 			}
-			if ($mod > 0) $msg .= $mod." ".$module['name']."<br>";
+			if ($mod > 0) $msg .= $mod." ".$module[name]."<br>";
 			$mod = 0;
-			$module = $myShip->getmodulebyid($shipdata['epsmodlvl']);
-			for ($i=0;$i<floor(($shipdata['c']['epsmod']/100)*$pro);$i++)
+			$module = $myShip->getmodulebyid($shipdata[epsmodlvl]);
+			for ($i=0;$i<floor(($shipdata[c][epsmod]/100)*$pro);$i++)
 			{
-				if (rand(1,100) <= $module['demontchg'])
+				if (rand(1,100) <= $module[demontchg])
 				{
-					$this->upperstoragebygoodid(1,$module['goods_id'],$this->cid,$this->user);
+					$this->upperstoragebygoodid(1,$module[goods_id],$this->cid,$this->user);
 					$mod++;
 				}
 			}
-			if ($mod > 0) $msg .= $mod." ".$module['name']."<br>";
+			if ($mod > 0) $msg .= $mod." ".$module[name]."<br>";
 			$mod = 0;
-			if ($shipdata['waffenmodlvl'] > 0)
+			if ($shipdata[waffenmodlvl] > 0)
 			{
-				$module = $myShip->getmodulebyid($shipdata['waffenmodlvl']);
-				for ($i=0;$i<floor(($shipdata['c']['waffenmod']/100)*$pro);$i++)
+				$module = $myShip->getmodulebyid($shipdata[waffenmodlvl]);
+				for ($i=0;$i<floor(($shipdata[c][waffenmod]/100)*$pro);$i++)
 				{
-					if (rand(1,100) <= $module['demontchg'])
+					if (rand(1,100) <= $module[demontchg])
 					{
-						$this->upperstoragebygoodid(1,$module['goods_id'],$this->cid,$this->user);
+						$this->upperstoragebygoodid(1,$module[goods_id],$this->cid,$this->user);
 						$mod++;
 					}
 				}
-				if ($mod > 0) $msg .= $mod." ".$module['name']."<br>";
+				if ($mod > 0) $msg .= $mod." ".$module[name]."<br>";
 				$mod = 0;
 			}
-			if ($mod > 0) $msg .= $mod." ".$module['name']."<br>";
+			if ($mod > 0) $msg .= $mod." ".$module[name]."<br>";
 			$mod = 0;
-			$module = $myShip->getmodulebyid($shipdata['sensormodlvl']);
-			for ($i=0;$i<floor(($shipdata['c']['sensormod']/100)*$pro);$i++)
+			$module = $myShip->getmodulebyid($shipdata[sensormodlvl]);
+			for ($i=0;$i<floor(($shipdata[c][sensormod]/100)*$pro);$i++)
 			{
-				if (rand(1,100) <= $module['demontchg'])
+				if (rand(1,100) <= $module[demontchg])
 				{
-					$this->upperstoragebygoodid(1,$module['goods_id'],$this->cid,$this->user);
+					$this->upperstoragebygoodid(1,$module[goods_id],$this->cid,$this->user);
 					$mod++;
 				}
 			}
-			if ($mod > 0) $msg .= $mod." ".$module['name']."<br>";
+			if ($mod > 0) $msg .= $mod." ".$module[name]."<br>";
 			$mod = 0;
-			if ($shipdata['reaktormodlvl'] > 0)
+			if ($shipdata[reaktormodlvl] > 0)
 			{
-				$module = $myShip->getmodulebyid($shipdata['reaktormodlvl']);
-				if (rand(1,100) <= $module['demontchg'] && round((1/100)*$pro) > 0)
+				$module = $myShip->getmodulebyid($shipdata[reaktormodlvl]);
+				if (rand(1,100) <= $module[demontchg] && round((1/100)*$pro) > 0)
 				{
-					$this->upperstoragebygoodid(1,$module['goods_id'],$this->cid,$this->user);
-					$msg .= "1 ".$module['name']."<br>";
+					$this->upperstoragebygoodid(1,$module[goods_id],$this->cid,$this->user);
+					$msg .= "1 ".$module[name]."<br>";
 				}
 			}
-			$module = $myShip->getmodulebyid($shipdata['antriebmodlvl']);
-			if (rand(1,100) <= $module['demontchg'] && round((1/100)*$pro) > 0)
+			$module = $myShip->getmodulebyid($shipdata[antriebmodlvl]);
+			if (rand(1,100) <= $module[demontchg] && round((1/100)*$pro) > 0)
 			{
-				$this->upperstoragebygoodid(1,$module['goods_id'],$this->cid,$this->user);
-				$msg .= "1 ".$module['name']."<br>";
+				$this->upperstoragebygoodid(1,$module[goods_id],$this->cid,$this->user);
+				$msg .= "1 ".$module[name]."<br>";
 			}
-			$module = $myShip->getmodulebyid($shipdata['computermodlvl']);
-			if (rand(1,100) <= $module['demontchg'] && round((1/100)*$pro) > 0)
+			$module = $myShip->getmodulebyid($shipdata[computermodlvl]);
+			if (rand(1,100) <= $module[demontchg] && round((1/100)*$pro) > 0)
 			{
-				$this->upperstoragebygoodid(1,$module['goods_id'],$this->cid,$this->user);
-				$msg .= "1 ".$module['name']."<br>";
+				$this->upperstoragebygoodid(1,$module[goods_id],$this->cid,$this->user);
+				$msg .= "1 ".$module[name]."<br>";
 			}
 			if ($this->db->query("SELECT id FROM stu_fleets WHERE user_id=".$this->user." AND ships_id=".$shipId,1) != 0)
 			{
@@ -2784,7 +2784,7 @@ class colony
 		$this->db->query("DELETE FROM stu_ships WHERE id='".$shipId."' AND user_id=".$this->user);
 		$this->db->query("DELETE FROM stu_ships_action WHERE ships_id='".$shipId."' OR ships_id2='".$shipId."'");
 		$this->db->query("UPDATE stu_ships SET dock=0 WHERE dock=".$shipId);
-		$return['msg'] = $msg;
+		$return[msg] = $msg;
 		return $return;
 	}
 	
@@ -2796,43 +2796,43 @@ class colony
 		if ($field == 0) return 0;
 		if ($this->db->query("SELECT id FROM stu_colonies_orbit WHERE colonies_id=".$this->cid." AND buildings_id='53' AND buildtime=0",1) == 0)
 		{
-			$return['msg'] = "Im Orbit dieses Planeten befindet sich kein fertiggestelltes Subraumteleskop";
+			$return[msg] = "Im Orbit dieses Planeten befindet sich kein fertiggestelltes Subraumteleskop";
 			return $return;
 		}
 		if ($this->db->query("SELECT id FROM stu_colonies_fields WHERE (buildings_id=21 or buildings_id=168) AND colonies_id=".$this->cid." AND aktiv=1",1) == 0)
 		{
-			$return['msg'] = "Zum scannen wird ein aktivierter Raumbahnhof benï¿½tigt";
+			$return[msg] = "Zum scannen wird ein aktivierter Raumbahnhof benötigt";
 			return $return;
 		}
 		if ($this->cenergie < 3)
 		{
-			$return['msg'] = "Es werden mindestens 3 Energie benï¿½tigt - Vorhanden sind nur ".$this->cenergie;
+			$return[msg] = "Es werden mindestens 3 Energie benötigt - Vorhanden sind nur ".$this->cenergie;
 			return $return;
 		}
 		$this->db->query("UPDATE stu_colonies SET energie=energie-3 WHERE id=".$this->cid);
-		if ($field['type'] == 15)
+		if ($field[type] == 15)
 		{
-			$return['msg'] = "Dieser Sektor kann aufgrund des Quasars nicht gescant werden";
+			$return[msg] = "Dieser Sektor kann aufgrund des Quasars nicht gescant werden";
 			return $return;
 		}
-		if ($field['type'] == 31)
+		if ($field[type] == 31)
 		{
-			$return['msg'] = "Dieser Sektor kann aufgrund des Mutaranebels nicht gescant werden";
+			$return[msg] = "Dieser Sektor kann aufgrund des Mutaranebels nicht gescant werden";
 			return $return;
 		}
 		if ($myMap->checksenjammer($coordsx,$coordsy,$this->cwese) != 0)
 		{
-			$return['msg'] = "Der Scan dieses Sektors ist fehlgeschlagen";
+			$return[msg] = "Der Scan dieses Sektors ist fehlgeschlagen";
 			return $return;
 		}
 		if ($coordsx >=1 && $coordsx <=20 && $coordsy >=80 && $coordsy <=120 && $this->cwese == 1)
 		{
-			$return['msg'] = "Dieser Sektor kann aufgrund von Subraumstï¿½rungen nicht gescant werden";
+			$return[msg] = "Dieser Sektor kann aufgrund von Subraumstörungen nicht gescant werden";
 			return $return;
 		}
 		if ($coordsx >=1 && $coordsx <=25 && $coordsy >=1 && $coordsy <=25 && $this->cwese == 1)
 		{
-			$return['msg'] = "Dieser Sektor kann aufgrund von Subraumstï¿½rungen nicht gescant werden";
+			$return[msg] = "Dieser Sektor kann aufgrund von Subraumstörungen nicht gescant werden";
 			return $return;
 		}
 		global $myMap;
@@ -2862,25 +2862,25 @@ class colony
 			$fielddata = $this->getgroundfielddatabyid($fieldId,$this->cid);
 		}
 		else return 0;
-		$build = $this->getbuildbyid($fielddata['buildings_id']);
-		if ($fielddata['integrity'] == $build['integrity'])
+		$build = $this->getbuildbyid($fielddata[buildings_id]);
+		if ($fielddata[integrity] == $build[integrity])
 		{
-			$return['msg'] = "Dieses Gebï¿½ude ist nicht beschï¿½digt";
+			$return[msg] = "Dieses Gebäude ist nicht beschädigt";
 			return $return;
 		}
-		$cost = $this->getbuildingcostbyid($build['id']);
+		$cost = $this->getbuildingcostbyid($build[id]);
 		for ($i=0;$i<count($cost);$i++) {
-			$count = $this->getcountbygoodid($cost[$i]['goods_id'],$this->cid);
-			$rcost = ceil((($cost[$i]['count']/100)*((100/$build['integrity'])*($build['integrity']-$fielddata['integrity']))));
+			$count = $this->getcountbygoodid($cost[$i][goods_id],$this->cid);
+			$rcost = ceil((($cost[$i]['count']/100)*((100/$build[integrity])*($build[integrity]-$fielddata[integrity]))));
 			if ($count < $rcost)
 			{
-				$return['msg'] = "Es wird ".$rcost." ".$cost[$i]['name']." benï¿½tigt - Vorhanden ist nur ".$count;
+				$return[msg] = "Es wird ".$rcost." ".$cost[$i][name]." benötigt - Vorhanden ist nur ".$count;
 				return $return;
 			}
 		}
-		for ($i=0;$i<count($cost);$i++) $this->lowerstoragebygoodid($rcost,$cost[$i]['goods_id'],$this->cid);
-		$this->db->query("UPDATE stu_colonies_".$add." SET integrity=".$build['integrity']." WHERE colonies_id=".$this->cid." AND field_id=".$fieldId);
-		$return['msg'] = $build['name']." auf Feld ".($fieldId+1)." repariert";
+		for ($i=0;$i<count($cost);$i++) $this->lowerstoragebygoodid($rcost,$cost[$i][goods_id],$this->cid);
+		$this->db->query("UPDATE stu_colonies_".$add." SET integrity=".$build[integrity]." WHERE colonies_id=".$this->cid." AND field_id=".$fieldId);
+		$return[msg] = $build[name]." auf Feld ".($fieldId+1)." repariert";
 		return $return;
 	}
 	
@@ -2888,49 +2888,49 @@ class colony
 	{
 		global $myShip,$myHistory;
 		$shipdata = $myShip->getdatabyid($shipId);
-		if ($shipdata['schilde_aktiv'] == 1 && $this->db->query("SELECT besonder FROM stu_ships_modules WHERE id=".$shipdata['schildmodlvl'],1) == "Regenerativ") $damage = round($damage * 0.8);
-		if ($shipdata['schilde_aktiv'] == 0 && $this->db->query("SELECT besonder FROM stu_ships_modules WHERE id=".$shipdata['huellmodlvl'],1) == "Ablativ") $damage = round($damage * 0.8);
-		if ($shipdata['schilde_aktiv'] == 0 && $this->db->query("SELECT besonder FROM stu_ships_modules WHERE id=".$shipdata['huellmodlvl'],1) == "Reparatursystem") $damage = round($damage * 0.5);
+		if ($shipdata[schilde_aktiv] == 1 && $this->db->query("SELECT besonder FROM stu_ships_modules WHERE id=".$shipdata[schildmodlvl],1) == "Regenerativ") $damage = round($damage * 0.8);
+		if ($shipdata[schilde_aktiv] == 0 && $this->db->query("SELECT besonder FROM stu_ships_modules WHERE id=".$shipdata[huellmodlvl],1) == "Ablativ") $damage = round($damage * 0.8);
+		if ($shipdata[schilde_aktiv] == 0 && $this->db->query("SELECT besonder FROM stu_ships_modules WHERE id=".$shipdata[huellmodlvl],1) == "Reparatursystem") $damage = round($damage * 0.5);
 
-		if ($shipdata['schilde_aktiv'] == 1)
+		if ($shipdata[schilde_aktiv] == 1)
 		{
-			if ($shipdata['schilde'] - $damage <= 0)
+			if ($shipdata[schilde] - $damage <= 0)
 			{
-				$huell = $shipdata['huelle'] - ($damage - $shipdata['schilde']);
-				$myShip->deactivatevalue($shipId,"schilde_aktiv",$shipdata['user_id']);
+				$huell = $shipdata[huelle] - ($damage - $shipdata[schilde]);
+				$myShip->deactivatevalue($shipId,"schilde_aktiv",$shipdata[user_id]);
 				if ($huell > 0)
 				{
 					$this->db->query("UPDATE stu_ships SET schilde=0 WHERE id='".$shipId."'");
 					$msg .= "Schilde brechen zusammen - Huelle bei ".$huell;
 				}
-				else $msg .= "Hï¿½llenbruch - Das Schiff wurde zerstï¿½rt";
+				else $msg .= "Hüllenbruch - Das Schiff wurde zerstört";
 			}
 			else
 			{
-				$schilde = $shipdata['schilde'] - $damage;
+				$schilde = $shipdata[schilde] - $damage;
 				$this->db->query("UPDATE stu_ships SET schilde=".$schilde." WHERE id='".$shipId."'");
 				$msg .= "Schilde bei ".$schilde;
-				$huell = $shipdata['huelle'];
+				$huell = $shipdata[huelle];
 			}
 		}
 		else
 		{
-			$huell = $shipdata['huelle'] - $damage;
-			if ($huell <= 0) $msg .= "Hï¿½llenbruch - Das Schiff wurde zerstï¿½rt";
+			$huell = $shipdata[huelle] - $damage;
+			if ($huell <= 0) $msg .= "Hüllenbruch - Das Schiff wurde zerstört";
 			else
 			{
 				$this->db->query("UPDATE stu_ships SET huelle=".$huell." WHERE id=".$shipId);
-				$msg .= "Hï¿½lle bei ".$huell;
+				$msg .= "Hülle bei ".$huell;
 			}
 		}
 		if ($huell < 1)
 		{
 			$myShip->trumfield($shipId);
 			$coldata = $this->getcolonybyid($colId);
-			$myHistory->addEvent("Die ".addslashes($shipdata['name'])." wurde in Sektor ".$shipdata['coords_x']."/".$shipdata['coords_y'].($shipdata['wese'] == 2 ? " (2)" : "")." von der Orbitalverteidigung der Kolonie ".addslashes($coldata['name'])." zerstï¿½rt$shipdata['name']d],1);
-			$return['destroyed'] = 1;
+			$myHistory->addEvent("Die ".addslashes($shipdata[name])." wurde in Sektor ".$shipdata[coords_x]."/".$shipdata[coords_y].($shipdata[wese] == 2 ? " (2)" : "")." von der Orbitalverteidigung der Kolonie ".addslashes($coldata[name])." zerstört",$shipdata[user_id],1);
+			$return[destroyed] = 1;
 		}
-		$return['msg'] = $msg;
+		$return[msg] = $msg;
 		return $return; 
 	}
 
@@ -2939,9 +2939,9 @@ class colony
 		$coldata = $this->getcolonybyid($colId);
 		if ($coldata == 0) return 0;
 		
-		// if ($coldata['energie'] == 0)
+		// if ($coldata[energie] == 0)
 		// {
-		// 	$return['msg'] = "Energiemangel auf der Kolonie - Orbitalverteidigung offline";
+		// 	$return[msg] = "Energiemangel auf der Kolonie - Orbitalverteidigung offline";
 		// 	return $return;
 		// }
 
@@ -2952,21 +2952,21 @@ class colony
 		for ($i=0;$i<mysql_num_rows($result);$i++)
 		{
 			$shipdata = $myShip->getdatabyid($shipId);
-			if ($usede == $coldata['energie'])
+			if ($usede == $coldata[energie])
 			{
 				$this->db->query("UPDATE stu_colonies SET energie=energie-".$usede." WHERE id='".$colId."'");
-				$return['msg'] = $msg;
+				$return[msg] = $msg;
 				return $return;
 			}
 			$data = mysql_fetch_assoc($result);
-			$msg .= "Phaserbatterie  (Feld ".($data['field_id']+1).") schieï¿½t auf die $data['field_id']e]."<br>";
+			$msg .= "Phaserbatterie  (Feld ".($data[field_id]+1).") schießt auf die ".$shipdata[name]."<br>";
 			$fire = $this->coldefensefire($colId,$shipId,8);
-			$msg .= $fire['msg']."<br>";
+			$msg .= $fire[msg]."<br>";
 			$usede++;
-			if ($fire['destroyed'] == 1)
+			if ($fire[destroyed] == 1)
 			{
 				$this->db->query("UPDATE stu_colonies SET energie=energie-".$usede." WHERE id='".$colId."'");
-				$return['msg'] = $msg;
+				$return[msg] = $msg;
 				return $return;
 			}
 		}
@@ -2975,21 +2975,21 @@ class colony
 		for ($i=0;$i<mysql_num_rows($result);$i++)
 		{
 			$shipdata = $myShip->getdatabyid($shipId);
-			if ($usede == $coldata['energie'])
+			if ($usede == $coldata[energie])
 			{
 				$this->db->query("UPDATE stu_colonies SET energie=energie-".$usede." WHERE id='".$colId."'");
-				$return['msg'] = $msg;
+				$return[msg] = $msg;
 				return $return;
 			}
 			$data = mysql_fetch_assoc($result);
-			$msg .= "Disruptorphalanx  (Feld ".($data['field_id']+1).") schieï¿½t auf die $data['field_id']e]."<br>";
+			$msg .= "Disruptorphalanx  (Feld ".($data[field_id]+1).") schießt auf die ".$shipdata[name]."<br>";
 			$fire = $this->coldefensefire($colId,$shipId,12);
-			$msg .= $fire['msg']."<br>";
+			$msg .= $fire[msg]."<br>";
 			$usede++;
-			if ($fire['destroyed'] == 1)
+			if ($fire[destroyed] == 1)
 			{
 				$this->db->query("UPDATE stu_colonies SET energie=energie-".$usede." WHERE id='".$colId."'");
-				$return['msg'] = $msg;
+				$return[msg] = $msg;
 				return $return;
 			}
 		}
@@ -2997,10 +2997,10 @@ class colony
 		for ($i=0;$i<mysql_num_rows($result);$i++)
 		{
 			$shipdata = $myShip->getdatabyid($shipId);
-			if ($usede == $coldata['energie'])
+			if ($usede == $coldata[energie])
 			{
 				$this->db->query("UPDATE stu_colonies SET energie=energie-".$usede." WHERE id='".$colId."'");
-				$return['msg'] = $msg;
+				$return[msg] = $msg;
 				return $return;
 			}
 			$data = mysql_fetch_assoc($result);
@@ -3011,29 +3011,29 @@ class colony
 				if ($count['count'] < $shots) $shots = $count['count'];
 				for ($q=0;$q<$shots;$q++)
 				{
-					$msg .= "Raketenwerfer (Feld ".($data['field_id']+1).") schieï¿½t eine Rakete auf die $data['field_id']e]."<br>";
+					$msg .= "Raketenwerfer (Feld ".($data[field_id]+1).") schießt eine Rakete auf die ".$shipdata[name]."<br>";
 					$fire = $this->coldefensefire($colId,$shipId,5);
-					$msg .= $fire['msg']."<br>";
+					$msg .= $fire[msg]."<br>";
 				}
 				$this->lowerstoragebygoodid($shots,41,$colId);
 				$usede++;
-				if ($fire['destroyed'] == 1)
+				if ($fire[destroyed] == 1)
 				{
 					$this->db->query("UPDATE stu_colonies SET energie=energie-".$usede." WHERE id='".$colId."'");
-					$return['msg'] = $msg;
+					$return[msg] = $msg;
 					return $return;
 				}
 			}
-			else $msg .= "Munition verbraucht - Raketenwerfer (Feld ".($data['field_id']+1).") offline<br>";
+			else $msg .= "Munition verbraucht - Raketenwerfer (Feld ".($data[field_id]+1).") offline<br>";
 		}
 		$result = $this->db->query("SELECT * FROM stu_colonies_orbit WHERE buildings_id=72 AND aktiv=1 AND colonies_id='".$colId."'");
 		for ($i=0;$i<mysql_num_rows($result);$i++)
 		{
 			$shipdata = $myShip->getdatabyid($shipId);
-			if ($usede == $coldata['energie'])
+			if ($usede == $coldata[energie])
 			{
 				$this->db->query("UPDATE stu_colonies SET energie=energie-".$usede." WHERE id='".$colId."'");
-				$return['msg'] = $msg;
+				$return[msg] = $msg;
 				return $return;
 			}
 			$data = mysql_fetch_assoc($result);
@@ -3044,45 +3044,45 @@ class colony
 				if ($count['count'] < $shots) $shots = $count['count'];
 				for ($q=0;$q<$shots;$q++)
 				{
-					$msg .= "Orbitale Verteidigungsplattform (Feld ".($data['field_id']+1).") schieï¿½t einen Plasmatorpedo auf die $data['field_id']e]."<br>";
+					$msg .= "Orbitale Verteidigungsplattform (Feld ".($data[field_id]+1).") schießt einen Plasmatorpedo auf die ".$shipdata[name]."<br>";
 					$fire = $this->coldefensefire($colId,$shipId,16);
-					$msg .= $fire['msg']."<br>";
+					$msg .= $fire[msg]."<br>";
 				}
 				$this->lowerstoragebygoodid($shots,16,$colId);
 				$usede++;
-				if ($fire['destroyed'] == 1)
+				if ($fire[destroyed] == 1)
 				{
 					$this->db->query("UPDATE stu_colonies SET energie=energie-".$usede." WHERE id='".$colId."'");
-					$return['msg'] = $msg;
+					$return[msg] = $msg;
 					return $return;
 				}
 			}
-			else $msg .= "Munition verbraucht - Orbitale Verteidigungsplattform (Feld ".($data['field_id']+1).") offline<br>";
+			else $msg .= "Munition verbraucht - Orbitale Verteidigungsplattform (Feld ".($data[field_id]+1).") offline<br>";
 		}
 		$result = $this->db->query("SELECT buildings_id,aktiv,field_id FROM stu_colonies_orbit WHERE (buildings_id=48 OR buildings_id=49 OR buildings_id=50) AND aktiv=1 AND colonies_id='".$colId."'");
 		for ($i=0;$i<mysql_num_rows($result);$i++)
 		{
 			$shipdata = $myShip->getdatabyid($shipId);
-			if ($usede == $coldata['energie'])
+			if ($usede == $coldata[energie])
 			{
 				$this->db->query("UPDATE stu_colonies SET energie=energie-".$usede." WHERE id='".$colId."'");
-				$return['msg'] = $msg;
+				$return[msg] = $msg;
 				return $return;
 			}
 			$data = mysql_fetch_assoc($result);
-			if ($data['buildings_id'] == 48)
+			if ($data[buildings_id] == 48)
 			{
 				$schaden = 12;
 				$type = "Photonentorpedo";
 				$good = 7;
 			}
-			elseif ($data['buildings_id'] == 49)
+			elseif ($data[buildings_id] == 49)
 			{
 				$schaden = 16;
 				$type = "Plasmatorpedo";
 				$good = 16;
 			}
-			elseif ($data['buildings_id'] == 50)
+			elseif ($data[buildings_id] == 50)
 			{
 				$schaden = 20;
 				$type = "Quantentorpedo";
@@ -3091,23 +3091,23 @@ class colony
 			$count = $this->getcountbygoodid($good,$colId);
 			if ($count['count'] > 0)
 			{
-				$msg .= "Torpedoplattform (Orbitfeld ".($data['field_id']+1).") schieï¿½t einen ".$type." auf die $data['field_id']e]."<br>";
+				$msg .= "Torpedoplattform (Orbitfeld ".($data[field_id]+1).") schießt einen ".$type." auf die ".$shipdata[name]."<br>";
 				$fire = $this->coldefensefire($colId,$shipId,$schaden);
-				$msg .= $fire['msg']."<br>";
+				$msg .= $fire[msg]."<br>";
 				$this->lowerstoragebygoodid(1,$good,$colId);
 				$usede++;
-				if ($fire['destroyed'] == 1)
+				if ($fire[destroyed] == 1)
 				{
 					$this->db->query("UPDATE stu_colonies SET energie=energie-".$usede." WHERE id='".$colId."'");
-					$return['msg'] = $msg;
+					$return[msg] = $msg;
 					return $return;
 				}
 			}
-			else $msg .= "Munition verbraucht - Torpedoplattform (Feld ".($data['field_id']+1).") offline<br>";
+			else $msg .= "Munition verbraucht - Torpedoplattform (Feld ".($data[field_id]+1).") offline<br>";
 		}
 
 		$this->db->query("UPDATE stu_colonies SET energie=energie-".$usede." WHERE id='".$colId."'");
-		$return['msg'] = $msg;
+		$return[msg] = $msg;
 		return $return;
 	}
 	
@@ -3125,7 +3125,7 @@ class colony
 			if ($this->ccolonies_classes_id == 7) $this->db->query("UPDATE stu_colonies_fields SET buildings_id='1',aktiv=1,integrity=100 WHERE field_id='22' AND colonies_id=".$this->cid);
 			if ($this->ccolonies_classes_id == 8) $this->db->query("UPDATE stu_colonies_fields SET buildings_id='1',aktiv=1,integrity=100 WHERE field_id='22' AND colonies_id=".$this->cid);
 			if ($this->ccolonies_classes_id == 9) $this->db->query("UPDATE stu_colonies_fields SET buildings_id='23',aktiv=1,integrity=100 WHERE field_id='17' AND colonies_id=".$this->cid);
-			$return['msg'] = "Es wurde eine neue Koloniezentrale errichtet";
+			$return[msg] = "Es wurde eine neue Koloniezentrale errichtet";
 			return $return;
 		}
 	}
@@ -3149,13 +3149,13 @@ class colony
 			$data = $this->getgroundfielddatabyid($fieldId,$this->cid);
 		}
 		else return 0;
-		if ($data['buildings_id'] == 0)
+		if ($data[buildings_id] == 0)
 		{
-			$return['msg'] = "Leere Felder kï¿½nnen nicht benannt werden";
+			$return[msg] = "Leere Felder können nicht benannt werden";
 			return $return;
 		}
 		$this->db->query("UPDATE stu_colonies_".$add." SET name='".addslashes($name)."' WHERE field_id='".$fieldId."' AND colonies_id=".$this->cid);
-		$return['msg'] = "Der Name wurde geï¿½ndert";
+		$return[msg] = "Der Name wurde geändert";
 		return $return;	
 	}
 	
@@ -3166,13 +3166,13 @@ class colony
 		if ($count == "reset")
 		{
 			$this->db->query("UPDATE stu_colonies SET bev_stop_count=0,ewopt=1 WHERE user_id=".$this->user." AND id=".$this->cid);
-			$return['msg'] = "Die Einwanderungsgrenze wurde zurï¿½ckgesetzt";
+			$return[msg] = "Die Einwanderungsgrenze wurde zurückgesetzt";
 		}
 		else
 		{
 			if (!is_numeric($count)) return 0;
 			$this->db->query("UPDATE stu_colonies SET bev_stop_count=".$count." WHERE user_id=".$this->user." AND id=".$this->cid);
-			$return['msg'] = "Einwanderungsgrenze wurde auf ".$count." festgelegt";
+			$return[msg] = "Einwanderungsgrenze wurde auf ".$count." festgelegt";
 		}
 		return $return;
 	}
@@ -3181,8 +3181,8 @@ class colony
 	{
 		if ($this->cshow == 0) return 0;
 		$this->db->query("UPDATE stu_colonies SET sperrung='".$mode."' WHERE id=".$this->cid);
-		if ($mode == 1) $return['msg'] = "Der Sektor wurde gesperrt";
-		else $return['msg'] = "Die Sektorsperrung wurde aufgehoben";
+		if ($mode == 1) $return[msg] = "Der Sektor wurde gesperrt";
+		else $return[msg] = "Die Sektorsperrung wurde aufgehoben";
 		return $return;
 	}
 	
@@ -3202,67 +3202,67 @@ class colony
 		global $myShip;
 		$shipdata = $myShip->getdatabyid($shipId);
 		if ($shipdata == 0) return 0;
-		if ($shipdata['coords_x'] != $this->ccoords_x || $shipdata['coords_y'] != $this->ccoords_y) return 0;
-		if ($this->cwese != $shipdata['wese']) return 0;
+		if ($shipdata[coords_x] != $this->ccoords_x || $shipdata[coords_y] != $this->ccoords_y) return 0;
+		if ($this->cwese != $shipdata[wese]) return 0;
 		if ($this->db->query("SELECT id FROM stu_colonies_fields WHERE (buildings_id=21 OR buildings_id=168) AND colonies_id=".$this->cid." AND aktiv=1",1) == 0)
 		{
-			$return['msg'] = "Fï¿½r die Schiffsupgrades wird ein aktivierter Raumbahnhof benï¿½tigt";
+			$return[msg] = "Für die Schiffsupgrades wird ein aktivierter Raumbahnhof benötigt";
 			return $return;
 		}
-		if ($this->user != $shipdata['user_id'])
+		if ($this->user != $shipdata[user_id])
 		{
-			$return['msg'] = "Du kannst nur Deine eigenen Schiffe upgraden";
+			$return[msg] = "Du kannst nur Deine eigenen Schiffe upgraden";
 			return $return;
 		}
 		if ($upgradeId == 1)
 		{
 			if ($this->getuserresearch(111,$this->user) == 0)
 			{
-				$return['msg'] = "Der Tachyon Emitter wurde noch nicht erforscht";
+				$return[msg] = "Der Tachyon Emitter wurde noch nicht erforscht";
 				return $return;
 			}
-			if ($shipdata['tachyon'] == 1)
+			if ($shipdata[tachyon] == 1)
 			{
-				$return['msg'] = "Auf diesem Schiff ist bereits ein Tachyon Emitter installiert";
+				$return[msg] = "Auf diesem Schiff ist bereits ein Tachyon Emitter installiert";
 				return $return;
 			}
-			if ($shipdata['c']['tachyon'] == 0)
+			if ($shipdata[c][tachyon] == 0)
 			{
-				$return['msg'] = "Auf diesem Schiffstyp kann kein Tachyon Emitter installiert werden";
+				$return[msg] = "Auf diesem Schiffstyp kann kein Tachyon Emitter installiert werden";
 				return $return;
 			}
 			if ($this->db->query("SELECT id FROM stu_colonies_orbit WHERE ((buildings_id > 26 AND buildings_id < 31) OR buildings_id = 135) AND colonies_id=".$this->cid,1) == 0)
 			{
-				$return['msg'] = "Fï¿½r die Schiffsupgrades wird eine erweiterte Werft benï¿½tigt";
+				$return[msg] = "Für die Schiffsupgrades wird eine erweiterte Werft benötigt";
 				return $return;
 			}
 			if ($this->cenergie < 10)
 			{
-				$return['msg'] = "Es wird 10 Energie benï¿½tigt - Vorhanden ist nur ".$this->cenergie;
+				$return[msg] = "Es wird 10 Energie benötigt - Vorhanden ist nur ".$this->cenergie;
 				return $return;
 			}
-			$good['bm'] = $this->getstoragebygoodid(3,$this->cid);
-			if ($good['bm'] == 0 || $good['bm'] < 10)
+			$good[bm] = $this->getstoragebygoodid(3,$this->cid);
+			if ($good[bm] == 0 || $good[bm] < 10)
 			{
-				$return['msg'] = "Es werden 10 Baumaterial benï¿½tigt - Vorhanden sind nur $return['msg']m];
+				$return[msg] = "Es werden 10 Baumaterial benötigt - Vorhanden sind nur ".$good[bm];
 				return $return;
 			}
-			$good['dura'] = $this->getstoragebygoodid(6,$this->cid);
-			if ($good['dura'] == 0 || $good['dura'] < 10)
+			$good[dura] = $this->getstoragebygoodid(6,$this->cid);
+			if ($good[dura] == 0 || $good[dura] < 10)
 			{
-				$return['msg'] = "Es werden 10 Duranium benï¿½tigt - Vorhanden sind nur $return['msg']a];
+				$return[msg] = "Es werden 10 Duranium benötigt - Vorhanden sind nur ".$good[dura];
 				return $return;
 			}
-			$good['iso'] = $this->getstoragebygoodid(10,$this->cid);
-			if ($good['iso'] == 0 || $good['iso'] < 5)
+			$good[iso] = $this->getstoragebygoodid(10,$this->cid);
+			if ($good[iso] == 0 || $good[iso] < 5)
 			{
-				$return['msg'] = "Es werden 5 Iso Chips benï¿½tigt - Vorhanden sind nur $return['msg']o];
+				$return[msg] = "Es werden 5 Iso Chips benötigt - Vorhanden sind nur ".$good[iso];
 				return $return;
 			}
-			$good['gel'] = $this->getstoragebygoodid(19,$this->cid);
-			if ($good['gel'] == 0 || $good['gel'] < 2)
+			$good[gel] = $this->getstoragebygoodid(19,$this->cid);
+			if ($good[gel] == 0 || $good[gel] < 2)
 			{
-				$return['msg'] = "Es werden 2 Gel Packs benï¿½tigt - Vorhanden sind nur $return['msg']l];
+				$return[msg] = "Es werden 2 Gel Packs benötigt - Vorhanden sind nur ".$good[gel];
 				return $return;
 			}
 			$this->db->query("UPDATE stu_ships SET tachyon=1 WHERE id=".$shipId);
@@ -3271,7 +3271,7 @@ class colony
 			$this->lowerstoragebygoodid(10,6,$this->cid);
 			$this->lowerstoragebygoodid(5,10,$this->cid);
 			$this->lowerstoragebygoodid(2,19,$this->cid);
-			$return['msg'] = "Auf der ".$shipdata['name']." wurde ein Tachyon Emitter installiert";
+			$return[msg] = "Auf der ".$shipdata[name]." wurde ein Tachyon Emitter installiert";
 			return $return;
 		}
 	}
@@ -3282,24 +3282,24 @@ class colony
 		if ($count <= 0 && $count != "max") return 0;
 		if ($this->db->query("SELECT id FROM stu_colonies_fields WHERE (buildings_id=51 OR buildings_id=81) AND colonies_id=".$this->cid,1) == 0)
 		{
-			$return['msg'] = "Es ist kein planetarer Schildemitter installiert";
+			$return[msg] = "Es ist kein planetarer Schildemitter installiert";
 			return $return;
 		}
 		if ($this->cschilde_aktiv == 1)
 		{
-			$return['msg'] = "Die Schilde kï¿½nnen nicht aufgeladen werden wenn sie aktiviert sind";
+			$return[msg] = "Die Schilde können nicht aufgeladen werden wenn sie aktiviert sind";
 			return $return;
 		}
 		if ($this->cschilde == $this->cmax_schilde)
 		{
-			$return['msg'] = "Die planetaren Schilde sind bereits vollstï¿½ndig aufgeladen";
+			$return[msg] = "Die planetaren Schilde sind bereits vollständig aufgeladen";
 			return $return;
 		}
 		if ($count == "max") $count = $this->cenergie;
 		if ($this->cenergie < $count) $count = $this->cenergie;
 		if ($this->cmax_schilde-$this->cschilde < $count) $count = $this->cmax_schilde-$this->cschilde;
 		$this->db->query("UPDATE stu_colonies SET energie=energie-".$count.",schilde=schilde+".$count." WHERE id=".$this->cid);
-		$return['msg'] = "Die planetaren Schilde wurden um ".$count." Einheiten aufgeladen";
+		$return[msg] = "Die planetaren Schilde wurden um ".$count." Einheiten aufgeladen";
 		return $return;
 	}
 	
@@ -3308,16 +3308,16 @@ class colony
 		if ($this->cshow == 0) return 0;
 		if (!is_numeric($freq1) || !is_numeric($freq2) || (strlen($freq1) != 2) || ($freq1 < 10) || (strlen($freq2) > 1))
 		{
-			$return['msg'] = "Es wurde eine ungï¿½ltige Schildfrequenz eingegeben";
+			$return[msg] = "Es wurde eine ungültige Schildfrequenz eingegeben";
 			return $return;
 		}
 		if ($this->db->query("SELECT id FROM stu_colonies_fields WHERE (buildings_id=51 OR buildings_id=81) AND colonies_id=".$this->cid." AND aktiv=1",1) == 0)
 		{
-			$return['msg'] = "Es befindet sich kein aktivierter planetarer Schildemitter auf dem Planeten";
+			$return[msg] = "Es befindet sich kein aktivierter planetarer Schildemitter auf dem Planeten";
 			return $return;
 		}
 		$this->db->query("UPDATE stu_colonies SET schild_freq1='".$freq1."',schild_freq2=".$freq2." WHERE id=".$this->cid);
-		$return['msg'] = "Die neue Schildfrequenz betrï¿½gt ".$freq1.",".$freq2."";
+		$return[msg] = "Die neue Schildfrequenz beträgt ".$freq1.",".$freq2."";
 		return $return;
 	}
 	
@@ -3326,21 +3326,21 @@ class colony
 		if ($this->cshow == 0) return 0;
 		if ($this->db->query("SELECT id FROM stu_colonies_fields WHERE (buildings_id=51 OR buildings_id=81) AND colonies_id=".$this->cid." AND aktiv=1",1) == 0)
 		{
-			$return['msg'] = "Es befindet sich kein aktivierter planetarer Schildemitter auf dem Planeten";
+			$return[msg] = "Es befindet sich kein aktivierter planetarer Schildemitter auf dem Planeten";
 			return $return;
 		}
 		if ($this->cenergie < 15)
 		{
-			$return['msg'] = "Zum aktivieren der Schilde werden 15 Energie benï¿½tigt";
+			$return[msg] = "Zum aktivieren der Schilde werden 15 Energie benötigt";
 			return $return;
 		}
 		if ($this->cschilde == 0)
 		{
-			$return['msg'] = "Die planetaren Schilde sind nicht aufgeladen";
+			$return[msg] = "Die planetaren Schilde sind nicht aufgeladen";
 			return $return;
 		}
 		$this->db->query("UPDATE stu_colonies SET schilde_aktiv=1,energie=energie-15 WHERE id=".$this->cid);
-		$return['msg'] = "Die planetaren Schilde wurden aktiviert";
+		$return[msg] = "Die planetaren Schilde wurden aktiviert";
 		return $return;
 	}
 	
@@ -3349,11 +3349,11 @@ class colony
 		if ($this->cshow == 0) return 0;
 		if ($this->db->query("SELECT id FROM stu_colonies_fields WHERE (buildings_id=51 OR buildings_id=81) AND colonies_id=".$this->cid." AND aktiv=1",1) == 0)
 		{
-			$return['msg'] = "Es befindet sich kein aktivierter planetarer Schildemitter auf dem Planeten";
+			$return[msg] = "Es befindet sich kein aktivierter planetarer Schildemitter auf dem Planeten";
 			return $return;
 		}
 		$this->db->query("UPDATE stu_colonies SET schilde_aktiv=0 WHERE id=".$this->cid);
-		$return['msg'] = "Die planetaren Schilde wurden deaktiviert";
+		$return[msg] = "Die planetaren Schilde wurden deaktiviert";
 		return $return;
 	}
 	
@@ -3362,12 +3362,12 @@ class colony
 		$data = $this->getcolonybyid($colId);
 		if ($data == 0) return 0;
 		if ($this->checkbuilding(81,$colId) == 0) return 0;
-		if ($data['schilde_aktiv'] == 0) return 0;
+		if ($data[schilde_aktiv] == 0) return 0;
 		$freq1 = rand(10,99);
 		$freq2 = rand(1,9);
 		$this->db->query("UPDATE stu_colonies SET schild_freq1=".$freq1.",schild_freq2=".$freq2." WHERE id=".$colId);
 		global $myComm;
-		$myComm->sendpm($data['user_id'],2,"Auf der Kolonie ".$data['name']." wurde die Schildfrequenz moduliert. Die neue Frequenz betrï¿½gt nun ".$freq1.",".$freq2,1);
+		$myComm->sendpm($data[user_id],2,"Auf der Kolonie ".$data[name]." wurde die Schildfrequenz moduliert. Die neue Frequenz beträgt nun ".$freq1.",".$freq2,1);
 	}
 
 	function decloakgeb($colId)
@@ -3375,41 +3375,41 @@ class colony
 		global $myUser;
 		$data = $this->getcolonybyid($colId);
 		if ($this->cshow == 0) return 0;
-		if ($this->db->query("SELECT id FROM stu_colonies_orbit WHERE colonies_id=".$data['id']." AND buildings_id=84",1) == 0)
+		if ($this->db->query("SELECT id FROM stu_colonies_orbit WHERE colonies_id=".$data[id]." AND buildings_id=84",1) == 0)
 		{
-			$return['msg'] = "Auf dieser Kolonie ist kein Sensornetz installiert";
+			$return[msg] = "Auf dieser Kolonie ist kein Sensornetz installiert";
 			return $return;
 		}
 		if ($this->db->query("SELECT id FROM stu_colonies_fields WHERE (buildings_id=21 OR buildings_id=168) AND colonies_id=".$colId." AND aktiv=1",1) == 0)
 		{
-			$return['msg'] = "Zum Scannen wird ein aktivierter Raumbahnhof benï¿½tigt";
+			$return[msg] = "Zum Scannen wird ein aktivierter Raumbahnhof benötigt";
 			return $return;
 		}
 		if ($this->cenergie < 12)
 		{
-			$return['msg'] = "Es wird mindestens 12 Energie zum Scan benï¿½tigt";
+			$return[msg] = "Es wird mindestens 12 Energie zum Scan benötigt";
 			return $return;
 		}
 		global $myComm;
 		$j=0;
 		$chance = 15;
-		for ($k=($data['coords_y']-1);$k<($data['coords_y']+2);$k++)
+		for ($k=($data[coords_y]-1);$k<($data[coords_y]+2);$k++)
 		{
-			for ($l=($data['coords_x']-1);$l<($data['coords_x']+2);$l++)
+			for ($l=($data[coords_x]-1);$l<($data[coords_x]+2);$l++)
 			{
 				$result2 = $this->db->query("SELECT a.id,a.user_id,a.name,a.coords_x,a.coords_y,a.huelle,a.huellmodlvl,b.huellmod FROM stu_ships as a LEFT JOIN stu_ships_rumps as b ON a.ships_rumps_id=b.id WHERE a.coords_x=".$l." AND a.coords_y=".$k." AND a.cloak=1 AND a.user_id!=".$this->user);
 				for ($i=0;$i<mysql_num_rows($result2);$i++)
 				{
 					$rand = rand(1,100);
 					$shipdat = mysql_fetch_assoc($result2);
-					$chance2 = $chance * round(sqrt(($this->db->query("SELECT huell FROM stu_ships_modules WHERE id=".$shipdat['huellmodlvl'],1)*$shipdat['huellmod'])/$shipdat['huelle']),1);
-					if (($k == $data['coords_y']) && ($l == $data['coords_x'])) $chance2 = 2 * $chance2;
+					$chance2 = $chance * round(sqrt(($this->db->query("SELECT huell FROM stu_ships_modules WHERE id=".$shipdat[huellmodlvl],1)*$shipdat[huellmod])/$shipdat[huelle]),1);
+					if (($k == $data[coords_y]) && ($l == $data[coords_x])) $chance2 = 2 * $chance2;
 					if ($rand <= $chance2)
 					{
-						if ($this->db->query("SELECT ships_id FROM stu_ships_uncloaked WHERE ships_id = ".$shipdat['id'],1) == 0)
+						if ($this->db->query("SELECT ships_id FROM stu_ships_uncloaked WHERE ships_id = ".$shipdat[id],1) == 0)
 						{
-							$this->db->query("INSERT INTO stu_ships_uncloaked (user_id,ships_id) VALUES ('".$this->user."','".$shipdat['id']."')");
-							$myComm->sendpm($shipdat['user_id'],2,"Die ".$shipdat['name']." wurde in Sektor ".$shipdat['coords_x']."/".$shipdat['coords_y']." von User ".$myUser->getfield("user",$this->user)." durch eine Sensorabtastung enttarnt",2);
+							$this->db->query("INSERT INTO stu_ships_uncloaked (user_id,ships_id) VALUES ('".$this->user."','".$shipdat[id]."')");
+							$myComm->sendpm($shipdat[user_id],2,"Die ".$shipdat[name]." wurde in Sektor ".$shipdat[coords_x]."/".$shipdat[coords_y]." von User ".$myUser->getfield("user",$this->user)." durch eine Sensorabtastung enttarnt",2);
 							$j++;
 						}
 					}
@@ -3417,8 +3417,8 @@ class colony
 				$chance2 = 0;
 			}
 		}
-		$this->db->query("UPDATE stu_colonies SET energie=energie-12 WHERE id=".$data['id']);
-		$return['msg'] = "Durch den Scan wurden ".$j." Schiffe entdeckt";
+		$this->db->query("UPDATE stu_colonies SET energie=energie-12 WHERE id=".$data[id]);
+		$return[msg] = "Durch den Scan wurden ".$j." Schiffe entdeckt";
 		return $return;
 	}
 	
@@ -3429,31 +3429,31 @@ class colony
 		global $myUser;
 		if ($this->db->query("SELECT id FROM stu_colonies_orbit WHERE colonies_id='".$this->cid."' AND buildings_id='102'",1) == 0)
 		{
-			$return['msg'] = "Im Orbit dieses Planeten befindet sich kein Horchposten";
+			$return[msg] = "Im Orbit dieses Planeten befindet sich kein Horchposten";
 			return $return;
 		}
 		if ($myUser->urasse != 2) 
 		{
-			$return['msg'] = "Kann diese Technologie nicht benutzen";
+			$return[msg] = "Kann diese Technologie nicht benutzen";
 			return $return;
 		}
 		if ($this->db->query("SELECT id FROM stu_colonies_fields WHERE (buildings_id=21 OR buildings_id=168) AND colonies_id=".$this->cid." AND aktiv=1",1) == 0)
 		{
-			$return['msg'] = "Zum Scannen wird ein aktivierter Raumbahnhof benï¿½tigt";
+			$return[msg] = "Zum Scannen wird ein aktivierter Raumbahnhof benötigt";
 			return $return;
 		}
 		if ($this->cenergie < 6)
 		{
-			$return['msg'] = "Zum Scannen wird 6 Energie benï¿½tigt";
+			$return[msg] = "Zum Scannen wird 6 Energie benötigt";
 			return $return;
 		}
 		if (abs($this->ccoords_x - $coordsx) + abs($this->ccoords_y - $coordsy) >= 40)
 		{
-			$return['msg'] = "Die Scanreichweite des Horchpostens betrï¿½gt 40 Sektoren";
+			$return[msg] = "Die Scanreichweite des Horchpostens beträgt 40 Sektoren";
 			return $return;
 		}
 		global $mapfields,$grafik;
-		$return['code'] = 1;
+		$return[code] = 1;
 		$x1 = $coordsx - 4;
 		$x2 = $coordsx + 4;
 		$y1 = $coordsy - 4;
@@ -3463,13 +3463,13 @@ class colony
 			$x1=1;
 			$x2=$coordsx+4;
 		}
-		if ($x2>$mapfields['max_x']) $x2=$mapfields['max_x'];
+		if ($x2>$mapfields[max_x]) $x2=$mapfields[max_x];
 		if ($y1<1)
 		{
 			$y1=1;
 			$y2=$coordsy+4;
 		}
-		if ($y2>$mapfields['max_y']) $y2=$mapfields['max_y'];
+		if ($y2>$mapfields[max_y]) $y2=$mapfields[max_y];
 		$map .= "<table bgcolor=#262323 cellspacing=1 cellpadding=1><tr><td class=tdmain x/y></td>";
 		for ($i=$x1;$i<=$x2;$i++) $map .= "<td class=tdmain>".$i."</td>";
 		$map .= "</tr>";
@@ -3482,12 +3482,12 @@ class colony
 				$fieldtype = $myMap->getfieldbycoords($j,$i,$wese);
 				$fielddata != 0 ? $fieldinf = "<b><font color=#ffffff>".count($fielddata)."</font></b>" : $fieldinf = "&nbsp;";
 				if ($fieldtype == 15) $fieldinf = "<strong><font color=#ffffff>X</font></strong>";
-				$map .= "<td width=29 height=30 border=1 background=".$grafik."/map/".$fieldtype['type'].".gif><table align=center width=30 height=30><tr><td align=center>".$fieldinf."</td></tr></table></td>";
+				$map .= "<td width=29 height=30 border=1 background=".$grafik."/map/".$fieldtype[type].".gif><table align=center width=30 height=30><tr><td align=center>".$fieldinf."</td></tr></table></td>";
 			}
 			$map .= "</tr>";
 		}
 		$map .= "</table>";
-		$return['msg'] = $map;
+		$return[msg] = $map;
 		$this->db->query("UPDATE stu_colonies SET energie=energie-6 WHERE id=".$this->cid);
 		return $return;
 	}
@@ -3500,46 +3500,46 @@ class colony
 		$result = $this->db->query("SELECT a.id,a.buildings_id,a.colonies_id,a.field_id,a.aktiv,b.user_id,b.name FROM stu_colonies_fields as a LEFT JOIN stu_colonies as b ON a.colonies_id=b.id WHERE a.buildtime>0 AND (a.buildtime<".time().")");
 		while($data=mysql_fetch_assoc($result))
 		{
-			$building = $this->getbuildbyid($data['buildings_id']);
-			$this->db->query("UPDATE stu_colonies_fields SET buildtime=0,aktiv=0 WHERE id=".$data['id']);
-			if ($data['buildings_id'] != 4 && $data['buildings_id'] != 218 && $data['buildings_id'] != 10 && $data['aktiv'] == 0) $act = $this->activateBuilding($data['field_id'],$data['colonies_id'],$data['user_id']);
-			if ($data['buildings_id'] == 38)
+			$building = $this->getbuildbyid($data[buildings_id]);
+			$this->db->query("UPDATE stu_colonies_fields SET buildtime=0,aktiv=0 WHERE id=".$data[id]);
+			if ($data[buildings_id] != 4 && $data[buildings_id] != 218 && $data[buildings_id] != 10 && $data[aktiv] == 0) $act = $this->activateBuilding($data[field_id],$data[colonies_id],$data[user_id]);
+			if ($data[buildings_id] == 38)
 			{
-				if ($act['code'] == 1) $aktiv = ",aktiv=1";
+				if ($act[code] == 1) $aktiv = ",aktiv=1";
 				$build2 = $this->getbuildbyid(39);
-				$this->db->query("UPDATE stu_colonies_underground SET buildings_id=39".$aktiv.",integrity=".$build2['integrity']." WHERE field_id=13 ANd colonies_id=".$data['colonies_id']);
+				$this->db->query("UPDATE stu_colonies_underground SET buildings_id=39".$aktiv.",integrity=".$build2[integrity]." WHERE field_id=13 ANd colonies_id=".$data[colonies_id]);
 			}
-			if ($data['buildings_id'] == 218)
+			if ($data[buildings_id] == 218)
 			{
-				$myComm->sendpm($data['user_id'],2,"Der Auftrag an Bord des abgestï¿½rzten Jem hadar Schiffes wurde abgeschlossen",$data['user_id']e]);
+				$myComm->sendpm($data[user_id],2,"Der Auftrag an Bord des abgestürzten Jem hadar Schiffes wurde abgeschlossen",4,$data[buildtime]);
 			}
 			else
 			{
-				$myComm->sendpm($data['user_id'],2,"Auf der Kolonie ".addslashes(stripslashes($data['name']))." wurde ein Gebï¿½ude auf der Oberflï¿½che fertiggestellt$data['user_id']ame].")$data['user_id']ime]);
+				$myComm->sendpm($data[user_id],2,"Auf der Kolonie ".addslashes(stripslashes($data[name]))." wurde ein Gebäude auf der Oberfläche fertiggestellt (".$building[name].")",4,$data[buildtime]);
 			}
 		}
 		$result = $this->db->query("SELECT a.id,a.buildings_id,a.colonies_id,a.field_id,a.aktiv,b.user_id,b.name FROM stu_colonies_orbit as a LEFT JOIN stu_colonies as b ON a.colonies_id=b.id WHERE a.buildtime>0 AND (a.buildtime<".time().")");
 		while($data=mysql_fetch_assoc($result))
 		{
-			$building = $this->getbuildbyid($data['buildings_id']);
-			$this->db->query("UPDATE stu_colonies_orbit SET buildtime=0,aktiv=0 WHERE id=".$data['id']);
-			if ($data['aktiv'] == 0) $this->activateOrbitBuilding($data['field_id'],$data['colonies_id'],$data['user_id']);
-			$myComm->sendpm($data['user_id'],2,"Auf der Kolonie ".addslashes(stripslashes($data['name']))." wurde ein Gebï¿½ude im Orbit fertiggestellt ($data['user_id']e].")",$data['user_id']e]);
+			$building = $this->getbuildbyid($data[buildings_id]);
+			$this->db->query("UPDATE stu_colonies_orbit SET buildtime=0,aktiv=0 WHERE id=".$data[id]);
+			if ($data[aktiv] == 0) $this->activateOrbitBuilding($data[field_id],$data[colonies_id],$data[user_id]);
+			$myComm->sendpm($data[user_id],2,"Auf der Kolonie ".addslashes(stripslashes($data[name]))." wurde ein Gebäude im Orbit fertiggestellt (".$building[name].")",4,$data[buildtime]);
 		}
 		$result = $this->db->query("SELECT a.id,a.buildings_id,a.colonies_id,a.field_id,a.aktiv,b.user_id,b.name FROM stu_colonies_underground as a LEFT JOIN stu_colonies as b ON a.colonies_id=b.id WHERE a.buildtime>0 AND (a.buildtime<".time().")");
 		while($data=mysql_fetch_assoc($result))
 		{
-			$building = $this->getbuildbyid($data['buildings_id']);
-			$this->db->query("UPDATE stu_colonies_underground SET buildtime=0,aktiv=0 WHERE id=".$data['id']);
-			if ($data['aktiv'] == 0) $this->activateGroundBuilding($data['field_id'],$data['colonies_id'],$data['user_id']);
-			$myComm->sendpm($data['user_id'],2,"Auf der Kolonie ".addslashes(stripslashes($data['name']))." wurde ein Gebï¿½ude im Untergrund fertiggestellt ($data['user_id']e].")",$data['user_id']e]);
+			$building = $this->getbuildbyid($data[buildings_id]);
+			$this->db->query("UPDATE stu_colonies_underground SET buildtime=0,aktiv=0 WHERE id=".$data[id]);
+			if ($data[aktiv] == 0) $this->activateGroundBuilding($data[field_id],$data[colonies_id],$data[user_id]);
+			$myComm->sendpm($data[user_id],2,"Auf der Kolonie ".addslashes(stripslashes($data[name]))." wurde ein Gebäude im Untergrund fertiggestellt (".$building[name].")",4,$data[buildtime]);
 		}
 		$result = $this->db->query("SELECT a.*,b.name,b.coords_x,b.coords_y FROM stu_ships_buildprogress as a LEFT JOIN stu_colonies as b ON a.colonies_id=b.id WHERE a.buildtime<=".time()." AND a.colonies_id>0");
 		while($data=mysql_fetch_assoc($result))
 		{
-			$this->db->query("INSERT INTO stu_ships (name,ships_rumps_id,user_id,huelle,coords_x,coords_y,huellmodlvl,sensormodlvl,waffenmodlvl,schildmodlvl,reaktormodlvl,antriebmodlvl,computermodlvl,epsmodlvl,points,wese) VALUES ('Noname','".$data['ships_rumps_id']."','".$data['user_id']."','".$data['huelle']."','".$data['coords_x']."','".$data['coords_y']."','".$data['huellmodlvl']."','".$data['sensormodlvl']."','".$data['waffenmodlvl']."','".$data['schildmodlvl']."','".$data['reaktormodlvl']."','".$data['antriebmodlvl']."','".$data['computermodlvl']."','".$data['epsmodlvl']."','".$data['points']."','".$data['wese']."')");
-			$myComm->sendpm($data['user_id'],2,"In der Werft auf der Kolonie ".$data['name']." wurde ein Schiff fertiggestellt",4,$data['buildtime']);
-			$this->db->query("DELETE FROM stu_ships_buildprogress WHERE id=".$data['id']);
+			$this->db->query("INSERT INTO stu_ships (name,ships_rumps_id,user_id,huelle,coords_x,coords_y,huellmodlvl,sensormodlvl,waffenmodlvl,schildmodlvl,reaktormodlvl,antriebmodlvl,computermodlvl,epsmodlvl,points,wese) VALUES ('Noname','".$data[ships_rumps_id]."','".$data[user_id]."','".$data[huelle]."','".$data[coords_x]."','".$data[coords_y]."','".$data[huellmodlvl]."','".$data[sensormodlvl]."','".$data[waffenmodlvl]."','".$data[schildmodlvl]."','".$data[reaktormodlvl]."','".$data[antriebmodlvl]."','".$data[computermodlvl]."','".$data[epsmodlvl]."','".$data[points]."','".$data[wese]."')");
+			$myComm->sendpm($data[user_id],2,"In der Werft auf der Kolonie ".$data[name]." wurde ein Schiff fertiggestellt",4,$data[buildtime]);
+			$this->db->query("DELETE FROM stu_ships_buildprogress WHERE id=".$data[id]);
 		}
 		$data = $this->db->query("SELECT * FROM stu_ships_buildprogress WHERE buildtime<=".time()." AND ships_id>0",2);
 		if ($data != 0)
@@ -3547,19 +3547,19 @@ class colony
 			global $myShip;
 			for ($i=0;$i<count($data);$i++)
 			{
-				$this->db->query("DELETE FROM stu_ships_buildprogress WHERE id=".$data[$i]['id']);
-				$ship = $myShip->getdatabyid($data[$i]['ships_id']);
-				$class = $myShip->getclassbyid($data[$i]['ships_rumps_id']);
-				$this->db->query("UPDATE stu_ships SET ships_rumps_id=".$data[$i]['ships_rumps_id'].",user_id=".$data[$i]['user_id'].",huelle=".$data[$i]['huelle'].",huellmodlvl=".$data[$i]['huellmodlvl'].",sensormodlvl=".$data[$i]['sensormodlvl'].",waffenmodlvl=".$data[$i]['waffenmodlvl'].",schildmodlvl=".$data[$i]['schildmodlvl'].",reaktormodlvl=".$data[$i]['reaktormodlvl'].",computermodlvl=".$data[$i]['computermodlvl'].",epsmodlvl=".$data[$i]['epsmodlvl'].",points=".$data[$i]['points'].",energie=0 WHERE id=".$data[$i]['ships_id']);
-				$myComm->sendpm($data[$i]['user_id'],2,"In Sektor ".$ship['coords_x']."/".$ship['coords_y']." wurde der Bau einer Station (".$class['name'].") abgeschlossen",2,$data[$i]['buildtime']);
-				$this->db->query("DELETE FROM stu_ships_storage WHERE ships_id=".$data[$i]['ships_id']);
+				$this->db->query("DELETE FROM stu_ships_buildprogress WHERE id=".$data[$i][id]);
+				$ship = $myShip->getdatabyid($data[$i][ships_id]);
+				$class = $myShip->getclassbyid($data[$i][ships_rumps_id]);
+				$this->db->query("UPDATE stu_ships SET ships_rumps_id=".$data[$i][ships_rumps_id].",user_id=".$data[$i][user_id].",huelle=".$data[$i][huelle].",huellmodlvl=".$data[$i][huellmodlvl].",sensormodlvl=".$data[$i][sensormodlvl].",waffenmodlvl=".$data[$i][waffenmodlvl].",schildmodlvl=".$data[$i][schildmodlvl].",reaktormodlvl=".$data[$i][reaktormodlvl].",computermodlvl=".$data[$i][computermodlvl].",epsmodlvl=".$data[$i][epsmodlvl].",points=".$data[$i][points].",energie=0 WHERE id=".$data[$i][ships_id]);
+				$myComm->sendpm($data[$i][user_id],2,"In Sektor ".$ship[coords_x]."/".$ship[coords_y]." wurde der Bau einer Station (".$class[name].") abgeschlossen",2,$data[$i][buildtime]);
+				$this->db->query("DELETE FROM stu_ships_storage WHERE ships_id=".$data[$i][ships_id]);
 			}
 		}
 		$result = $this->db->query("SELECT a.ships_id,b.user_id,b.name FROM stu_ships_action as a LEFT JOIN stu_ships as b ON a.ships_id=b.id WHERE a.mode='deact' AND a.ships_id2<".time());
 		while($data=mysql_fetch_assoc($result))
 		{
-			$myComm->sendpm($data['user_id'],2,"Die Kommunikationsverbindung zur ".addslashes(stripslashes($data['name']))." wurde wieder hergestellt",2);
-			$this->db->query("UPDATE stu_ships SET deact=0 WHERE id=".$data['ships_id']);
+			$myComm->sendpm($data[user_id],2,"Die Kommunikationsverbindung zur ".addslashes(stripslashes($data[name]))." wurde wieder hergestellt",2);
+			$this->db->query("UPDATE stu_ships SET deact=0 WHERE id=".$data[ships_id]);
 		}
 		$this->db->query("DELETE FROM stu_ships_action WHERE (mode='lsendef' OR mode='ksendef' OR mode='shidef' OR mode='readef' OR mode='waffdef' OR mode='cloakdef' OR mode='deact') AND ships_id2<".time());
 	}
@@ -3568,82 +3568,82 @@ class colony
 	{
 		if ($this->db->query("SELECT ships_rumps_id FROM stu_ships_build WHERE user_id='".$this->user."' AND ships_rumps_id='".$classId."'",1) == 0)
 		{
-			$return['msg'] = "Du darfst diesen Schiffstyp nicht bauen";
+			$return[msg] = "Du darfst diesen Schiffstyp nicht bauen";
 			return $return;
 		}
 		global $myShip;
 		$ship = $myShip->getclassbyid($classId);
-		$tmp = $this->db->query("SELECT * FROM stu_ships_modules WHERE type=1 AND lvl >= ".$ship['huellmod_min']." AND lvl <= ".$ship['huellmod_max']." ORDER BY lvl",2);
+		$tmp = $this->db->query("SELECT * FROM stu_ships_modules WHERE type=1 AND lvl >= ".$ship[huellmod_min]." AND lvl <= ".$ship[huellmod_max]." ORDER BY lvl",2);
 		for ($i=0;$i<count($tmp);$i++)
 		{
-			if (($tmp[$i]['research_id'] == 0) || ($this->getuserresearch($tmp[$i]['research_id'],$this->user) == 1))
+			if (($tmp[$i][research_id] == 0) || ($this->getuserresearch($tmp[$i][research_id],$this->user) == 1))
 			{
-				$data['huelle'][$i] = $tmp[$i];
-				$data['huelle'][$i]['c'] = $ship['huellmod'];
+				$data[huelle][$i] = $tmp[$i];
+				$data[huelle][$i][c] = $ship[huellmod];
 			}
 		}
-		$tmp = $this->db->query("SELECT * FROM stu_ships_modules WHERE type=2 AND lvl >= ".$ship['computermod_min']." AND lvl <= ".$ship['computermod_max']." ORDER BY lvl",2);
+		$tmp = $this->db->query("SELECT * FROM stu_ships_modules WHERE type=2 AND lvl >= ".$ship[computermod_min]." AND lvl <= ".$ship[computermod_max]." ORDER BY lvl",2);
 		for ($i=0;$i<count($tmp);$i++)
 		{
-			if (($tmp[$i]['research_id'] == 0) || ($this->getuserresearch($tmp[$i]['research_id'],$this->user) == 1))
+			if (($tmp[$i][research_id] == 0) || ($this->getuserresearch($tmp[$i][research_id],$this->user) == 1))
 			{
-				$data['computer'][] = $tmp[$i];
-				$data['computer'][$i]['c'] = 1;
+				$data[computer][] = $tmp[$i];
+				$data[computer][$i][c] = 1;
 			}
 		}
-		$tmp = $this->db->query("SELECT * FROM stu_ships_modules WHERE type=3 AND lvl >= ".$ship['schildmod_min']." AND lvl <= ".$ship['schildmod_max']." ORDER BY lvl",2);
+		$tmp = $this->db->query("SELECT * FROM stu_ships_modules WHERE type=3 AND lvl >= ".$ship[schildmod_min]." AND lvl <= ".$ship[schildmod_max]." ORDER BY lvl",2);
 		for ($i=0;$i<count($tmp);$i++)
 		{
-			if (($tmp[$i]['research_id'] == 0) || ($this->getuserresearch($tmp[$i]['research_id'],$this->user) == 1))
+			if (($tmp[$i][research_id] == 0) || ($this->getuserresearch($tmp[$i][research_id],$this->user) == 1))
 			{
-				$data['schilde'][] = $tmp[$i];
-				$data['schilde'][$i]['c'] = $ship['schildmod'];
+				$data[schilde][] = $tmp[$i];
+				$data[schilde][$i][c] = $ship[schildmod];
 			}
 		}
-		if ($ship['waffenmod_max'] != 0)
+		if ($ship[waffenmod_max] != 0)
 		{
-			$tmp = $this->db->query("SELECT * FROM stu_ships_modules WHERE type=4 AND lvl >= ".$ship['waffenmod_min']." AND lvl <= ".$ship['waffenmod_max']." ORDER BY lvl",2);
+			$tmp = $this->db->query("SELECT * FROM stu_ships_modules WHERE type=4 AND lvl >= ".$ship[waffenmod_min]." AND lvl <= ".$ship[waffenmod_max]." ORDER BY lvl",2);
 			for ($i=0;$i<count($tmp);$i++)
 			{
-				if (($tmp[$i]['research_id'] == 0) || ($this->getuserresearch($tmp[$i]['research_id'],$this->user) == 1)){
-					$data['waffen'][] = $tmp[$i];
-					$data['waffen'][$i]['c'] = $ship['waffenmod'];
+				if (($tmp[$i][research_id] == 0) || ($this->getuserresearch($tmp[$i][research_id],$this->user) == 1)){
+					$data[waffen][] = $tmp[$i];
+					$data[waffen][$i][c] = $ship[waffenmod];
 				}
 			}
 		}
-		$tmp = $this->db->query("SELECT * FROM stu_ships_modules WHERE type=5 AND lvl >= ".$ship['antriebsmod_min']." AND lvl <= ".$ship['antriebsmod_max']." ORDER BY lvl",2);
+		$tmp = $this->db->query("SELECT * FROM stu_ships_modules WHERE type=5 AND lvl >= ".$ship[antriebsmod_min]." AND lvl <= ".$ship[antriebsmod_max]." ORDER BY lvl",2);
 		for ($i=0;$i<count($tmp);$i++)
 		{
-			if (($tmp[$i]['research_id'] == 0) || ($this->getuserresearch($tmp[$i]['research_id'],$this->user) == 1)){
-				$data['antrieb'][] = $tmp[$i];
-				$data['antrieb'][$i]['c'] = 1;
+			if (($tmp[$i][research_id] == 0) || ($this->getuserresearch($tmp[$i][research_id],$this->user) == 1)){
+				$data[antrieb][] = $tmp[$i];
+				$data[antrieb][$i][c] = 1;
 			}
 		}
-		$tmp = $this->db->query("SELECT * FROM stu_ships_modules WHERE type=6 AND lvl >= ".$ship['epsmod_min']." AND lvl <= ".$ship['epsmod_max']." ORDER BY lvl",2);
+		$tmp = $this->db->query("SELECT * FROM stu_ships_modules WHERE type=6 AND lvl >= ".$ship[epsmod_min]." AND lvl <= ".$ship[epsmod_max]." ORDER BY lvl",2);
 		for ($i=0;$i<count($tmp);$i++)
 		{
-			if (($tmp[$i]['research_id'] == 0) || ($this->getuserresearch($tmp[$i]['research_id'],$this->user) == 1))
+			if (($tmp[$i][research_id] == 0) || ($this->getuserresearch($tmp[$i][research_id],$this->user) == 1))
 			{
-				$data['eps'][] = $tmp[$i];
-				$data['eps'][$i]['c'] = $ship['epsmod'];
+				$data[eps][] = $tmp[$i];
+				$data[eps][$i][c] = $ship[epsmod];
 			}
 		}
-		$tmp = $this->db->query("SELECT * FROM stu_ships_modules WHERE type=7 AND lvl >= ".$ship['sensormod_min']." AND lvl <= ".$ship['sensormod_max']." ORDER BY lvl",2);
+		$tmp = $this->db->query("SELECT * FROM stu_ships_modules WHERE type=7 AND lvl >= ".$ship[sensormod_min]." AND lvl <= ".$ship[sensormod_max]." ORDER BY lvl",2);
 		for ($i=0;$i<count($tmp);$i++)
 		{
-			if (($tmp[$i]['research_id'] == 0) || ($this->getuserresearch($tmp[$i]['research_id'],$this->user) == 1))
+			if (($tmp[$i][research_id] == 0) || ($this->getuserresearch($tmp[$i][research_id],$this->user) == 1))
 			{
-				$data['sensor'][] = $tmp[$i];
-				$data['sensor'][$i]['c'] = $ship['sensormod'];
+				$data[sensor][] = $tmp[$i];
+				$data[sensor][$i][c] = $ship[sensormod];
 			}
 		}
-		$tmp = $this->db->query("SELECT * FROM stu_ships_modules WHERE type=8 AND lvl >= ".$ship['reaktormod_min']." AND lvl <= ".$ship['reaktormod_max']." ORDER BY lvl",2);
+		$tmp = $this->db->query("SELECT * FROM stu_ships_modules WHERE type=8 AND lvl >= ".$ship[reaktormod_min]." AND lvl <= ".$ship[reaktormod_max]." ORDER BY lvl",2);
 		for ($i=0;$i<count($tmp);$i++)
 		{
-			if (($tmp[$i]['research_id'] == 0) || ($this->getuserresearch($tmp[$i]['research_id'],$this->user) == 1))
+			if (($tmp[$i][research_id] == 0) || ($this->getuserresearch($tmp[$i][research_id],$this->user) == 1))
 			{
-				$data['reaktor'][] = $tmp[$i];
-				$data['reaktor'][$i]['c'] = 1;
+				$data[reaktor][] = $tmp[$i];
+				$data[reaktor][$i][c] = 1;
 			}
 		}
 		return $data;
@@ -3655,158 +3655,158 @@ class colony
 		$class = $myShip->getclassbyid($classId);
 		if ($huellmod == 0)
 		{
-			$return['msg'] = "Es wurde kein Hï¿½llenmodul ausgewï¿½hlt";
-			$return['code'] = 0;
+			$return[msg] = "Es wurde kein Hüllenmodul ausgewählt";
+			$return[code] = 0;
 			return $return;
 		}
 		$module = $this->getmodulebyid($huellmod);
-		if (($module['lvl'] > $class['huellmod_max']) || ($module['lvl'] < $class['huellmod_min']))
+		if (($module[lvl] > $class[huellmod_max]) || ($module[lvl] < $class[huellmod_min]))
 		{
-			$return['msg'] = "Dieses Hï¿½llenmodul kann in den gewï¿½hlten Schiffsrumpf nicht eingebaut werden";
-			$return['code'] = 0;
+			$return[msg] = "Dieses Hüllenmodul kann in den gewählten Schiffsrumpf nicht eingebaut werden";
+			$return[code] = 0;
 			return $return;
 		}
-		$stor = $this->checkstoragebygoodid($class['huellmod'],$module['goods_id'],$colId);
+		$stor = $this->checkstoragebygoodid($class[huellmod],$module[goods_id],$colId);
 		if ($stor == 0)
 		{
-			$return['msg'] = "Dieses Hï¿½llenmodul befindet sich nicht auf dem Planeten";
-			$return['code'] = 0;
+			$return[msg] = "Dieses Hüllenmodul befindet sich nicht auf dem Planeten";
+			$return[code] = 0;
 			return $return;
 		}
 		if ($schildmod == 0)
 		{
-			$return['msg'] = "Es wurde kein Schildmodul ausgewï¿½hlt";
-			$return['code'] = 0;
+			$return[msg] = "Es wurde kein Schildmodul ausgewählt";
+			$return[code] = 0;
 			return $return;
 		}
 		$module = $this->getmodulebyid($schildmod);
-		if (($module['lvl'] > $class['schildmod_max']) || ($module['lvl'] < $class['schildmod_min']))
+		if (($module[lvl] > $class[schildmod_max]) || ($module[lvl] < $class[schildmod_min]))
 		{
-			$return['msg'] = "Dieses Schildmodul kann in den gewï¿½hlten Schiffsrumpf nicht eingebaut werden";
-			$return['code'] = 0;
+			$return[msg] = "Dieses Schildmodul kann in den gewählten Schiffsrumpf nicht eingebaut werden";
+			$return[code] = 0;
 			return $return;
 		}
-		$stor = $this->checkstoragebygoodid($class['schildmod'],$module['goods_id'],$colId);
+		$stor = $this->checkstoragebygoodid($class[schildmod],$module[goods_id],$colId);
 		if ($stor == 0)
 		{
-			$return['msg'] = "Dieses Schildmodul befindet sich nicht auf dem Planeten";
-			$return['code'] = 0;
+			$return[msg] = "Dieses Schildmodul befindet sich nicht auf dem Planeten";
+			$return[code] = 0;
 			return $return;
 		}
 		if ($waffenmod != 0)
 		{
 			$module = $this->getmodulebyid($waffenmod);
-			if (($module['lvl'] > $class['waffenmod_max']) || ($module['lvl'] < $class['waffenmod_min']))
+			if (($module[lvl] > $class[waffenmod_max]) || ($module[lvl] < $class[waffenmod_min]))
 			{
-				$return['msg'] = "Dieses Waffenmodul kann in den gewï¿½hlten Schiffsrumpf nicht eingebaut werden";
-				$return['code'] = 0;
+				$return[msg] = "Dieses Waffenmodul kann in den gewählten Schiffsrumpf nicht eingebaut werden";
+				$return[code] = 0;
 				return $return;
 			}
-			$stor = $this->checkstoragebygoodid($class['waffenmod'],$module['goods_id'],$colId);
+			$stor = $this->checkstoragebygoodid($class[waffenmod],$module[goods_id],$colId);
 			if ($stor == 0)
 			{
-				$return['msg'] = "Dieses Waffenmodul befindet sich nicht auf dem Planeten";
-				$return['code'] = 0;
+				$return[msg] = "Dieses Waffenmodul befindet sich nicht auf dem Planeten";
+				$return[code] = 0;
 				return $return;
 			}
 		}
 		if ($epsmod == 0)
 		{
-			$return['msg'] = "Es wurde kein EPS-Gittermodul ausgewï¿½hlt";
-			$return['code'] = 0;
+			$return[msg] = "Es wurde kein EPS-Gittermodul ausgewählt";
+			$return[code] = 0;
 			return $return;
 		}
 		$module = $this->getmodulebyid($epsmod);
-		if (($module['lvl'] > $class['epsmod_max']) || ($module['lvl'] < $class['epsmod_min']))
+		if (($module[lvl] > $class[epsmod_max]) || ($module[lvl] < $class[epsmod_min]))
 		{
-			$return['msg'] = "Dieses EPS-Gittermodul kann in den gewï¿½hlten Schiffsrumpf nicht eingebaut werden";
-			$return['code'] = 0;
+			$return[msg] = "Dieses EPS-Gittermodul kann in den gewählten Schiffsrumpf nicht eingebaut werden";
+			$return[code] = 0;
 			return $return;
 		}
-		$stor = $this->checkstoragebygoodid($class['epsmod'],$module['goods_id'],$colId);
+		$stor = $this->checkstoragebygoodid($class[epsmod],$module[goods_id],$colId);
 		if ($stor == 0)
 		{
-			$return['msg'] = "Dieses EPS-Gittermodul befindet sich nicht auf dem Planeten";
-			$return['code'] = 0;
+			$return[msg] = "Dieses EPS-Gittermodul befindet sich nicht auf dem Planeten";
+			$return[code] = 0;
 			return $return;
 		}
 		if ($computermod == 0)
 		{
-			$return['msg'] = "Es wurde kein Computermodul ausgewï¿½hlt";
-			$return['code'] = 0;
+			$return[msg] = "Es wurde kein Computermodul ausgewählt";
+			$return[code] = 0;
 			return $return;
 		}
 		$module = $this->getmodulebyid($computermod);
-		if (($module['lvl'] > $class['computermod_max']) || ($module['lvl'] < $class['computermod_min']))
+		if (($module[lvl] > $class[computermod_max]) || ($module[lvl] < $class[computermod_min]))
 		{
-			$return['msg'] = "Dieses Computermodul kann in den gewï¿½hlten Schiffsrumpf nicht eingebaut werden";
-			$return['code'] = 0;
+			$return[msg] = "Dieses Computermodul kann in den gewählten Schiffsrumpf nicht eingebaut werden";
+			$return[code] = 0;
 			return $return;
 		}
-		$stor = $this->checkstoragebygoodid(1,$module['goods_id'],$colId);
+		$stor = $this->checkstoragebygoodid(1,$module[goods_id],$colId);
 		if ($stor == 0)
 		{
-			$return['msg'] = "Dieses Computermodul befindet sich nicht auf dem Planeten";
-			$return['code'] = 0;
+			$return[msg] = "Dieses Computermodul befindet sich nicht auf dem Planeten";
+			$return[code] = 0;
 			return $return;
 		}
 		if ($antriebmod == 0)
 		{
-			$return['msg'] = "Es wurde kein Antriebsmodul ausgewï¿½hlt";
-			$return['code'] = 0;
+			$return[msg] = "Es wurde kein Antriebsmodul ausgewählt";
+			$return[code] = 0;
 			return $return;
 		}
 		$module = $this->getmodulebyid($antriebmod);
-		if (($module['lvl'] > $class['antriebsmod_max']) || ($module['lvl'] < $class['antriebsmod_min']))
+		if (($module[lvl] > $class[antriebsmod_max]) || ($module[lvl] < $class[antriebsmod_min]))
 		{
-			$return['msg'] = "Dieses Antriebsmodul kann in den gewï¿½hlten Schiffsrumpf nicht eingebaut werden";
-			$return['code'] = 0;
+			$return[msg] = "Dieses Antriebsmodul kann in den gewählten Schiffsrumpf nicht eingebaut werden";
+			$return[code] = 0;
 			return $return;
 		}
-		$stor = $this->checkstoragebygoodid(1,$module['goods_id'],$colId);
+		$stor = $this->checkstoragebygoodid(1,$module[goods_id],$colId);
 		if ($stor == 0)
 		{
-			$return['msg'] = "Dieses Antriebsmodul befindet sich nicht auf dem Planeten";
-			$return['code'] = 0;
+			$return[msg] = "Dieses Antriebsmodul befindet sich nicht auf dem Planeten";
+			$return[code] = 0;
 			return $return;
 		}
 		if ($sensormod == 0)
 		{
-			$return['msg'] = "Es wurde kein Sensorenmodul ausgewï¿½hlt";
-			$return['code'] = 0;
+			$return[msg] = "Es wurde kein Sensorenmodul ausgewählt";
+			$return[code] = 0;
 			return $return;
 		}
 		$module = $this->getmodulebyid($sensormod);
-		if (($module['lvl'] > $class['sensormod_max']) || ($module['lvl'] < $class['sensormod_min']))
+		if (($module[lvl] > $class[sensormod_max]) || ($module[lvl] < $class[sensormod_min]))
 		{
-			$return['msg'] = "Dieses Sensorenmodul kann in den gewï¿½hlten Schiffsrumpf nicht eingebaut werden";
-			$return['code'] = 0;
+			$return[msg] = "Dieses Sensorenmodul kann in den gewählten Schiffsrumpf nicht eingebaut werden";
+			$return[code] = 0;
 			return $return;
 		}
-		$stor = $this->checkstoragebygoodid($class['sensormod'],$module['goods_id'],$colId);
+		$stor = $this->checkstoragebygoodid($class[sensormod],$module[goods_id],$colId);
 		if ($stor == 0)
 		{
-			$return['msg'] = "Dieses Sensorenmodul befindet sich nicht auf dem Planeten";
-			$return['code'] = 0;
+			$return[msg] = "Dieses Sensorenmodul befindet sich nicht auf dem Planeten";
+			$return[code] = 0;
 			return $return;
 		}
 		if ($reaktormod != 0)
 		{
 			$module = $this->getmodulebyid($reaktormod);
-			if (($module['lvl'] > $class['reaktormod_max']) || ($module['lvl'] < $class['reaktormod_min']))
+			if (($module[lvl] > $class[reaktormod_max]) || ($module[lvl] < $class[reaktormod_min]))
 			{
-				$return['msg'] = "Dieses Reaktormodul kann in den gewï¿½hlten Schiffsrumpf nicht eingebaut werden";
-				$return['code'] = 0;
+				$return[msg] = "Dieses Reaktormodul kann in den gewählten Schiffsrumpf nicht eingebaut werden";
+				$return[code] = 0;
 				return $return;
 			}
-			$stor = $this->checkstoragebygoodid(1,$module['goods_id'],$colId);
+			$stor = $this->checkstoragebygoodid(1,$module[goods_id],$colId);
 			if ($stor == 0)
 			{
-				$return['msg'] = "Dieses Reaktormodul befindet sich nicht auf dem Planeten";
+				$return[msg] = "Dieses Reaktormodul befindet sich nicht auf dem Planeten";
 				return $return;
 			}
 		}
-		$return['code'] = 1;
+		$return[code] = 1;
 		return $return;
 	}
 	
@@ -3852,7 +3852,7 @@ class colony
 	{
 		$mode == 1 ? $m = 0 : $m = 2;
 		$this->db->query("UPDATE stu_colonies_fields SET aktiv=".$m." WHERE colonies_id=".$this->cid." AND field_id=".$fieldId);
-		$return['msg'] = "Aktivierungseinstellung fï¿½r das Gebï¿½ude auf Feld ".($fieldId+1)." geï¿½ndert";
+		$return[msg] = "Aktivierungseinstellung für das Gebäude auf Feld ".($fieldId+1)." geändert";
 		return $return;
 	}
 	
@@ -3860,7 +3860,7 @@ class colony
 	{
 		$mode == 1 ? $m = 0 : $m = 2;
 		$this->db->query("UPDATE stu_colonies_orbit SET aktiv=".$m." WHERE colonies_id=".$this->cid." AND field_id=".$fieldId);
-		$return['msg'] = "Aktivierungseinstellung fï¿½r das Gebï¿½ude auf Orbitfeld ".($fieldId+1)." geï¿½ndert";
+		$return[msg] = "Aktivierungseinstellung für das Gebäude auf Orbitfeld ".($fieldId+1)." geändert";
 		return $return;
 	}
 	
@@ -3868,7 +3868,7 @@ class colony
 	{
 		$mode == 1 ? $m = 0 : $m = 2;
 		$this->db->query("UPDATE stu_colonies_underground SET aktiv=".$m." WHERE colonies_id=".$this->cid." AND field_id=".$fieldId);
-		$return['msg'] = "Aktivierungseinstellung fï¿½r das Gebï¿½ude auf Untergrundfeld ".($fieldId+1)." geï¿½ndert";
+		$return[msg] = "Aktivierungseinstellung für das Gebäude auf Untergrundfeld ".($fieldId+1)." geändert";
 		return $return;
 	}
 	
@@ -3878,9 +3878,9 @@ class colony
 		if (mysql_num_rows($result) == 0) return 0;
 		while($data=mysql_fetch_assoc($result))
 		{
-			$data['dn_mode'] == 1 ? $nm = 2 : $nm = 1;
-			$data['dn_nextchange'] == 0 ? $nchg = time()+$data['dn_duration'] : $nchg = $data['dn_nextchange']+$data['dn_duration'];
-			$this->db->query("UPDATE stu_colonies SET dn_mode=".$nm.",dn_nextchange=".$nchg." WHERE id=".$data['id']);
+			$data[dn_mode] == 1 ? $nm = 2 : $nm = 1;
+			$data[dn_nextchange] == 0 ? $nchg = time()+$data[dn_duration] : $nchg = $data[dn_nextchange]+$data[dn_duration];
+			$this->db->query("UPDATE stu_colonies SET dn_mode=".$nm.",dn_nextchange=".$nchg." WHERE id=".$data[id]);
 		}
 	}
 	
@@ -3890,15 +3890,15 @@ class colony
 	{
 		if ($this->cshow == 0)
 		{
-			$return['msg'] = "Dies ist nicht Deine Kolonie";
+			$return[msg] = "Dies ist nicht Deine Kolonie";
 			return $return;
 		}
-		if ($this->db->query("SELECT id FROM stu_colonies_fields WHERE buildings_id=157 AND colonies_id=".$colId." ANd buildtime=0",1) == 0) $return['msg'] = "Auf dieser Kolonie befindet sich keine fertiggestellte Latinumpresse";
-		if ($this->cenergie < 10) $return['msg'] = "Zum Pressen werden mindestens 10 Energie benï¿½tigt - Vorhanden sind jedoch nur ".$this->cenergie;
+		if ($this->db->query("SELECT id FROM stu_colonies_fields WHERE buildings_id=157 AND colonies_id=".$colId." ANd buildtime=0",1) == 0) $return[msg] = "Auf dieser Kolonie befindet sich keine fertiggestellte Latinumpresse";
+		if ($this->cenergie < 10) $return[msg] = "Zum Pressen werden mindestens 10 Energie benötigt - Vorhanden sind jedoch nur ".$this->cenergie;
 		$stor = $this->getgoodstorbyid($colId,34);
-		if ($stor < 60) $return['msg'] = "Zum Pressen werden mindestens 60 Ring-Materie benï¿½tigt. Vorhanden sind jedoch nur ".$stor;
+		if ($stor < 60) $return[msg] = "Zum Pressen werden mindestens 60 Ring-Materie benötigt. Vorhanden sind jedoch nur ".$stor;
 		$storbm = $this->getgoodstorbyid($colId,3);
-		if ($storbm < 1) $return['msg'] = "Zum Pressen wird mindestens 1 Baumaterial benï¿½tigt. Vorhanden sind jedoch nur ".$storbm;
+		if ($storbm < 1) $return[msg] = "Zum Pressen wird mindestens 1 Baumaterial benötigt. Vorhanden sind jedoch nur ".$storbm;
 		if ($return) return $return;
 		global $user;
 		if ($count*10 > $this->cenergie) $count = floor($this->cenergie/10);
@@ -3908,7 +3908,7 @@ class colony
 		$this->lowerstoragebygoodid($count,3,$colId);
 		$this->upperstoragebygoodid($count,24,$colId,$user);
 		$this->db->query("UPDATE stu_colonies SET energie=energie-".($count*10)." WHERE id=".$colId);
-		$return['msg'] = ($count*60)." Ringmaterie zu ".$count." Latinum gepresst - ".($count*10)." Energie und ".$count." Baumaterial verbraucht";
+		$return[msg] = ($count*60)." Ringmaterie zu ".$count." Latinum gepresst - ".($count*10)." Energie und ".$count." Baumaterial verbraucht";
 		return $return;
 	}
 	
@@ -3924,42 +3924,42 @@ class colony
 			$shipId = $id;
 		}
 		$col = $this->getcolonybyid($colId);
-		if ($col['dn_mode'] == 2 && $col['colonies_classes_id'] != 9) $n = "n/";
+		if ($col[dn_mode] == 2 && $col[colonies_classes_id] != 9) $n = "n/";
 		$result = $this->db->query("SELECT a.field_id,a.type,a.buildings_id,a.aktiv,a.name,a.buildtime,b.name as bname, b.secretimage FROM stu_colonies_orbit as a LEFT JOIN stu_buildings as b ON a.buildings_id=b.id WHERE a.colonies_id=".$colId." ORDER BY a.field_id");
 		$map = "<table cellspacing=1 cellpadding=1><tr>";
 		for ($i=0;$i<mysql_num_rows($result);$i++)
 		{
 			$data = mysql_fetch_assoc($result);
-			$data['buildtime'] > 0 ? $id = 106 : $id = $data['buildings_id'];
-			if ($data['name'] != "") $alt = "- ".$data['name']." ";
-			if ($data['aktiv'] == 0 && $link == 1) $alt .= "(offline)";
-			elseif ($data['aktiv'] == 1 && $link == 1) $alt .= "(online)";
-			if ($data['buildtime'] > 0 && $link == 1) $alt .= " (im Bau bis ".date("d.m H:i",$data['buildtime']).")";
+			$data[buildtime] > 0 ? $id = 106 : $id = $data[buildings_id];
+			if ($data[name] != "") $alt = "- ".$data[name]." ";
+			if ($data[aktiv] == 0 && $link == 1) $alt .= "(offline)";
+			elseif ($data[aktiv] == 1 && $link == 1) $alt .= "(online)";
+			if ($data[buildtime] > 0 && $link == 1) $alt .= " (im Bau bis ".date("d.m H:i",$data[buildtime]).")";
 
-			if ($data['buildings_id'] == 0)
+			if ($data[buildings_id] == 0)
 			{
-				$img = "<img src=".$grafik."/fields/".$data['type'].".gif border=0>";
+				$img = "<img src=".$grafik."/fields/".$data[type].".gif border=0>";
 			}
-			elseif ($data['secretimage'] != "0")
+			elseif ($data[secretimage] != "0")
 			{
-				$img = "<img src=http://www.stuniverse.de/gfx/secret/".$data['secretimage']."_".$data['type'].".gif border=0 title='".$data['bname']." ".$alt."'>";
+				$img = "<img src=http://www.stuniverse.de/gfx/secret/".$data[secretimage]."_".$data[type].".gif border=0 title='".$data[bname]." ".$alt."'>";
 			}
 			else
 			{
-				$img = "<img src=".$grafik."/buildings/".$id."_".$data['type'].".gif border=0 title='".$data['bname']." ".$alt."'>";
+				$img = "<img src=".$grafik."/buildings/".$id."_".$data[type].".gif border=0 title='".$data[bname]." ".$alt."'>";
 			}
-			$data['aktiv'] == 1 && $link == 1 ? $border = " style='border: 1px solid #9BA4A4'" : $border = " style='border: 1px solid #505656'";
-			if ($link == 1) $map .= "<td class=collist width=30 align=center".$border."><a href=main.php?page=colony&section=orbitfield&field=".$data['field_id']."&id=".$colId.">".$img."</a></td>";
+			$data[aktiv] == 1 && $link == 1 ? $border = " style='border: 1px solid #9BA4A4'" : $border = " style='border: 1px solid #505656'";
+			if ($link == 1) $map .= "<td class=collist width=30 align=center".$border."><a href=main.php?page=colony&section=orbitfield&field=".$data[field_id]."&id=".$colId.">".$img."</a></td>";
 			elseif ($link == 2)
 			{
 				global $freq1,$freq2;
-				if ($data['buildings_id'] == 0) $map .= "<td class=collist width=30 align=center".$border.">".$img."</td>";
-				else $map .= "<td class=collist width=30 align=center".$border."><a href=?page=ship&section=scan&mode=col&action=attack&type=orbit&field=".$data['field_id']."&id=".$shipId."&id2=".$colId."&freq1=".$freq1."&freq2=".$freq2.">".$img."</a></td>";
+				if ($data[buildings_id] == 0) $map .= "<td class=collist width=30 align=center".$border.">".$img."</td>";
+				else $map .= "<td class=collist width=30 align=center".$border."><a href=?page=ship&section=scan&mode=col&action=attack&type=orbit&field=".$data[field_id]."&id=".$shipId."&id2=".$colId."&freq1=".$freq1."&freq2=".$freq2.">".$img."</a></td>";
 			}
 			else $map .= "<td class=collist width=30 align=center".$border.">".$img."</td>";
-			if ((($col['colonies_classes_id'] == 6) || ($col['colonies_classes_id'] == 9) && ($col['colonies_classes_id'] != 11)) && (($i == 6) || ($i == 13))) $map .= "</tr><tr>";
-			if ((($col['colonies_classes_id'] != 6) && ($col['colonies_classes_id'] != 9) && ($col['colonies_classes_id'] != 11)) && (($i == 8) || ($i == 17))) $map .= "</tr><tr>";
-			if (($col['colonies_classes_id'] == 11) && (($i == 17) || ($i == 35))) $map .= "</tr><tr>";
+			if ((($col[colonies_classes_id] == 6) || ($col[colonies_classes_id] == 9) && ($col[colonies_classes_id] != 11)) && (($i == 6) || ($i == 13))) $map .= "</tr><tr>";
+			if ((($col[colonies_classes_id] != 6) && ($col[colonies_classes_id] != 9) && ($col[colonies_classes_id] != 11)) && (($i == 8) || ($i == 17))) $map .= "</tr><tr>";
+			if (($col[colonies_classes_id] == 11) && (($i == 17) || ($i == 35))) $map .= "</tr><tr>";
 			unset($alt);
 		}
 		$map .= "</tr></table>";
@@ -3969,70 +3969,70 @@ class colony
 		for ($i=0;$i<mysql_num_rows($result);$i++)
 		{
 			$data = mysql_fetch_assoc($result);
-			$data['buildtime'] > 0 ? $id = 106 : $id = $data['buildings_id'];
-			if ($data['name'] != "") $alt = "- ".$data['name']." ";
-			if ($data['aktiv'] == 0 && $link == 1) $alt .= "(offline)";
-			elseif ($data['aktiv'] == 1 && $link == 1) $alt .= "(online)";
-			if (($data['buildings_id'] >= 210) && ($data['buildings_id'] <= 215))
+			$data[buildtime] > 0 ? $id = 106 : $id = $data[buildings_id];
+			if ($data[name] != "") $alt = "- ".$data[name]." ";
+			if ($data[aktiv] == 0 && $link == 1) $alt .= "(offline)";
+			elseif ($data[aktiv] == 1 && $link == 1) $alt .= "(online)";
+			if (($data[buildings_id] >= 210) && ($data[buildings_id] <= 215))
 			{
-				$allyname = $this->db->query("SELECT a.name FROM stu_allys as a left outer join stu_allys_embassys as b on a.id = b.allys_id2 WHERE b.colonies_id=".$colId." AND b.field_id=".$data['field_id'],1);
+				$allyname = $this->db->query("SELECT a.name FROM stu_allys as a left outer join stu_allys_embassys as b on a.id = b.allys_id2 WHERE b.colonies_id=".$colId." AND b.field_id=".$data[field_id],1);
 				if ($allyname != "") $alt = "der ".strip_tags(stripslashes($allyname));
 			}
-			if ($data['buildtime'] > 0 && $link == 1) $alt .= " (im Bau bis ".date("d.m H:i",$data['buildtime']).")";
-			if (($data['buildings_id'] == 0) || ($cl[$data['field_id']] == 1))
+			if ($data[buildtime] > 0 && $link == 1) $alt .= " (im Bau bis ".date("d.m H:i",$data[buildtime]).")";
+			if (($data[buildings_id] == 0) || ($cl[$data[field_id]] == 1))
 			{
-				$img = "<img src=".$grafik."/fields/".$n.$data['type'].".gif border=0>";
+				$img = "<img src=".$grafik."/fields/".$n.$data[type].".gif border=0>";
 			}
-			elseif ($data['secretimage'] != "0")
+			elseif ($data[secretimage] != "0")
 			{
-				$img = "<img src=http://www.stuniverse.de/gfx/secret/".$n.$data['secretimage']."_".$data['type'].".gif border=0 title='".$data['bname']." ".$alt."'>";
+				$img = "<img src=http://www.stuniverse.de/gfx/secret/".$n.$data[secretimage]."_".$data[type].".gif border=0 title='".$data[bname]." ".$alt."'>";
 			}
 			else
 			{
-				$img = "<img src=".$grafik."/buildings/".$n.$id."_".$data['type'].".gif border=0 title='".$data['bname']." ".$alt."'>";
+				$img = "<img src=".$grafik."/buildings/".$n.$id."_".$data[type].".gif border=0 title='".$data[bname]." ".$alt."'>";
 			}
-			$data['aktiv'] == 1 && $cl[$data['field_id']] == 0 && $link == 1? $border = " style='border: 1px solid #9BA4A4'" : $border = " style='border: 1px solid #505656'";
-			if ($link == 1) $map.= "<td class=collist width=30 align=center".$border."><a href=main.php?page=colony&section=field&field=".$data['field_id']."&id=".$colId.">".$img."</a></td>";
+			$data[aktiv] == 1 && $cl[$data[field_id]] == 0 && $link == 1? $border = " style='border: 1px solid #9BA4A4'" : $border = " style='border: 1px solid #505656'";
+			if ($link == 1) $map.= "<td class=collist width=30 align=center".$border."><a href=main.php?page=colony&section=field&field=".$data[field_id]."&id=".$colId.">".$img."</a></td>";
 			elseif ($link == 2)
 			{
 				global $freq1,$freq2;
-				$map .= "<td class=collist width=30 align=center".$border."><a href=?page=ship&section=scan&mode=col&action=attack&type=field&field=".$data['field_id']."&id=".$shipId."&id2=".$colId."&freq1=".$freq1."&freq2=".$freq2.">".$img."</a></td>";
+				$map .= "<td class=collist width=30 align=center".$border."><a href=?page=ship&section=scan&mode=col&action=attack&type=field&field=".$data[field_id]."&id=".$shipId."&id2=".$colId."&freq1=".$freq1."&freq2=".$freq2.">".$img."</a></td>";
 			}
 			else $map .= "<td class=collist width=30 align=center".$border.">".$img."</td>";
-			if ((($col['colonies_classes_id'] == 6) || ($col['colonies_classes_id'] == 9) && ($col['colonies_classes_id'] != 11)) && (($i == 6) || ($i == 13) || ($i == 20) || ($i == 27))) $map .= "</tr><tr>";
-			if ((($col['colonies_classes_id'] != 6) && ($col['colonies_classes_id'] != 9) && ($col['colonies_classes_id'] != 11)) && (($i == 8) || ($i == 17) || ($i == 26) || ($i == 35) || ($i == 44))) $map .= "</tr><tr>";
-			if (($col['colonies_classes_id'] == 11) && (($i == 17) || ($i == 35) || ($i == 53) || ($i == 71) || ($i == 89) || ($i == 107) || ($i == 125) || ($i == 143) || ($i == 161) || ($i == 179) || ($i == 197) || ($i == 215))) $map .= "</tr><tr>";
+			if ((($col[colonies_classes_id] == 6) || ($col[colonies_classes_id] == 9) && ($col[colonies_classes_id] != 11)) && (($i == 6) || ($i == 13) || ($i == 20) || ($i == 27))) $map .= "</tr><tr>";
+			if ((($col[colonies_classes_id] != 6) && ($col[colonies_classes_id] != 9) && ($col[colonies_classes_id] != 11)) && (($i == 8) || ($i == 17) || ($i == 26) || ($i == 35) || ($i == 44))) $map .= "</tr><tr>";
+			if (($col[colonies_classes_id] == 11) && (($i == 17) || ($i == 35) || ($i == 53) || ($i == 71) || ($i == 89) || ($i == 107) || ($i == 125) || ($i == 143) || ($i == 161) || ($i == 179) || ($i == 197) || ($i == 215))) $map .= "</tr><tr>";
 			unset($alt);
 		}
 		$map .= "</tr></table>";
-		if ($col['colonies_classes_id'] != 6 && $data['colonies_classes_id'] != 9 && $link == 1)
+		if ($col[colonies_classes_id] != 6 && $data[colonies_classes_id] != 9 && $link == 1)
 		{
 			$result = $this->db->query("SELECT a.field_id,a.type,a.buildings_id,a.aktiv,a.name,a.buildtime,b.name as bname, b.secretimage FROM stu_colonies_underground as a LEFT JOIN stu_buildings as b ON a.buildings_id=b.id WHERE a.colonies_id=".$colId." ORDER BY a.field_id");
 			$map .= "<table cellspacing=1 cellpadding=1><tr>";
 			for ($i=0;$i<mysql_num_rows($result);$i++)
 			{
 				$data = mysql_fetch_assoc($result);
-				$data['buildtime'] > 0 ? $id = 106 : $id = $data['buildings_id'];
-				if ($data['name'] != "") $alt = "- ".$data['name']." ";
-				if ($data['aktiv'] == 0) $alt .= "(offline)";
-				elseif ($data['aktiv'] == 1) $alt .= "(online)";
-				if ($data['buildtime'] > 0 && $link == 1) $alt .= " (im Bau bis ".date("d.m H:i",$data['buildtime']).")";
-				if ($data['buildings_id'] == 0)
+				$data[buildtime] > 0 ? $id = 106 : $id = $data[buildings_id];
+				if ($data[name] != "") $alt = "- ".$data[name]." ";
+				if ($data[aktiv] == 0) $alt .= "(offline)";
+				elseif ($data[aktiv] == 1) $alt .= "(online)";
+				if ($data[buildtime] > 0 && $link == 1) $alt .= " (im Bau bis ".date("d.m H:i",$data[buildtime]).")";
+				if ($data[buildings_id] == 0)
 				{
-					$img = "<img src=".$grafik."/fields/".$data['type'].".gif border=0>";
+					$img = "<img src=".$grafik."/fields/".$data[type].".gif border=0>";
 				}
-				elseif ($data['secretimage'] != "0")
+				elseif ($data[secretimage] != "0")
 				{
-					$img = "<img src=http://www.stuniverse.de/gfx/secret/".$data['secretimage']."_".$data['type'].".gif border=0 title='".$data['bname']." ".$alt."'>";
+					$img = "<img src=http://www.stuniverse.de/gfx/secret/".$data[secretimage]."_".$data[type].".gif border=0 title='".$data[bname]." ".$alt."'>";
 				}
 				else
 				{
-					$img = "<img src=".$grafik."/buildings/".$id."_".$data['type'].".gif border=0 title='".$data['bname']." ".$alt."'>";
+					$img = "<img src=".$grafik."/buildings/".$id."_".$data[type].".gif border=0 title='".$data[bname]." ".$alt."'>";
 				}
-				$data['aktiv'] == 1 && $link == 1 ? $border = " style='border: 1px solid #9BA4A4'" : $border = " style='border: 1px solid #505656'";
-				$link == 1 ? $map.= "<td class=collist width=30 align=center".$border."><a href=main.php?page=colony&section=groundfield&field=".$data['field_id']."&id=".$colId.">".$img."</a></td>" : $map .= "<td class=collist width=30 align=center".$border.">".$img."</td>";
-				if (($col['colonies_classes_id'] != 11) && (($i == 8) || ($i == 17) || ($i == 26))) $map .= "</tr>";
-				if (($col['colonies_classes_id'] == 11) && (($i == 17) || ($i == 35) || ($i == 53) || ($i == 71) || ($i == 89) || ($i == 107))) $map .= "</tr>";
+				$data[aktiv] == 1 && $link == 1 ? $border = " style='border: 1px solid #9BA4A4'" : $border = " style='border: 1px solid #505656'";
+				$link == 1 ? $map.= "<td class=collist width=30 align=center".$border."><a href=main.php?page=colony&section=groundfield&field=".$data[field_id]."&id=".$colId.">".$img."</a></td>" : $map .= "<td class=collist width=30 align=center".$border.">".$img."</td>";
+				if (($col[colonies_classes_id] != 11) && (($i == 8) || ($i == 17) || ($i == 26))) $map .= "</tr>";
+				if (($col[colonies_classes_id] == 11) && (($i == 17) || ($i == 35) || ($i == 53) || ($i == 71) || ($i == 89) || ($i == 107))) $map .= "</tr>";
 				unset($alt);
 			}
 			$map .= "</tr></table>";
@@ -4045,17 +4045,17 @@ class colony
 		$result = $this->db->query("SELECT * FROM stu_terraform WHERE v_feld=".$type);
 		while($tmp=mysql_fetch_assoc($result))
 		{
-			if ($tmp['id'] == 14 && $this->ccolonies_classes_id != 5) continue;
-			if ($tmp['id'] == 24 && $this->ccolonies_classes_id != 10) continue;
-			if ($tmp['id'] == 1 && $this->ccolonies_classes_id == 10) continue;
-			if ($tmp['id'] == 7 || $tmp['id'] == 18 || $tmp['id'] == 19 || $tmp['id'] == 20)
+			if ($tmp[id] == 14 && $this->ccolonies_classes_id != 5) continue;
+			if ($tmp[id] == 24 && $this->ccolonies_classes_id != 10) continue;
+			if ($tmp[id] == 1 && $this->ccolonies_classes_id == 10) continue;
+			if ($tmp[id] == 7 || $tmp[id] == 18 || $tmp[id] == 19 || $tmp[id] == 20)
 			{
 				global $field;
 				if ($field != 31) continue;
 			}
-			if ($tmp['research_id'] > 0)
+			if ($tmp[research_id] > 0)
 			{
-				if ($this->getuserresearch($tmp['research_id'],$this->user) == 1) $data[] = $tmp;
+				if ($this->getuserresearch($tmp[research_id],$this->user) == 1) $data[] = $tmp;
 			}
 			else $data[] = $tmp;
 		}
@@ -4066,7 +4066,7 @@ class colony
 	{
 		if ($this->cshow == 0) return 0;
 		if ($sonId < 1 || $sonId > 4) {
-			$return['msg'] = "Parameterfehler";
+			$return[msg] = "Parameterfehler";
 			return $return;
 		}
 		if ($sonId == 1 && $this->getuserresearch(212,$this->user) == 0) $ferror = 1;
@@ -4075,12 +4075,12 @@ class colony
 		elseif ($sonId == 4 && $this->getuserresearch(230,$this->user) == 0) $ferror = 1;
 		if ($ferror == 1)
 		{
-			$return['msg'] = "Du hast diesen Sondentyp noch nicht erforscht";
+			$return[msg] = "Du hast diesen Sondentyp noch nicht erforscht";
 			return $return;
 		}
 		if ($this->db->query("SELECT id FROM stu_colonies_orbit WHERE colonies_id=".$this->cid." AND buildings_id=169 ANd buildtime=0",1) == 0)
 		{
-			$return['msg'] = "Es befindet sich keine fertiggestellte Robotikfabrik auf der Kolonie";
+			$return[msg] = "Es befindet sich keine fertiggestellte Robotikfabrik auf der Kolonie";
 			return $return;
 		}
 		if ($sonId == 1)
@@ -4106,24 +4106,24 @@ class colony
 		$ecost *= $count;
 		if ($this->cenergie < $ecost)
 		{
-			$return['msg'] = "Es wird ".$ecost." Energie bentï¿½tigt - Vorhanden sind nur ".$this->cenergie;
+			$return[msg] = "Es wird ".$ecost." Energie bentötigt - Vorhanden sind nur ".$this->cenergie;
 			return $return;
 		}
 		$probecost = $this->getprobecostbylvl($sonId);
 		for ($i=0;$i<count($probecost);$i++)
 		{
-			$probecost[$i]['gesamt'] = $probecost[$i]['count'] * $count;
-			$storcount = $this->getcountbygoodid($probecost[$i]['goods_id'],$this->cid);
-			if ($storcount < $probecost[$i]['gesamt'])
+			$probecost[$i][gesamt] = $probecost[$i]['count'] * $count;
+			$storcount = $this->getcountbygoodid($probecost[$i][goods_id],$this->cid);
+			if ($storcount < $probecost[$i][gesamt])
 			{
-				$return['msg'] = "Es werden ".$probecost[$i]['name']." benï¿½tigt - Vorhanden sind nur ".$storcount;
+				$return[msg] = "Es werden ".$probecost[$i][name]." benötigt - Vorhanden sind nur ".$storcount;
 				return $return;
 			}
 		}
-		for ($i=0;$i<count($probecost);$i++) $this->lowerstoragebygoodid($probecost[$i]['gesamt'],$probecost[$i]['goods_id'],$this->cid);
+		for ($i=0;$i<count($probecost);$i++) $this->lowerstoragebygoodid($probecost[$i][gesamt],$probecost[$i][goods_id],$this->cid);
 		$this->db->query("UPDATE stu_colonies SET energie=energie-".$ecost." WHERE id=".$this->cid);
 		$this->upperstoragebygoodid($count,$end,$this->cid,$this->user);
-		$return['msg'] = "Leite Produktion ein... ".$count." Sonden hergestellt";
+		$return[msg] = "Leite Produktion ein... ".$count." Sonden hergestellt";
 		return $return;
 	}
 
@@ -4136,34 +4136,34 @@ class colony
 		{
 			if ($this->getuserresearch(218,$this->user) == 1)
 			{
-				$return['msg'] = "Osmium-Analyse bereits durchgefï¿½hrt";
+				$return[msg] = "Osmium-Analyse bereits durchgeführt";
 				return $return;
 			}
 			if ($storcount < 5)
 			{
-				$return['msg'] = "Zur Analyse werden 5 Osmium benï¿½tigt";
+				$return[msg] = "Zur Analyse werden 5 Osmium benötigt";
 				return $return;
 			}
 			$this->lowerstoragebygoodid(5,$goodId,$this->cid);
 			$this->db->query("INSERT INTO stu_research_user (research_id,user_id) VALUES ('218','".$this->user."')");
-			$return['msg'] = "Osmium-Analyse komplett";
+			$return[msg] = "Osmium-Analyse komplett";
 			return $return;
 		}
 		if ($goodId == 39)
 		{
 			if ($this->getuserresearch(219,$this->user) == 1)
 			{
-				$return['msg'] = "Kirstall-Analyse bereits durchgefï¿½hrt";
+				$return[msg] = "Kirstall-Analyse bereits durchgeführt";
 				return $return;
 			}
 			if ($storcount < 5)
 			{
-				$return['msg'] = "Zur Analyse werden 5 tholianische Kristalle benï¿½tigt";
+				$return[msg] = "Zur Analyse werden 5 tholianische Kristalle benötigt";
 				return $return;
 			}
 			$this->lowerstoragebygoodid(5,$goodId,$this->cid);
 			$this->db->query("INSERT INTO stu_research_user (research_id,user_id) VALUES ('219','".$this->user."')");
-			$return['msg'] = "Kristall-Analyse komplett";
+			$return[msg] = "Kristall-Analyse komplett";
 			return $return;
 		}
 
@@ -4171,68 +4171,68 @@ class colony
 		{
 			if ($this->getuserresearch(254,$this->user) == 1)
 			{
-				$return['msg'] = "Plasmawaffen bereits bekannt";
+				$return[msg] = "Plasmawaffen bereits bekannt";
 				return $return;
 			}
 			if ($storcount < 1)
 			{
-				$return['msg'] = "Zur Analyse wird mindestens eine Plasmakanone benï¿½tigt";
+				$return[msg] = "Zur Analyse wird mindestens eine Plasmakanone benötigt";
 				return $return;
 			}
 			$this->lowerstoragebygoodid(1,$goodId,$this->cid);
 			$this->db->query("INSERT INTO stu_research_user (research_id,user_id) VALUES ('254','".$this->user."')");
-			$return['msg'] = "Plasmakanone wurde demontiert und analysiert";
+			$return[msg] = "Plasmakanone wurde demontiert und analysiert";
 			return $return;
 		}
 		if (($goodId >= 142) && ($goodId <= 144))
 		{
 			if ($this->getuserresearch(255,$this->user) == 1)
 			{
-				$return['msg'] = "Partikelwaffen bereits bekannt";
+				$return[msg] = "Partikelwaffen bereits bekannt";
 				return $return;
 			}
 			if ($storcount < 1)
 			{
-				$return['msg'] = "Zur Analyse wird mindestens eine Partikelkanone benï¿½tigt";
+				$return[msg] = "Zur Analyse wird mindestens eine Partikelkanone benötigt";
 				return $return;
 			}
 			$this->lowerstoragebygoodid(1,$goodId,$this->cid);
 			$this->db->query("INSERT INTO stu_research_user (research_id,user_id) VALUES ('255','".$this->user."')");
-			$return['msg'] = "Partikelkanone wurde demontiert und analysiert";
+			$return[msg] = "Partikelkanone wurde demontiert und analysiert";
 			return $return;
 		}
 		if (($goodId == 97) || ($goodId == 98) || ($goodId == 234))
 		{
 			if ($this->getuserresearch(262,$this->user) == 1)
 			{
-				$return['msg'] = "Polaronwaffen bereits bekannt";
+				$return[msg] = "Polaronwaffen bereits bekannt";
 				return $return;
 			}
 			if ($storcount < 1)
 			{
-				$return['msg'] = "Zur Analyse wird mindestens ein Polaronstrahler benï¿½tigt";
+				$return[msg] = "Zur Analyse wird mindestens ein Polaronstrahler benötigt";
 				return $return;
 			}
 			$this->lowerstoragebygoodid(1,$goodId,$this->cid);
 			$this->db->query("INSERT INTO stu_research_user (research_id,user_id) VALUES ('262','".$this->user."')");
-			$return['msg'] = "Polaronstrahler wurde demontiert und analysiert";
+			$return[msg] = "Polaronstrahler wurde demontiert und analysiert";
 			return $return;
 		}
 		if ($goodId == 27)
 		{
 			if ($this->getuserresearch(266,$this->user) == 1)
 			{
-				$return['msg'] = "Polarontorpedos bereits bekannt";
+				$return[msg] = "Polarontorpedos bereits bekannt";
 				return $return;
 			}
 			if ($storcount < 5)
 			{
-				$return['msg'] = "Zur Analyse werden mindestens fï¿½nf Polarontropedos benï¿½tigt";
+				$return[msg] = "Zur Analyse werden mindestens fünf Polarontropedos benötigt";
 				return $return;
 			}
 			$this->lowerstoragebygoodid(5,$goodId,$this->cid);
 			$this->db->query("INSERT INTO stu_research_user (research_id,user_id) VALUES ('266','".$this->user."')");
-			$return['msg'] = "Polarontorpedos wurden demontiert und analysiert";
+			$return[msg] = "Polarontorpedos wurden demontiert und analysiert";
 			return $return;
 		}
 		if ($goodId == 29)
@@ -4240,114 +4240,114 @@ class colony
 
 			if ($this->getuserresearch(268,$this->user) == 1)
 			{
-				$return['msg'] = "Positrontorpedos bereits bekannt";
+				$return[msg] = "Positrontorpedos bereits bekannt";
 				return $return;
 			}
 			if ($storcount < 5)
 			{
-				$return['msg'] = "Zur Analyse werden mindestens fï¿½nf Positrontropedos benï¿½tigt";
+				$return[msg] = "Zur Analyse werden mindestens fünf Positrontropedos benötigt";
 				return $return;
 			}
 			$this->lowerstoragebygoodid(5,$goodId,$this->cid);
 			$this->db->query("INSERT INTO stu_research_user (research_id,user_id) VALUES ('268','".$this->user."')");
-			$return['msg'] = "Positrontorpedos wurden demontiert und analysiert";
+			$return[msg] = "Positrontorpedos wurden demontiert und analysiert";
 			return $return;
 		}
 		if ($goodId == 45)
 		{
 			if ($this->getuserresearch(221,$this->user) == 1)
 			{
-				$return['msg'] = "Daten bereits bekannt";
+				$return[msg] = "Daten bereits bekannt";
 				return $return;
 			}
 			if ($storcount < 1) {
-				$return['msg'] = "Keine Daten vorhanden";
+				$return[msg] = "Keine Daten vorhanden";
 				return $return;
 			}
 			$this->lowerstoragebygoodid(1,$goodId,$this->cid);
 			$this->db->query("INSERT INTO stu_research_user (research_id,user_id) VALUES ('221','".$this->user."')");
-			$return['msg'] = "Daten eingespeist";
+			$return[msg] = "Daten eingespeist";
 			return $return;
 		}
 		if ($goodId == 46)
 		{
 			if ($this->getuserresearch(222,$this->user) == 1)
 			{
-				$return['msg'] = "Daten bereits bekannt";
+				$return[msg] = "Daten bereits bekannt";
 				return $return;
 			}
 			if ($storcount < 1)
 			{
-				$return['msg'] = "Keine Daten vorhanden";
+				$return[msg] = "Keine Daten vorhanden";
 				return $return;
 			}
 			$this->lowerstoragebygoodid(1,$goodId,$this->cid);
 			$this->db->query("INSERT INTO stu_research_user (research_id,user_id) VALUES ('222','".$this->user."')");
-			$return['msg'] = "Daten eingespeist";
+			$return[msg] = "Daten eingespeist";
 			return $return;
 		}
 		if ($goodId == 47)
 		{
 			if ($this->getuserresearch(226,$this->user) == 1)
 			{
-				$return['msg'] = "Daten bereits bekannt";
+				$return[msg] = "Daten bereits bekannt";
 				return $return;
 			}
 			if ($storcount < 1)
 			{
-				$return['msg'] = "Keine Daten vorhanden";
+				$return[msg] = "Keine Daten vorhanden";
 				return $return;
 			}
 			$this->lowerstoragebygoodid(1,$goodId,$this->cid);
 			$this->db->query("INSERT INTO stu_research_user (research_id,user_id) VALUES ('226','".$this->user."')");
-			$return['msg'] = "Daten eingespeist";
+			$return[msg] = "Daten eingespeist";
 			return $return;
 		}
 		if ($goodId == 48)
 		{
 			if ($this->getuserresearch(227,$this->user) == 1)
 			{
-				$return['msg'] = "Daten bereits bekannt";
+				$return[msg] = "Daten bereits bekannt";
 				return $return;
 			}
 			if ($storcount < 1)
 			{
-				$return['msg'] = "Keine Daten vorhanden";
+				$return[msg] = "Keine Daten vorhanden";
 				return $return;
 			}
 			$this->lowerstoragebygoodid(1,$goodId,$this->cid);
 			$this->db->query("INSERT INTO stu_research_user (research_id,user_id) VALUES ('227','".$this->user."')");
-			$return['msg'] = "Daten eingespeist";
+			$return[msg] = "Daten eingespeist";
 			return $return;
 		}
 		if ($goodId == 221)
 		{
 			if ($this->getuserresearch(252,$this->user) == 1)
 			{
-				$return['msg'] = "Daten bereits bekannt";
+				$return[msg] = "Daten bereits bekannt";
 				return $return;
 			}
 			if ($storcount < 1)
 			{
-				$return['msg'] = "Keine Daten vorhanden";
+				$return[msg] = "Keine Daten vorhanden";
 				return $return;
 			}
 			$this->lowerstoragebygoodid(1,$goodId,$this->cid);
 			$this->db->query("INSERT INTO stu_research_user (research_id,user_id) VALUES ('252','".$this->user."')");
-			$return['msg'] = "Daten eingespeist";
+			$return[msg] = "Daten eingespeist";
 			return $return;
 		}
 		if ($goodId == 49)
 		{
 			if ($storcount < 1)
 			{
-				$return['msg'] = "Keine Daten vorhanden";
+				$return[msg] = "Keine Daten vorhanden";
 				return $return;
 			}
-			$return['msg'] = "Verschlï¿½sselung konnte nicht ï¿½berwunden werden. Der Computer identifiziert eine Kessok-Signatur.";
+			$return[msg] = "Verschlüsselung konnte nicht überwunden werden. Der Computer identifiziert eine Kessok-Signatur.";
 			return $return;
 		}
-		$return['msg'] = "Materialien/Daten kï¿½nnen nicht verarbeitet werden";
+		$return[msg] = "Materialien/Daten können nicht verarbeitet werden";
 		return $return;
 	}
 	function getprobecostbylvl($lvl) 
@@ -4463,16 +4463,16 @@ class colony
 		$class == 6 || $class == 9 ? $m = 35 : $m = 54;
 		if ($field >= $m+1)
 		{
-			$return['msg'] = "Dieses Feld existiert nicht";
+			$return[msg] = "Dieses Feld existiert nicht";
 			return $return;
 		}
 		if ($cf == 0)
 		{
-			$return['msg'] = "Es ist kein aktivierter Tarnfeldgenerator vorhanden";
+			$return[msg] = "Es ist kein aktivierter Tarnfeldgenerator vorhanden";
 			return $return;
 		}
 		$this->db->query("UPDATE stu_colonies SET cloakfield=".$field." WHERE id=".$colId);
-		$return['msg'] = "Tarnfeld wurde neu ausgerichtet";
+		$return[msg] = "Tarnfeld wurde neu ausgerichtet";
 		return $return;
 	}
 
@@ -4481,47 +4481,47 @@ class colony
 		if ($this->cshow == 0) return 0;
 		$data = $this->getfielddatabyid($fieldId,$colId);
 		if ($data == 0) return 0;
-		if ($data['buildtime'] != 0)
+		if ($data[buildtime] != 0)
 		{
-			$return['msg'] = "Das Gebï¿½ude wurde noch nicht fertiggestellt";
+			$return[msg] = "Das Gebäude wurde noch nicht fertiggestellt";
 			return $return;
 		}
 		global $myUser;
-		if ($data['buildings_id'] == 201)
+		if ($data[buildings_id] == 201)
 		{
 			if ($this->getuserresearch(251,$this->user) == 0)
 			{
-				$return['msg'] = "Du hast die Automatische Raffinerie noch nicht erforscht";
+				$return[msg] = "Du hast die Automatische Raffinerie noch nicht erforscht";
 				return $return;
 			}
 			if ($newId != 202)
 			{
-				$return['msg'] = "Falsche Moduseinstellung";
+				$return[msg] = "Falsche Moduseinstellung";
 				return $return;
 			}
-			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='202' WHERE field_id='".$data['field_id']."' AND colonies_id='".$colId."'");
-			$return['msg'] = "Raffinerie auf Kelbonitverarbeitung umgestellt";
+			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='202' WHERE field_id='".$data[field_id]."' AND colonies_id='".$colId."'");
+			$return[msg] = "Raffinerie auf Kelbonitverarbeitung umgestellt";
 			return $return;
 		}
-		elseif ($data['buildings_id'] == 202)
+		elseif ($data[buildings_id] == 202)
 		{
 			if ($this->getuserresearch(251,$this->user) == 0)
 			{
-				$return['msg'] = "Du hast die Automatische Raffinerie noch nicht erforscht";
+				$return[msg] = "Du hast die Automatische Raffinerie noch nicht erforscht";
 				return $return;
 			}
 			if ($newId != 201)
 			{
-				$return['msg'] = "Falsche Moduseinstellung";
+				$return[msg] = "Falsche Moduseinstellung";
 				return $return;
 			}
-			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='201' WHERE field_id='".$data['field_id']."' AND colonies_id='".$colId."'");
-			$return['msg'] = "Raffinerie auf Nitriumverarbeitung umgestellt";
+			$this->db->query("UPDATE stu_colonies_fields SET buildings_id='201' WHERE field_id='".$data[field_id]."' AND colonies_id='".$colId."'");
+			$return[msg] = "Raffinerie auf Nitriumverarbeitung umgestellt";
 			return $return;
 		}
 		else 
 		{
-			$return['msg'] = "Parameterfehler";
+			$return[msg] = "Parameterfehler";
 			return $return;
 		}
 	}
@@ -4533,34 +4533,34 @@ class colony
 		if ($embassy != 0)
 		{
 			$embdata = mysql_fetch_array($myAlly->getembassybyid($embassy));
-			$ally = $myAlly->getallybyid($embdata['allys_id2']);
-			$ally2 = $myAlly->getallybyid($embdata['allys_id1']);
-			$ally['diplo'] > 0 ? $recipient = $ally['diplo'] : $recipient = $ally['user_id'];
+			$ally = $myAlly->getallybyid($embdata[allys_id2]);
+			$ally2 = $myAlly->getallybyid($embdata[allys_id1]);
+			$ally[diplo] > 0 ? $recipient = $ally[diplo] : $recipient = $ally[user_id];
 			$emb = $this->db->query("SELECT * FROM stu_allys_embassys WHERE id=".$embassy,2);
-			if ($emb['colonies_id'] != 0)
+			if ($emb[colonies_id] != 0)
 			{
-				$return['msg'] = "Dieser Allianz wurde bereits eine Botschaft ï¿½bergeben";
+				$return[msg] = "Dieser Allianz wurde bereits eine Botschaft übergeben";
 				return $return;
 			}
 			$emb = $this->db->query("SELECT * FROM stu_allys_embassys WHERE colonies_id=".$colId." AND field_id = ".$field,2);
 			if ($emb != 0)
 			{
-				$return['msg'] = "Dieses Botschaftsgebï¿½ude wird bereits verwendet";
+				$return[msg] = "Dieses Botschaftsgebäude wird bereits verwendet";
 				return $return;
 			}
 			$this->db->query("UPDATE stu_allys_embassys SET colonies_id=".$colId.", field_id = ".$field." WHERE id=".$embassy);
-			$myComm->sendpm($recipient,$this->user,"Die Allianz ".$ally2['name']." hat Ihnen eine Botschaft ï¿½berstellt");
-			$return['msg'] = "Botschaft wurde ï¿½bergeben";
+			$myComm->sendpm($recipient,$this->user,"Die Allianz ".$ally2[name]." hat Ihnen eine Botschaft überstellt");
+			$return[msg] = "Botschaft wurde übergeben";
 		}
 		else
 		{
 			$ally = $myAlly->getallybyid($myAlly->getembassyownerbycolony($colId,$field));
 			$ally2 = $myAlly->getallybyid($myAlly->getembassybuilderbycolony($colId,$field));
-			$ally['diplo'] > 0 ? $recipient = $ally['diplo'] : $recipient = $ally['user_id'];
+			$ally[diplo] > 0 ? $recipient = $ally[diplo] : $recipient = $ally[user_id];
 			$this->db->query("UPDATE stu_allys_embassys SET colonies_id=0, field_id = 0 WHERE colonies_id=".$colId." AND field_id = ".$field);
 			$this->db->query("UPDATE stu_colonies_fields SET buildings_id=210 WHERE colonies_id=".$colId." AND field_id = ".$field);
-			$myComm->sendpm($recipient,$this->user,"Die Allianz ".$ally2['name']." hat Ihre Botschafter ausgewiesen");
-			$return['msg'] = "Botschafter wurden ausgewiesen";
+			$myComm->sendpm($recipient,$this->user,"Die Allianz ".$ally2[name]." hat Ihre Botschafter ausgewiesen");
+			$return[msg] = "Botschafter wurden ausgewiesen";
 		}
 		return $return;
 	}
@@ -4571,57 +4571,57 @@ class colony
 		$data = $this->getcolonybyid($this->cid);
 		if ($data == 0) return 0;
 		$field = $this->getfielddatabyid($fieldId,$this->cid);
-		if ($field['buildings_id'] == 0) return 0;
+		if ($field[buildings_id] == 0) return 0;
 		if ($field == 0) return 0;
 
 		if ($type == 1)
 		{
 			// Reaktor hochfahren
-			if ($data['bev_free'] < 5)
+			if ($data[bev_free] < 5)
 			{
-				$return['msg'] = "Zum Hochfahren des Reaktors werden 5 freie Arbeiter benï¿½tigt";
+				$return[msg] = "Zum Hochfahren des Reaktors werden 5 freie Arbeiter benötigt";
 				return $return;
 			}
-			if ($field['aktiv'] == 1)
+			if ($field[aktiv] == 1)
 			{
-				$return['msg'] = "Der Reaktor lï¿½uft bereits";
+				$return[msg] = "Der Reaktor läuft bereits";
 				return $return;
 			}
 			$this->activateBuilding($fieldId,$this->cid,$this->user);
 			$this->db->query("UPDATE stu_colonies_fields SET buildtime='".(time()+10800)."' WHERE field_id='".$fieldId."' AND colonies_id='".$this->cid."'");
-			$return['msg'] = "Reaktor wurde in Betrieb genommen";
+			$return[msg] = "Reaktor wurde in Betrieb genommen";
 			return $return;
 		}
 		if ($type == 2)
 		{
 			// Reaktor runterfahren
-			if ($data['bev_free'] < 5)
+			if ($data[bev_free] < 5)
 			{
-				$return['msg'] = "Zum Herunterfahren des Reaktors werden 5 freie Arbeiter benï¿½tigt";
+				$return[msg] = "Zum Herunterfahren des Reaktors werden 5 freie Arbeiter benötigt";
 				return $return;
 			}
-			if ($field['aktiv'] == 0)
+			if ($field[aktiv] == 0)
 			{
-				$return['msg'] = "Der Reaktor lï¿½uft noch nicht";
+				$return[msg] = "Der Reaktor läuft noch nicht";
 				return $return;
 			}
 			$this->deactivateBuilding($fieldId,$this->cid,$this->user);
 			$this->db->query("UPDATE stu_colonies_fields SET buildtime='".(time()+10800)."' WHERE field_id='".$fieldId."' AND colonies_id='".$this->cid."'");
-			$return['msg'] = "Reaktor wurde auï¿½er Betrieb genommen";
+			$return[msg] = "Reaktor wurde außer Betrieb genommen";
 			return $return;
 		}
 		elseif ($type == 3)
 		{
 			// Waffen ausbauen
 
-			$return['msg'] = "Alle ï¿½brigen Waffensysteme sind unbrauchbar, eine Bergung wï¿½re sinnlos";
+			$return[msg] = "Alle übrigen Waffensysteme sind unbrauchbar, eine Bergung wäre sinnlos";
 			return $return;
 		}
 		elseif ($type == 4)
 		{
 			// Computer anzapfen
 
-			$return['msg'] = "Der Computer ist endgï¿½ltig zerstï¿½rt. Weitere Versuche, die Daten zu bergen, sind unmï¿½glich.";
+			$return[msg] = "Der Computer ist endgültig zerstört. Weitere Versuche, die Daten zu bergen, sind unmöglich.";
 			return $return;
 
 		}
@@ -4629,11 +4629,11 @@ class colony
 		{
 			// Erkunden
 
-			$return['msg'] = "Das Schiff wurde schon erkundet";
+			$return[msg] = "Das Schiff wurde schon erkundet";
 			return $return;
 			
 		}
-		$return['msg'] = "Fehler";
+		$return[msg] = "Fehler";
 		return $return;
 
 	}
@@ -4642,8 +4642,8 @@ class colony
 	{
 		global $grafik;
 		$data =  $this->db->query("SELECT name,secretimage,id FROM stu_goods WHERE id = ".$Id."",4);
-		if ($data['secretimage'] != "0") $return = "<img src=http://www.stuniverse.de/gfx/secret/".$data['secretimage'].".gif title='".$data['name']."'>";
-		else $return = "<img src=".$grafik."/goods/".$data['id'].".gif title='".$data['name']."'>";
+		if ($data[secretimage] != "0") $return = "<img src=http://www.stuniverse.de/gfx/secret/".$data[secretimage].".gif title='".$data[name]."'>";
+		else $return = "<img src=".$grafik."/goods/".$data[id].".gif title='".$data[name]."'>";
 		return $return;
 	}
 

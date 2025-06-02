@@ -1,7 +1,7 @@
 /*
     Datei: tooltip.js
     Datum: 02.12.2004
-    Autor: J. Strï¿½big <struebig@gmx.net>
+    Autor: J. Strübig <struebig@gmx.net>
     Web: http://javascript.jstruebig.de/source/tooltip.html
 */
 
@@ -115,7 +115,7 @@ function pageOffset(win)
 
 
 ////////////////////////////////////////////////////////////
-// speziell fï¿½r den IE 6.
+// speziell für den IE 6.
 function getBody(w)
 {
     return w.document.compatMode && w.document.compatMode == "CSS1Compat" ?
@@ -130,20 +130,20 @@ window.onload = function()
     addLayer(tt_id);
 
     window.tObj = document.getElementById ? document.getElementById(tt_id)
-    : document.all ? document.all['tt_id'] : null;
+    : document.all ? document.all[tt_id] : null;
     window.tObj.hide = true;
     hideTooltip();
 
-    for(var s in tt_styles) window.tObj.style['s'] = tt_styles['s'];
+    for(var s in tt_styles) window.tObj.style[s] = tt_styles[s];
 
     for(var i = 0;i < all.length; i++)
     {
-        if(all['i'].className == tt_className)
+        if(all[i].className == tt_className)
         {
-              all['i'].onmouseover = function(e) { tooltip(this, this.tooltip, e);  };
-              all['i'].onmouseout = function(e) { window.setTimeout("hideTooltip()", tt_wait); };
-              all['i'].tooltip = all['i'].title;
-              all['i'].title = '';
+              all[i].onmouseover = function(e) { tooltip(this, this.tooltip, e);  };
+              all[i].onmouseout = function(e) { window.setTimeout("hideTooltip()", tt_wait); };
+              all[i].tooltip = all[i].title;
+              all[i].title = '';
        }
     }
     window.tObj.onmouseover = function() { this.hide = false; }

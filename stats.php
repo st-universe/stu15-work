@@ -18,17 +18,17 @@ if (!$section)
 			<td class=tdmain align=center>Spielerstats</td>
 		</tr>
 		<tr>
-			<td class=tdmainobg>Spieler: ".$player['active']."<br>
-			|-online: ".$player['online']."<br>
-			|-im Urlaub: ".$player['vac']."<br>
-			|-werden gelï¿½scht: $player['nrdel']l]."<br>
-			|-&Oslash; Sympathie: ".$player['symp']."<br>
-			|-Fï¿½deration: $player['fed']d]."<br>
-			|-Romulaner: ".$player['rom']."<br>
-			|-Klingonen: ".$player['kli']."<br>
-			|-Cardassianer: ".$player['car']."<br>
-			|-Ferengi: ".$player['fer']."<br>
-			|-<a href=?page=stats&section=allywars>Allianzkriege: ".$player['allywar']."</a>
+			<td class=tdmainobg>Spieler: ".$player[active]."<br>
+			|-online: ".$player[online]."<br>
+			|-im Urlaub: ".$player[vac]."<br>
+			|-werden gelöscht: ".$player[nrdel]."<br>
+			|-&Oslash; Sympathie: ".$player[symp]."<br>
+			|-Föderation: ".$player[fed]."<br>
+			|-Romulaner: ".$player[rom]."<br>
+			|-Klingonen: ".$player[kli]."<br>
+			|-Cardassianer: ".$player[car]."<br>
+			|-Ferengi: ".$player[fer]."<br>
+			|-<a href=?page=stats&section=allywars>Allianzkriege: ".$player[allywar]."</a>
 			</td>
 		</tr>
 		</table>
@@ -39,17 +39,17 @@ if (!$section)
 			<td class=tdmain align=center>Koloniestats</td>
 		</tr>
 		<tr>
-			<td class=tdmainobg>Kolonisiert: ".$cols['settled']."<br>
-			|-Einwohner: ".$cols['bev']."<br>
-			|-kol. Klasse M: ".$cols['cm']."<br>
-			|-kol. Klasse L: ".$cols['cl']."<br>
-			|-kol. Klasse N: ".$cols['cn']."<br>
-			|-kol. Klasse G: ".$cols['cg']."<br>
-			|-kol. Klasse K: ".$cols['ck']."<br>
-			|-kol. Klasse D: ".$cols['cd']."<br>
-			|-kol. Klasse H: ".$cols['ch']."<br>
-			|-kol. Klasse X: ".$cols['cx']."<br>
-			|-kol. Klasse J: ".$cols['cj']."<br>
+			<td class=tdmainobg>Kolonisiert: ".$cols[settled]."<br>
+			|-Einwohner: ".$cols[bev]."<br>
+			|-kol. Klasse M: ".$cols[cm]."<br>
+			|-kol. Klasse L: ".$cols[cl]."<br>
+			|-kol. Klasse N: ".$cols[cn]."<br>
+			|-kol. Klasse G: ".$cols[cg]."<br>
+			|-kol. Klasse K: ".$cols[ck]."<br>
+			|-kol. Klasse D: ".$cols[cd]."<br>
+			|-kol. Klasse H: ".$cols[ch]."<br>
+			|-kol. Klasse X: ".$cols[cx]."<br>
+			|-kol. Klasse J: ".$cols[cj]."<br>
 			</td>
 		</tr>
 		</table>
@@ -60,11 +60,11 @@ if (!$section)
 			<td class=tdmain align=center>Schiffstats</td>
 		</tr>
 		<tr>
-			<td class=tdmainobg>Schiffe: ".$ships['ships']."<br>
-			|-inaktiv: ".$ships['inaktiv']."<br>
-			|-&Oslash; Crew/Schiff: ".$ships['crew']."<br>
-			|-&Oslash; Torps/Schiff: ".$ships['torp']."<br>
-			|-Trï¿½mmerfelder: $ships['trums']s]."<br></td>
+			<td class=tdmainobg>Schiffe: ".$ships[ships]."<br>
+			|-inaktiv: ".$ships[inaktiv]."<br>
+			|-&Oslash; Crew/Schiff: ".$ships[crew]."<br>
+			|-&Oslash; Torps/Schiff: ".$ships[torp]."<br>
+			|-Trümmerfelder: ".$ships[trums]."<br></td>
 		</tr>
 		</table>
 		</td>
@@ -74,8 +74,8 @@ if (!$section)
 			<td class=tdmain align=center>Ressourcenstats</td>
 		</tr>
 		<tr>
-			<td class=tdmainobg>Ressourcen: ".$ress['ress']."<br>
-			|-&Oslash; Ress/Spieler: ".round($ress['ress']/$player['active'])."
+			<td class=tdmainobg>Ressourcen: ".$ress[ress]."<br>
+			|-&Oslash; Ress/Spieler: ".round($ress[ress]/$player[active])."
 			</td>
 		</tr>
 		<tr>
@@ -85,11 +85,11 @@ if (!$section)
 		<td class=tdmainobg>
 		<table width=100% cellspacing=0 cellpadding=0>
 		<tr>
-			<td class=tdmainobg rowspan=2><img src=".$grafik."/planets/".$cols['wm']['colonies_classes_id'].".gif title='Kolonieschau'></td>
-			<td class=tdmainobg>".stripslashes($cols['wm']['name'])."</td>
+			<td class=tdmainobg rowspan=2><img src=".$grafik."/planets/".$cols[wm][colonies_classes_id].".gif title='Kolonieschau'></td>
+			<td class=tdmainobg>".stripslashes($cols[wm][name])."</td>
 		</tr>
 		<tr>
-			<td class=tdmainobg>Temperatur ".$cols['wm']['temp']."ï¿½C</td>
+			<td class=tdmainobg>Temperatur ".$cols[wm][temp]."°C</td>
 		</tr>
 		</table></td>
 		</tr>
@@ -102,10 +102,10 @@ if (!$section)
 		</tr>
 		<tr>
 			<td class=tdmainobg>G-Wirtschaft: ";
-			$cols['lrw'] >= 0 ? print("<font color=green>+".$cols['lrw']." %</font>") : print("<font color=red>".$cols['lrw']." %</font>");
+			$cols[lrw] >= 0 ? print("<font color=green>+".$cols[lrw]." %</font>") : print("<font color=red>".$cols[lrw]." %</font>");
 			echo "<br>
-			|-&Oslash; Wirtschaft: ".$cols['wirtschaft']."<br>
-			|-Arbeitslose %: ".round($cols['jless'],2)."<br>
+			|-&Oslash; Wirtschaft: ".$cols[wirtschaft]."<br>
+			|-Arbeitslose %: ".round($cols[jless],2)."<br>
 			</td>
 		</tr>
 		</table>
@@ -121,17 +121,17 @@ if (!$section)
 		</tr>
 		<tr>
 			<td class=tdmainobg>
-			<a href=main.php?page=stats&section=bestcols>Die 10 grï¿½ï¿½ten Kolonien</a><br>
-			<a href=main.php?page=stats&section=bestfleet>Die 10 grï¿½ï¿½ten Flotten</a><br>
+			<a href=main.php?page=stats&section=bestcols>Die 10 größten Kolonien</a><br>
+			<a href=main.php?page=stats&section=bestfleet>Die 10 größten Flotten</a><br>
 			<a href=main.php?page=stats&section=bestweap>Die 10 bestbewaffnetsten Flotten</a><br>
-			<a href=main.php?page=stats&section=bestwirt>Die 10 stï¿½rksten Wirtschaftsmï¿½chte</a><br>
-			<a href=main.php?page=stats&section=mostbev>Die 10 bevï¿½lkerungsreichsten Kolonisten</a><br>
+			<a href=main.php?page=stats&section=bestwirt>Die 10 stärksten Wirtschaftsmächte</a><br>
+			<a href=main.php?page=stats&section=mostbev>Die 10 bevölkerungsreichsten Kolonisten</a><br>
 			<a href=main.php?page=stats&section=mostjobless>Die 10 miesesten Arbeitgeber</a><br>
 			<a href=main.php?page=stats&section=bestresearch>Die 10 fortgeschrittensten Kolonisten</a><br>
 			<a href=main.php?page=stats&section=richestuser>Die 10 reichsten Kolonisten</a></td>
 		</tr>
 		<tr>
-			<td class=tdmainobg><a href=main.php?page=hally&section=goodview>Warenï¿½bersicht</a></td>
+			<td class=tdmainobg><a href=main.php?page=hally&section=goodview>Warenübersicht</a></td>
 		</tr></table>
 		</td><td valign=top>
 		<table cellpadding=1 cellspacing=1 bgcolor=#262323>
@@ -141,7 +141,7 @@ if (!$section)
 		<tr>
 			<td class=tdmainobg>
 			<a href=main.php?page=stats&section=shipclasses>Details: Schiffe</a><br>
-			<a href=main.php?page=stats&section=buildclasses>Details: Gebï¿½ude</a><br>
+			<a href=main.php?page=stats&section=buildclasses>Details: Gebäude</a><br>
 			(Aktualisierung alle 15mins)</td>
 		</tr>
 		</table>
@@ -158,7 +158,7 @@ if (!$section)
 		<tr>
 			<td class=tdmainobg>Schiffe: ".$ships." (".($myDB->query("SELECT COUNT(user_id) FROM stu_stats WHERE ship_count>".$ships,1)+1).".)<br>
 			Wirtschaft: ".$wirt." (".($myDB->query("SELECT COUNT(user_id) FROM stu_stats WHERE wirtschaft>".$wirt,1)+1).".)<br>
-			Bevï¿½lkerung: ".$bev." (".($myDB->query("SELECT COUNT(user_id) FROM stu_stats WHERE bev>".$bev,1)+1).".)</td>
+			Bevölkerung: ".$bev." (".($myDB->query("SELECT COUNT(user_id) FROM stu_stats WHERE bev>".$bev,1)+1).".)</td>
 		</tr>
 		</table>
 		</td>
@@ -180,10 +180,10 @@ elseif ($section == "tick")
 		<td class=tdmain><strong>Ende</strong></td>
 	</tr>";
 	for ($i=0;$i<count($ticks);$i++) {
-		$ticks[$i]['ende'] != 0 ? $ende = date("d.m.Y H:i:s",$ticks[$i]['ende']) : $ende = "-";
+		$ticks[$i][ende] != 0 ? $ende = date("d.m.Y H:i:s",$ticks[$i][ende]) : $ende = "-";
 		echo "<tr>
-			<td class=tdmainobg>".$ticks[$i]['runde']."</td>
-			<td class=tdmainobg>".date("d.m.Y H:i:s",$ticks[$i]['start_tsp'])."</td>
+			<td class=tdmainobg>".$ticks[$i][runde]."</td>
+			<td class=tdmainobg>".date("d.m.Y H:i:s",$ticks[$i][start_tsp])."</td>
 			<td class=tdmainobg>".$ende."</td>
 		</tr>";
 	}
@@ -194,7 +194,7 @@ elseif ($section == "bestcols")
 	$cols = $myColony->getbestcols();
 	echo "<table width=100% bgcolor=#262323 cellspacing=1 cellpadding=1>
 	<tr>
-		<td class=tdmain>/ <a href=?page=stats>Statistiken</a> / <strong>Die 10 grï¿½ï¿½ten Kolonien</strong></td>
+		<td class=tdmain>/ <a href=?page=stats>Statistiken</a> / <strong>Die 10 größten Kolonien</strong></td>
 	</tr>
 	</table><br><br>
 	<table width=90% cellpadding=1 cellspacing=1 bgcolor=#262323>
@@ -206,9 +206,9 @@ elseif ($section == "bestcols")
 	for ($i=0;$i<count($cols);$i++)
 	{
 		echo "<tr>
-			<td class=tdmainobg>".stripslashes($cols[$i]['name'])."</td>
-			<td class=tdmainobg align=center>".$cols[$i]['bevcount']."</td>
-			<td class=tdmainobg>".stripslashes($cols[$i]['user'])."</td>
+			<td class=tdmainobg>".stripslashes($cols[$i][name])."</td>
+			<td class=tdmainobg align=center>".$cols[$i][bevcount]."</td>
+			<td class=tdmainobg>".stripslashes($cols[$i][user])."</td>
 		</tr>";
 	}
 	echo "</table>";
@@ -218,19 +218,19 @@ elseif ($section == "mostbev")
 	$cols = $myColony->getmostbev();
 	echo "<table width=100% bgcolor=#262323 cellspacing=1 cellpadding=1>
 	<tr>
-		<td class=tdmain>/ <a href=?page=stats>Statistiken</a> / <strong>Die 10 bevï¿½lkerungsreichsten Kolonisten</strong></td>
+		<td class=tdmain>/ <a href=?page=stats>Statistiken</a> / <strong>Die 10 bevölkerungsreichsten Kolonisten</strong></td>
 	</tr>
 	</table><br>
 	<table width=50% cellpadding=1 cellspacing=1 bgcolor=#262323>
 	<tr>
 		<td class=tdmainobg><strong>User</strong></td>
-		<td class=tdmainobg><strong>Bevï¿½lkerung</strong></td>
+		<td class=tdmainobg><strong>Bevölkerung</strong></td>
 	</tr>";
 	for ($i=0;$i<count($cols);$i++)
 	{
 		echo "<tr>
-			<td class=tdmainobg>".stripslashes($cols[$i]['user'])."</td>
-			<td class=tdmainobg>".$cols[$i]['maxsum']."</td>
+			<td class=tdmainobg>".stripslashes($cols[$i][user])."</td>
+			<td class=tdmainobg>".$cols[$i][maxsum]."</td>
 		</tr>";
 	}
 	echo "</table>";
@@ -251,8 +251,8 @@ elseif ($section == "mostjobless")
 	while($data=mysql_fetch_assoc($cols))
 	{
 		echo "<tr>
-			<td class=tdmainobg>".stripslashes($data['user'])."</td>
-			<td class=tdmainobg>".$data['maxsum']."</td>
+			<td class=tdmainobg>".stripslashes($data[user])."</td>
+			<td class=tdmainobg>".$data[maxsum]."</td>
 		</tr>";
 	}
 	echo "</table>";
@@ -262,12 +262,12 @@ elseif ($section == "bestfleet")
 	if (!$runde)
 	{
 		$runde = $myGame->getcurrentround();
-		$runde = $runde['runde']-1;
+		$runde = $runde[runde]-1;
 	}
 	$cols = $myHistory->getShipTtHistory($runde);
 	echo "<table width=100% bgcolor=#262323 cellspacing=1 cellpadding=1>
 	<tr>
-		<td class=tdmain>/ <a href=?page=stats>Statistiken</a> / <strong>Die 10 grï¿½ï¿½ten Flotten</strong></td>
+		<td class=tdmain>/ <a href=?page=stats>Statistiken</a> / <strong>Die 10 größten Flotten</strong></td>
 	</tr>
 	</table><br>
 	<table width=70% cellpadding=1 cellspacing=1 bgcolor=#262323>
@@ -275,12 +275,12 @@ elseif ($section == "bestfleet")
 		<td class=tdmain><b>User</b></td>
 		<td class=tdmain align=center><b>Schiffe</b></td>
 	</tr>";
-	if ($cols == 0)	echo "<tr><td class=tdmainobg colspan=2 align=Center>Fï¿½r diese Runde sind keine Daten gespeichert</td></tr>";
+	if ($cols == 0)	echo "<tr><td class=tdmainobg colspan=2 align=Center>Für diese Runde sind keine Daten gespeichert</td></tr>";
 	else
 	{
 		for ($i=0;$i<count($cols);$i++) {
 			echo "<tr>
-				<td class=tdmainobg>".stripslashes($cols[$i]['user'])."</td>
+				<td class=tdmainobg>".stripslashes($cols[$i][user])."</td>
 				<td class=tdmainobg align=Center>".$cols[$i]['count']."</td>
 			</tr>";
 		}
@@ -300,7 +300,7 @@ elseif ($section == "bestwirt")
 	$cols = $myColony->getbestwirt();
 	echo "<table width=100% bgcolor=#262323 cellspacing=1 cellpadding=1>
 	<tr>
-		<td class=tdmain>/ <a href=?page=stats>Statistiken</a> / <strong>Die 10 grï¿½ï¿½ten Wirtschaftsmï¿½chte</strong></td>
+		<td class=tdmain>/ <a href=?page=stats>Statistiken</a> / <strong>Die 10 größten Wirtschaftsmächte</strong></td>
 	</tr>
 	</table><br>
 	<table width=50% cellpadding=1 cellspacing=1 bgcolor=#262323>
@@ -310,7 +310,7 @@ elseif ($section == "bestwirt")
 	for ($i=0;$i<count($cols);$i++)
 	{
 		echo "<tr>
-			<td class=tdmainobg>".stripslashes($cols[$i]['user'])."</td>
+			<td class=tdmainobg>".stripslashes($cols[$i][user])."</td>
 		</tr>";
 	}
 	echo "</table>";
@@ -331,8 +331,8 @@ elseif ($section == "bestresearch")
 	for ($i=0;$i<count($cols);$i++)
 	{
 		echo "<tr>
-			<td class=tdmainobg>".stripslashes($cols[$i]['user'])."</td>
-			<td class=tdmainobg align=Center>".$cols[$i]['idcount']."</td>
+			<td class=tdmainobg>".stripslashes($cols[$i][user])."</td>
+			<td class=tdmainobg align=Center>".$cols[$i][idcount]."</td>
 		</tr>";
 	}
 	echo "</table>";
@@ -366,8 +366,8 @@ elseif ($section == "richestuser")
 		foreach($data as $key => $unit)
 		{
 			echo "<tr>
-				<td class=tdmainobg>".stripslashes($unit['user'])."</td>
-				<td class=tdmainobg align=Center>".$unit['latinum']."</td>
+				<td class=tdmainobg>".stripslashes($unit[user])."</td>
+				<td class=tdmainobg align=Center>".$unit[latinum]."</td>
 			</tr>";
 			if ($key >=9) break;
 		}
@@ -387,10 +387,10 @@ elseif ($section == "bestweap")
 	for ($i=0;$i<mysql_num_rows($result);$i++)
 	{
 		$data[$i] = mysql_fetch_assoc($result);
-		$pho = $myDB->query("SELECT SUM(a.count) FROM stu_ships_storage as a LEFT JOIN stu_ships as b ON a.ships_id=b.id WHERE a.user_id=".$data[$i]['user_id']." AND a.goods_id=7 AND b.ships_rumps_id!=5 AND b.ships_rumps_id!=65 AND b.ships_rumps_id!=66 AND b.ships_rumps_id!=67 AND b.ships_rumps_id!=68",1);
-		$pla = $myDB->query("SELECT SUM(a.count) FROM stu_ships_storage as a LEFT JOIN stu_ships as b ON a.ships_id=b.id WHERE a.user_id=".$data[$i]['user_id']." AND a.goods_id=16 AND b.ships_rumps_id!=5 AND b.ships_rumps_id!=65 AND b.ships_rumps_id!=66 AND b.ships_rumps_id!=67 AND b.ships_rumps_id!=68",1);
-		$qua = $myDB->query("SELECT SUM(a.count) FROM stu_ships_storage as a LEFT JOIN stu_ships as b ON a.ships_id=b.id WHERE a.user_id=".$data[$i]['user_id']." AND a.goods_id=17 AND b.ships_rumps_id!=5 AND b.ships_rumps_id!=65 AND b.ships_rumps_id!=66 AND b.ships_rumps_id!=67 AND b.ships_rumps_id!=68",1);
-		$data[$i]['points'] = ($pho + $pla*2 + $qua*3)*round($data[$i]['torps']/$data[$i]['shipcount']);
+		$pho = $myDB->query("SELECT SUM(a.count) FROM stu_ships_storage as a LEFT JOIN stu_ships as b ON a.ships_id=b.id WHERE a.user_id=".$data[$i][user_id]." AND a.goods_id=7 AND b.ships_rumps_id!=5 AND b.ships_rumps_id!=65 AND b.ships_rumps_id!=66 AND b.ships_rumps_id!=67 AND b.ships_rumps_id!=68",1);
+		$pla = $myDB->query("SELECT SUM(a.count) FROM stu_ships_storage as a LEFT JOIN stu_ships as b ON a.ships_id=b.id WHERE a.user_id=".$data[$i][user_id]." AND a.goods_id=16 AND b.ships_rumps_id!=5 AND b.ships_rumps_id!=65 AND b.ships_rumps_id!=66 AND b.ships_rumps_id!=67 AND b.ships_rumps_id!=68",1);
+		$qua = $myDB->query("SELECT SUM(a.count) FROM stu_ships_storage as a LEFT JOIN stu_ships as b ON a.ships_id=b.id WHERE a.user_id=".$data[$i][user_id]." AND a.goods_id=17 AND b.ships_rumps_id!=5 AND b.ships_rumps_id!=65 AND b.ships_rumps_id!=66 AND b.ships_rumps_id!=67 AND b.ships_rumps_id!=68",1);
+		$data[$i][points] = ($pho + $pla*2 + $qua*3)*round($data[$i][torps]/$data[$i][shipcount]);
 	}
 	fsort($data,'points',-1); 
 	reset($data);
@@ -409,8 +409,8 @@ elseif ($section == "bestweap")
 		foreach($data as $key => $unit)
 		{
 			echo "<tr>
-				<td class=tdmainobg>".stripslashes($myUser->getfield("user",$unit['user_id']))."</td>
-				<td class=tdmainobg align=Center>".$unit['points']."</td>
+				<td class=tdmainobg>".stripslashes($myUser->getfield("user",$unit[user_id]))."</td>
+				<td class=tdmainobg align=Center>".$unit[points]."</td>
 			</tr>";
 			if ($key >=9) break;
 		}
@@ -431,9 +431,9 @@ elseif ($section == "bestweap")
 	while($data=mysql_fetch_assoc($result))
 	{
 		echo "<tr>
-		<td class=tdmainobg>".stripslashes($myDB->query("SELECT name FROM stu_allys WHERE id=".$data['allys_id1'],1))."</td>
-		<td class=tdmainobg>".stripslashes($myDB->query("SELECT name FROM stu_allys WHERE id=".$data['allys_id2'],1))."</td>
-		<td class=tdmainobg>".date("d.m.Y",$data['date_tsp'])."</td>
+		<td class=tdmainobg>".stripslashes($myDB->query("SELECT name FROM stu_allys WHERE id=".$data[allys_id1],1))."</td>
+		<td class=tdmainobg>".stripslashes($myDB->query("SELECT name FROM stu_allys WHERE id=".$data[allys_id2],1))."</td>
+		<td class=tdmainobg>".date("d.m.Y",$data[date_tsp])."</td>
 		</tr>";
 	}
 	echo "</table>";
