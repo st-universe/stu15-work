@@ -221,7 +221,7 @@ echo "<head>
 	
 	function cp(objekt,datei)
 	{
-		document.images[objekt].src = \"" . $grafik . "/\" + datei + \".gif\"
+		document.images['objekt'].src = \"" . $grafik . "/\" + datei + \".gif\"
 	}
 	//-->
 	</SCRIPT>";

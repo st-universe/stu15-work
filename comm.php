@@ -488,7 +488,7 @@ if (!$section) {
  					if ((number<0)||(number>=document.pm.contacts.options.length)) {
 					document.pm.recipient.value=\"\";
 				} else {
-					var Text=document.pm.contacts.options[number].value;
+					var Text=document.pm.contacts.options['number'].value;
 					document.pm.recipient.value=Text;
 				}
 			}
