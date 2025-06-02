@@ -1,7 +1,12 @@
 <?php
 function addlog($type, $category, $userid, $script, $additional)
 {
-    global $myDB;
+    // Parameter zu Strings konvertieren um Array-to-string Fehler zu vermeiden
+    $type = is_array($type) ? serialize($type) : (string)$type;
+    $category = is_array($category) ? serialize($category) : (string)$category;
+    $userid = is_array($userid) ? serialize($userid) : (string)$userid;
+    $script = is_array($script) ? serialize($script) : (string)$script;
+    $additional = is_array($additional) ? serialize($additional) : (string)$additional;
 
     // Einfache Logging-Funktion
     $logdir = "/var/www/stuv15tracking/glogs/";
@@ -20,15 +25,5 @@ function addlog($type, $category, $userid, $script, $additional)
         fwrite($handle, $logentry);
         fclose($handle);
         chmod($logfile, 0644);
-    }
-
-    // Optional: Auch in Datenbank loggen falls Tabelle existiert
-    if (isset($myDB)) {
-        try {
-            $myDB->query("INSERT INTO stu_logs (type, category, user_id, script, additional, timestamp) 
-                         VALUES ('$type', '$category', '$userid', '$script', '$additional', NOW())");
-        } catch (Exception $e) {
-            // Ignoriere DB-Fehler beim Logging
-        }
     }
 }

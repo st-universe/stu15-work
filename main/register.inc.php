@@ -1,10 +1,10 @@
 <table width=100% bgcolor=#262323 cellspacing=1 cellpadding=1>
-	<tr>
-		<td class=tdmain>/ <a href=?page=main>STU</a> / <strong>Registrierung</strong></td>
-	</tr>
+    <tr>
+        <td class=tdmain>/ <a href=?page=main>STU</a> / <strong>Registrierung</strong></td>
+    </tr>
 </Table><br>
 <table width=100% bgcolor=#262323 cellspacing=1 cellpadding=1>
-	<?php
+    <?php
 	include_once("class/user.class.php");
 	$myUser = new user;
 	include_once("class/game.class.php");
@@ -39,7 +39,8 @@
 				// Logging nur wenn functions.inc.php existiert
 				if (file_exists("inc/functions.inc.php")) {
 					include_once("inc/functions.inc.php");
-					addlog("500", "6", $result, getenv("SCRIPT_NAME"), "-");
+					$script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : 'register.inc.php';
+					addlog("500", "6", (string)$result, $script_name, "-");
 				}
 			}
 		}
