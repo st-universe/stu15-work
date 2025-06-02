@@ -11,16 +11,16 @@
 	$myGame = new game;
 
 	// Variablen initialisieren
+	// Variablen initialisieren - sowohl GET als auch POST berücksichtigen
 	$sent = isset($_POST['sent']) ? $_POST['sent'] : 0;
 	$login = isset($_POST['login']) ? $_POST['login'] : '';
-	$user = isset($_POST['user']) ? $_POST['user'] : '';
+	$user = isset($_POST['user']) ? $_POST['user'] : (isset($_GET['user']) ? $_GET['user'] : '');
 	$email = isset($_POST['email']) ? $_POST['email'] : '';
 	$pw = isset($_POST['pw']) ? $_POST['pw'] : '';
 	$pw2 = isset($_POST['pw2']) ? $_POST['pw2'] : '';
 	$seite = isset($_POST['seite']) ? $_POST['seite'] : '';
 	$actcode = isset($_GET['actcode']) ? $_GET['actcode'] : '';
-	$error = array();
-	$result = 0;
+
 
 	if ($sent == 1) {
 		if (!$login) $error['login'] = "Du hast keinen Loginnamen angegeben.";
