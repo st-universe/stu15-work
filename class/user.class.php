@@ -61,7 +61,7 @@ class user
 			return $return;
 		}
 		$actcode = md5((strlen($login . $seite . $runde)) * 144);
-		$id = $this->db->query("INSERT INTO stu_user (user,pass,email,login,rasse,startrunde,aktiv,act_code,lastloginround) VALUES ('" . addslashes($user) . "','" . md5($pw) . "','" . $email . "','" . str_replace("'", "", $login) . "','" . $seite . "','" . $runde . "','0','" . $actcode . "','" . $runde . "')", 5);
+		$id = $this->db->query("INSERT INTO stu_user (user,pass,email,login,rasse,startrunde,aktiv,act_code,lastloginround,grafik) VALUES ('" . addslashes($user) . "','" . md5($pw) . "','" . $email . "','" . str_replace("'", "", $login) . "','" . $seite . "','" . $runde . "','1','" . $actcode . "','" . $runde . "','/gfx')", 5);
 		$this->db->query("INSERT INTO stu_user_profiles (user_id,sl_sorttype,sl_sortway) VALUES ('" . $id . "','class','down')");
 		mail($email, "STU Anmeldung", "Hallo " . $login . "<br>
 		Du erh�lst hiermit Deinem Aktivierungscode f�r STU. Klicke einfach auf den Link<br>
