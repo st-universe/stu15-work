@@ -61,13 +61,13 @@ class user
 			return $return;
 		}
 		$actcode = md5((strlen($login . $seite . $runde)) * 144);
-		$id = $this->db->query("INSERT INTO stu_user (user,pass,email,login,rasse,startrunde,aktiv,act_code,lastloginround,grafik) VALUES ('" . addslashes($user) . "','" . md5($pw) . "','" . $email . "','" . str_replace("'", "", $login) . "','" . $seite . "','" . $runde . "','1','" . $actcode . "','" . $runde . "','/gfx')", 5);
+		$id = $this->db->query("INSERT INTO stu_user (user,pass,email,login,rasse,startrunde,act_code,lastloginround,grafik) VALUES ('" . addslashes($user) . "','" . md5($pw) . "','" . $email . "','" . str_replace("'", "", $login) . "','" . $seite . "','" . $runde . "','" . $actcode . "','" . $runde . "','/gfx')", 5);
 		$this->db->query("INSERT INTO stu_user_profiles (user_id,sl_sorttype,sl_sortway) VALUES ('" . $id . "','class','down')");
 		mail($email, "STU Anmeldung", "Hallo " . $login . "<br>
 		Du erh�lst hiermit Deinem Aktivierungscode f�r STU. Klicke einfach auf den Link<br>
-		<a href=http://www.stuniverse.de/index.php?page=register&actcode=" . $actcode . "&user=" . $id . " target=_blank>Aktivierung</a><br><br>
-		( F�r AOL-User (oder wenn der Link nicht korrekt dargestellt wird): http://www.stuniverse.de/index.php?page=register&actcode=" . $actcode . "&user=" . $id . " )<br><br>
-		Mit freundlichen Gr��en<br><br>
+		<a href=https://www.v1.5.stuniverse.de/index.php?page=register&actcode=" . $actcode . "&user=" . $id . " target=_blank>Aktivierung</a><br><br>
+		( F�r AOL-User (oder wenn der Link nicht korrekt dargestellt wird): https://www.v1.5.stuniverse.de/index.php?page=register&actcode=" . $actcode . "&user=" . $id . " )<br><br>
+		Mit freundlichen Gren<br><br>
 		Das STU-Team", "From: Star Trek Universe <automail@stuniverse.de>
 Content-Type: text/html");
 		global $myGame;
