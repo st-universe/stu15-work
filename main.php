@@ -4,9 +4,28 @@ include_once("inc/config.inc.php");
 include_once("class/mod.class.php");
 include_once("class/db.class.php");
 session_start();
-// Überprüfung der Cookies
-if (!$_SESSION["user"] || !$_SESSION["chk"])
-{
+
+// Variablen sicher abrufen
+$page = isset($_GET['page']) ? $_GET['page'] : 'main';
+$action = isset($_GET['action']) ? $_GET['action'] : '';
+$section = isset($_GET['section']) ? $_GET['section'] : '';
+$field = isset($_GET['field']) ? $_GET['field'] : '';
+$col = isset($_GET['col']) ? $_GET['col'] : '';
+$class = isset($_GET['class']) ? $_GET['class'] : '';
+$classid = isset($_GET['classid']) ? $_GET['classid'] : '';
+$shipid = isset($_GET['shipid']) ? $_GET['shipid'] : '';
+$id = isset($_GET['id']) ? $_GET['id'] : '';
+$tpa = isset($_GET['tpa']) ? $_GET['tpa'] : '';
+$tid = isset($_GET['tid']) ? $_GET['tid'] : '';
+$tsec = isset($_GET['tsec']) ? $_GET['tsec'] : '';
+$tfie = isset($_GET['tfie']) ? $_GET['tfie'] : '';
+$tcol = isset($_GET['tcol']) ? $_GET['tcol'] : '';
+$tcla = isset($_GET['tcla']) ? $_GET['tcla'] : '';
+$tclai = isset($_GET['tclai']) ? $_GET['tclai'] : '';
+$tsid = isset($_GET['tsid']) ? $_GET['tsid'] : '';
+
+// ÃœberprÃ¼fung der Cookies
+if (!$_SESSION["user"] || !$_SESSION["chk"]) {
 	$page = "error";
 	$errorId = "996";
 }
@@ -14,20 +33,16 @@ if (!$_SESSION["user"] || !$_SESSION["chk"])
 $user = $_SESSION["user"];
 
 $myDB = new db;
-if ($sqlerr == 1)
-{
+if ($sqlerr == 1) {
 	$page = "error";
 	$errorid = 998;
-	addlog("998","1",$user,"Datenbankfehler");
-}
-else
-{
-	// Start der Session bzw. Überprüfung einer bereitss bestehenden Session
+	addlog("998", "1", $user, "Datenbankfehler");
+} else {
+	// Start der Session bzw. ÃœberprÃ¼fung einer bereitss bestehenden Session
 	include_once("class/usersess.class.php");
 	$mySession = new usersess;
 	$login = $mySession->checkcookie();
-	if ($login != 1)
-	{
+	if ($login != 1) {
 		$errorid = 996;
 		echo "<head>
 		<link rel=\"STYLESHEET\" type=\"text/css\" href=gfx/css/style.css>
@@ -35,11 +50,10 @@ else
 		include_once("error.php");
 		exit;
 	}
-	// Include der restlichen Klassen für Schiffssteuerung, etc
+	// Include der restlichen Klassen fÃ¼r Schiffssteuerung, etc
 	include_once("class/game.class.php");
 	$myGame = new game;
-	if ($myGame->getvalue('tick') == 1)
-	{
+	if ($myGame->getvalue('tick') == 1) {
 		$errorid = 100;
 		echo "<head>
 		<link rel=\"STYLESHEET\" type=\"text/css\" href=gfx/css/style.css>
@@ -66,56 +80,46 @@ else
 	$myTrade = new trade;
 	include_once("class/history.class.php");
 	$myHistory = new history;
-	$myGame->loguser(getenv("REMOTE_ADDR"),getenv("HTTP_USER_AGENT"));
-	if ($page != "main" && $page != "options" && $page != "logout" && $page && $myUser->udelmark == 1) $myUser->updateUserById($user,0,"delmark");
+	$myGame->loguser(getenv("REMOTE_ADDR"), getenv("HTTP_USER_AGENT"));
+	if ($page != "main" && $page != "options" && $page != "logout" && $page && $myUser->udelmark == 1) $myUser->updateUserById($user, 0, "delmark");
 }
 if ($page != "error") $result = $mySession->sessioncheck();
 if ($page == "logout") $mySession->logout();
 if ($page != "error") $wartung = $myGame->getvalue("wartung");
 if (($user > 102) && ($wartung == 1)) $page = "wartung";
-if (($page != "wartung") && ($page != "tick") && ($page != "error"))
-{
+if (($page != "wartung") && ($page != "tick") && ($page != "error")) {
 	//$myColony->finishProcesses();
 	//$myColony->setdaytime();
 }
-if ($myUser->umozilla == 1)
-{
+if ($myUser->umozilla == 1) {
 	$css = "gfx/css/style.css";
 	$mcss = "../gfx/css/style.css";
+} else {
+	$css = $grafik . "/css/style.css";
+	$mcss = $grafik . "/css/style.css";
 }
-else
-{
-	$css = $grafik."/css/style.css";
-	$mcss = $grafik."/css/style.css";
-}
-if ($login == 1)
-{
-	if ($HTTP_POST_VARS["avm"] == "on" && $myUser->upvac > 0)
-	{
+if ($login == 1) {
+	if (isset($_POST["avm"]) && $_POST["avm"] == "on" && $myUser->upvac > 0) {
 		$mySession->logout();
 		$myUser->avm();
 		$errorid = 700;
 		echo "<head><link rel=\"STYLESHEET\" type=\"text/css\" href=gfx/css/style.css></head>";
 		include_once("error.php");
-		$myGame->addlog("700","5",$user,"Urlaubsmodus aktiviert");
+		$myGame->addlog("700", "5", $user, "Urlaubsmodus aktiviert");
 		exit;
 	}
-	if ($myUser->uvac == 1)
-	{
+	if ($myUser->uvac == 1) {
 		$mdvm = 1;
 		$myUser->dvm();
 	}
 	$result = $myComm->checknewmsg($user);
-	if ($action == "ignorepm")
-	{
+	if ($action == "ignorepm") {
 		$myComm->markallpmasread($user);
 		echo "<script language=Javascript>parent.frames[1].location.href=\"static/leftbottom.php?grafik=$grafik&css=$mcss\";</script>";
 		$result = 0;
 	}
-	if (($result != 0) && ($section != "delall") && ($page != "npm"))
-	{
-		if (($page == "showinfo") || ($page == "shiphelp") || ($page == "help"))
-		{
+	if (($result != 0) && ($section != "delall") && ($page != "npm")) {
+		if (($page == "showinfo") || ($page == "shiphelp") || ($page == "help")) {
 			$tpa = $page;
 			$tid = $id;
 			$tsec = $section;
@@ -125,11 +129,10 @@ if ($login == 1)
 			$tclai = $classid;
 			$tsid = $shipid;
 		}
-		echo "<script language=Javascript>parent.frames[1].location.href=\"main.php?page=npm&tpa=".$tpa."&tid=".$tid."&tsec=".$tsec."&tfie=".$tfie."&tcol=".$tcol."&tcla=".$tcla."&tclai=".$tclai."&tsid=".$tsid."\";</script>";
+		echo "<script language=Javascript>parent.frames[1].location.href=\"main.php?page=npm&tpa=" . $tpa . "&tid=" . $tid . "&tsec=" . $tsec . "&tfie=" . $tfie . "&tcol=" . $tcol . "&tcla=" . $tcla . "&tclai=" . $tclai . "&tsid=" . $tsid . "\";</script>";
 	}
 }
-switch($page)
-{
+switch ($page) {
 	default:
 		$inc = "desk.php";
 	case "main":
@@ -203,7 +206,7 @@ switch($page)
 }
 if (!$grafik) $grafik = "gfx/";
 echo "<head>
-	<link rel=\"STYLESHEET\" type=\"text/css\" href=\"".$css."\">
+	<link rel=\"STYLESHEET\" type=\"text/css\" href=\"" . $css . "\">
 	<SCRIPT LANGUAGE='JavaScript'><!--
 	
 	var Win = null;
@@ -218,7 +221,7 @@ echo "<head>
 	
 	function cp(objekt,datei)
 	{
-		document.images[objekt].src = \"".$grafik."/\" + datei + \".gif\"
+		document.images[objekt].src = \"" . $grafik . "/\" + datei + \".gif\"
 	}
 	//-->
 	</SCRIPT>";
@@ -227,10 +230,8 @@ echo "</head>";
 if ($page == "folist") echo "<meta http-equiv=\"REFRESH\" content=\"200; url=http://www.stuniverse.de/main.php?page=folist\">";
 unset($result);
 include_once($inc);
-echo "<br>Queries: ".$qcount;
-if (time() >= $myDB->query("SELECT value FROM stu_game WHERE fielddescr='proceed_time'",1))
-{
-	$myDB->query("UPDATE stu_game SET value=".(time()+15)." WHERE fielddescr='proceed_time'");
-	$myDB->query("UPDATE stu_game SET value=".$user." WHERE fielddescr='proceed_user'");
+echo "<br>Queries: " . $qcount;
+if (time() >= $myDB->query("SELECT value FROM stu_game WHERE fielddescr='proceed_time'", 1)) {
+	$myDB->query("UPDATE stu_game SET value=" . (time() + 15) . " WHERE fielddescr='proceed_time'");
+	$myDB->query("UPDATE stu_game SET value=" . $user . " WHERE fielddescr='proceed_user'");
 }
-?>
