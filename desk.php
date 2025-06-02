@@ -1,5 +1,5 @@
 <?php
-if (!isset($mdvm)) $mdvm = 0;
+
 
 $rounds = $myGame->getcurrentround();
 $time = time() - $rounds['start_tsp'];
