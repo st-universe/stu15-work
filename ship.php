@@ -1,4 +1,9 @@
 <?php
+$command = isset($_POST['command']) ? $_POST['command'] : (isset($_GET['command']) ? $_GET['command'] : '');
+$result = isset($_POST['result']) ? $_POST['result'] : (isset($_GET['result']) ? $_GET['result'] : '');
+$sort = isset($_POST['sort']) ? $_POST['sort'] : (isset($_GET['sort']) ? $_GET['sort'] : '');
+$way = isset($_POST['way']) ? $_POST['way'] : (isset($_GET['way']) ? $_GET['way'] : '');
+$i = 0;
 if ($command == "bussard" && $sent == 0) $section = "fleetbussard";
 if ($command == "erz" && $sent == 0) $section = "fleeterz";
 if ($command == "ebatt" && $sent == 0) $section = "fleetebatt";
