@@ -280,15 +280,44 @@ Content-Type: text/html");
 
 	function activateUser($actcode, $userId)
 	{
-		$userId = chop($userId);
-		if (!is_numeric($userId)) return 0;
+		$userId = trim($userId);
+		if (!is_numeric($userId)) {
+			error_log("activateUser: userId ist nicht numerisch: " . $userId);
+			return 0;
+		}
+
 		$data = $this->getuserbyid($userId);
-		if ($data['aktiv'] == 1) exit;
+		if ($data == 0 || !$data) {
+			error_log("activateUser: Benutzer nicht gefunden: " . $userId);
+			return 0;
+		}
+
+		if ($data['aktiv'] == 1) {
+			error_log("activateUser: Benutzer bereits aktiv: " . $userId);
+			return 0;
+		}
+
+		// Debug: Aktivierungscode überprüfen
 		$act2 = md5((strlen($data['login'] . $data['rasse'] . $data['startrunde'])) * 144);
-		if ($act2 != $actcode) return 0;
+
+		error_log("activateUser Debug - UserID: " . $userId);
+		error_log("activateUser Debug - Login: " . $data['login']);
+		error_log("activateUser Debug - Rasse: " . $data['rasse']);
+		error_log("activateUser Debug - Startrunde: " . $data['startrunde']);
+		error_log("activateUser Debug - Berechneter Code: " . $act2);
+		error_log("activateUser Debug - Empfangener Code: " . $actcode);
+
+		if ($act2 != $actcode) {
+			error_log("activateUser: Aktivierungscode stimmt nicht überein");
+			return 0;
+		}
+
+		// User aktivieren
 		$this->db->query("UPDATE stu_user SET act_code='',aktiv=1 WHERE id=" . $userId);
+		error_log("activateUser: Benutzer erfolgreich aktiviert: " . $userId);
 		return 1;
 	}
+
 
 	function getUserProfile($userId)
 	{
