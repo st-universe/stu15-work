@@ -1,13 +1,13 @@
 <?php
-$rb = $_POST['rb'] ?? $_GET['rb'] ?? null;
-$se = $_POST['se'] ?? $_GET['se'] ?? 1;
-$stxt = $_POST['stxt'] ?? $_GET['stxt'] ?? '';
-$sort = $_POST['sort'] ?? $_GET['sort'] ?? '';
-$way = $_POST['way'] ?? $_GET['way'] ?? '';
-$action = $_POST['action'] ?? $_GET['action'] ?? '';
-$id = $_POST['id'] ?? $_GET['id'] ?? '';
-$shipid = $_POST['shipid'] ?? $_GET['shipid'] ?? '';
-$stationid = $_POST['stationid'] ?? $_GET['stationid'] ?? '';
+$rb = isset($_POST['rb']) ? $_POST['rb'] : (isset($_GET['rb']) ? $_GET['rb'] : null);
+$se = isset($_POST['se']) ? $_POST['se'] : (isset($_GET['se']) ? $_GET['se'] : 1);
+$stxt = isset($_POST['stxt']) ? $_POST['stxt'] : (isset($_GET['stxt']) ? $_GET['stxt'] : '');
+$sort = isset($_POST['sort']) ? $_POST['sort'] : (isset($_GET['sort']) ? $_GET['sort'] : '');
+$way = isset($_POST['way']) ? $_POST['way'] : (isset($_GET['way']) ? $_GET['way'] : '');
+$action = isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GET['action'] : '');
+$id = isset($_POST['id']) ? $_POST['id'] : (isset($_GET['id']) ? $_GET['id'] : '');
+$shipid = isset($_POST['shipid']) ? $_POST['shipid'] : (isset($_GET['shipid']) ? $_GET['shipid'] : '');
+$stationid = isset($_POST['stationid']) ? $_POST['stationid'] : (isset($_GET['stationid']) ? $_GET['stationid'] : '');
 if ($myUser->uhasperr == 1 && $section != "goodview") {
 	echo "<table width=100% bgcolor=#262323 cellpadding=1 cellspacing=1>
 	<tr>
