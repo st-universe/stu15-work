@@ -100,7 +100,7 @@ if (!$section) {
 					<input type=hidden name=page value=comm>
 					<input type=hidden name=section value=viewknpost>
 					Volltextsuche <input type=text size=10 name=txt class=text> <input type=submit value=suchen class=button name=sb>
-					</form><form action=main.php method=post>
+					</form><form action=main.php method=get>
 					<input type=hidden name=page value=comm>
 					<input type=hidden name=section value=knbyuser>
 					Autorensuche <input type=text size=4 name=tuid class=text> <input type=submit value=suchen class=button name=sb><br>
