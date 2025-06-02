@@ -117,7 +117,7 @@
 		<td class=tdmain align=center><b>Registrierung</b></td>
 	</tr>
 	<tr>
-		<td class=tdmainobg>Die Anmeldung war erfolgreich. Du kannst Dich nun mit '" . $login . "' und Deinem Passwort einloggen.<br>
+		<td class=tdmainobg>Die Anmeldung war erfolgreich. Dir wurde eine E-Mail geschickt mit einem aktivierungslink. Nachdem du deinen Account aktiviert hast, kannst du dich mit '" . $login . "' und Deinem Passwort einloggen.<br>
 		Viel Spaß!</td>
 	</tr>";
 	}
