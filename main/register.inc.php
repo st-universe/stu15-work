@@ -10,6 +10,18 @@
 	include_once("class/game.class.php");
 	$myGame = new game;
 
+	// Variablen initialisieren
+	$sent = isset($_POST['sent']) ? $_POST['sent'] : 0;
+	$login = isset($_POST['login']) ? $_POST['login'] : '';
+	$user = isset($_POST['user']) ? $_POST['user'] : '';
+	$email = isset($_POST['email']) ? $_POST['email'] : '';
+	$pw = isset($_POST['pw']) ? $_POST['pw'] : '';
+	$pw2 = isset($_POST['pw2']) ? $_POST['pw2'] : '';
+	$seite = isset($_POST['seite']) ? $_POST['seite'] : '';
+	$actcode = isset($_GET['actcode']) ? $_GET['actcode'] : '';
+	$error = array();
+	$result = 0;
+
 	if ($sent == 1) {
 		if (!$login) $error['login'] = "Du hast keinen Loginnamen angegeben.";
 		if (!$user) $error['user'] = "Du hast keinen Spielernamen angegeben.";
@@ -57,33 +69,33 @@
 	</tr>
 	<form action=?page=register method=post>
 	<input type=hidden name=sent value=1>";
-		if ($error['register']) echo "<tr><td colspan=2 align=center><font color=Red>" . $error['register'] . "</font></td></tr>";
+		if (isset($error['register'])) echo "<tr><td colspan=2 align=center><font color=Red>" . $error['register'] . "</font></td></tr>";
 		echo "<tr>
 		<td class=tdmainobg>Loginname</td>
 		<td class=tdmainobg><input type=text name=login size=15 value='" . $login . "'></td>
 	</tr>";
-		if ($error['login']) echo "<tr><td colspan=2 align=center><font color=Red>" . $error['login'] . "</font></td></tr>";
+		if (isset($error['login'])) echo "<tr><td colspan=2 align=center><font color=Red>" . $error['login'] . "</font></td></tr>";
 		echo "<tr>
 		<td class=tdmainobg>Spielername</td>
 		<td class=tdmainobg><input type=text name=user size=15 value='" . $user . "'></td>
 	</tr>";
-		if ($error['user']) echo "<tr><td colspan=2 align=center><font color=Red>" . $error['user'] . "</font></td></tr>";
+		if (isset($error['user'])) echo "<tr><td colspan=2 align=center><font color=Red>" . $error['user'] . "</font></td></tr>";
 		echo "<tr>
 		<td class=tdmainobg>Emailadresse</td>
 		<td class=tdmainobg><input type=text name=email size=15 value='" . $email . "'></td>
 	</tr>";
-		if ($error['email']) echo "<tr><td colspan=2 align=center><font color=Red>" . $error['email'] . "</font></td></tr>";
+		if (isset($error['email'])) echo "<tr><td colspan=2 align=center><font color=Red>" . $error['email'] . "</font></td></tr>";
 		echo "<tr>
 		<td class=tdmainobg>Passwort</td>
 		<td class=tdmainobg><input type=password name=pw size=15></td>
 	</tr>";
-		if ($error['pw']) echo "<tr><td colspan=2 align=center><font color=Red>" . $error['pw'] . "</font></td></tr>";
-		if ($error['pw3']) echo "<tr><td colspan=2 align=center><font color=Red>" . $error['pw3'] . "</font></td></tr>";
+		if (isset($error['pw'])) echo "<tr><td colspan=2 align=center><font color=Red>" . $error['pw'] . "</font></td></tr>";
+		if (isset($error['pw3'])) echo "<tr><td colspan=2 align=center><font color=Red>" . $error['pw3'] . "</font></td></tr>";
 		echo "<tr>
 		<td class=tdmainobg>Passwort wiederholen</td>
 		<td class=tdmainobg><input type=password name=pw2 size=15></td>
 	</tr>";
-		if ($error['pw2']) echo "<tr><td colspan=2 align=center><font color=Red>" . $error['pw2'] . "</font></td></tr>";
+		if (isset($error['pw2'])) echo "<tr><td colspan=2 align=center><font color=Red>" . $error['pw2'] . "</font></td></tr>";
 		echo "<tr>
 		<td class=tdmainobg>Seite</td>
 		<td class=tdmainobg><select name=seite>
