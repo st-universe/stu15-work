@@ -4,6 +4,9 @@ $result = isset($_POST['result']) ? $_POST['result'] : (isset($_GET['result']) ?
 $sort = isset($_POST['sort']) ? $_POST['sort'] : (isset($_GET['sort']) ? $_GET['sort'] : '');
 $way = isset($_POST['way']) ? $_POST['way'] : (isset($_GET['way']) ? $_GET['way'] : '');
 $i = 0;
+$crew = isset($_POST['crew']) ? $_POST['crew'] : (isset($_GET['crew']) ? $_GET['crew'] : 0);
+$wadd = isset($_POST['wadd']) ? $_POST['wadd'] : (isset($_GET['wadd']) ? $_GET['wadd'] : '');
+$rda = isset($_POST['rda']) ? $_POST['rda'] : (isset($_GET['rda']) ? $_GET['rda'] : '');
 if ($command == "bussard" && $sent == 0) $section = "fleetbussard";
 if ($command == "erz" && $sent == 0) $section = "fleeterz";
 if ($command == "ebatt" && $sent == 0) $section = "fleetebatt";
