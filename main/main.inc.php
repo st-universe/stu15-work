@@ -16,7 +16,11 @@
 			um das Spiel mit seinem Stand vom 05.05.2006. Dies betrifft auch die Datenbank.<br>Alte Spieleraccounts
 			existieren noch, jedoch sind die Zugänge aus Sicherheitsgründen gelöscht.
 			<br>Wer seinen alten Account wieder erkennt kann sich bei Hux <a href=https://discord.gg/NK3fCdx
-				target="https://discord.gg/NK3fCdx">auf dem offiziellen Discord Server von STU</a> <br><br>
+				target="_blank">auf dem offiziellen Discord Server von STU</a> melden.<br>Diese Version ist überwiegend
+			nur zum gucken und nicht zum spielen geeignet. Vieles funktioniert nicht und wird im laufe der Jahre
+			vielleicht restauriert.
+			Registrierung ist jedoch möglich.<br>Ansonsten läuft die aktuelle Version 3 von STU auf <a
+				href=https://stuniverse.de target=_blank>stuniverse.de</a><br><br>
 			<b>05.05.06</b> - Das war es nun. Die aktuellen News zum STU2 Start bekommt ihr im Forum.<br>Bis bald in
 			STU2!<br><br>
 			<b>12.03.06</b> - <img src=http://www.stuniverse.de/chaos.jpg><br>
