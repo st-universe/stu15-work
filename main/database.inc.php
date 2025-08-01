@@ -116,9 +116,13 @@ function renderCommodities($commodities)
             </tr>";
 
     foreach ($commodities as $commodity) {
+        $imagePath = $commodity['secretimage']
+            ? "/gfx/secret/{$commodity['secretimage']}.gif"
+            : "/gfx/goods/{$commodity['id']}.gif";
+
         echo "<tr>
                 <td class='tdmainobg' style='text-align: center;'>{$commodity['id']}</td>
-                <td class='tdmainobg' style='text-align: center;'><img src=/gfx/goods/{$commodity['id']}.gif alt={$commodity['name']}></td>
+                <td class='tdmainobg' style='text-align: center;'><img src=$imagePath alt={$commodity['name']}></td>
                 <td class='tdmainobg' style='text-align: center;'>{$commodity['name']}</td>
                 <td class='tdmainobg' style='text-align: center;'>{$commodity['wfaktor']}</td>
                 <td class='tdmainobg' style='text-align: center;'>{$commodity['hide']}</td>
