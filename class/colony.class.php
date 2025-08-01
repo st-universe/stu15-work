@@ -468,7 +468,11 @@ class colony
 
 	function getgoodsbybuilding($buildingId) { return $this->db->query("SELECT count,goods_id,mode,buildings_id FROM stu_buildings_goods WHERE buildings_id='".$buildingId."'",2); }
 
-	function goodlist()	{ return $this->db->query("SELECT id,name FROM stu_goods ORDER BY sort ASC",2); }
+	function goodlist($full = false) {
+		$fields = $full ? '*' : 'id,name';
+
+		return $this->db->query("SELECT $fields FROM stu_goods ORDER BY sort ASC",2);
+	}
 
 	function getstoragebygoodid($goodsId) { return $this->db->query("SELECT colonies_id,user_id,goods_id,count FROM stu_colonies_storage WHERE goods_id='".$goodsId."' AND colonies_id='".$this->cid."'",4); }
 

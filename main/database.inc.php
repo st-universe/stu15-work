@@ -4,6 +4,7 @@ $entitySelected = isset($_GET['selected']) ? $_GET['selected'] : 'ship-type';
 
 $entities = [
     'colony-type' => 'Colony Type',
+    'commodity' => 'Commodity',
     'ship-type' => 'Ship Type',
 ];
 
@@ -11,18 +12,24 @@ renderBreadcrumb();
 renderSelect($entities, $entitySelected);
 
 switch ($entitySelected) {
+    case 'colony-type':
+        include_once("class/colony.class.php");
+        $colonyRepository = new colony();
+        $colonyTypes = $colonyRepository->getColonyTypes();
+        renderColonyTypes($colonyTypes);
+        break;
+    case 'commodity':
+        include_once("class/colony.class.php");
+        $colonyRepository = new colony();
+        $commodities = $colonyRepository->goodlist(true);
+        renderCommodities($commodities);
+        break;
     case 'ship-type':
     default:
         include_once("class/ship.class.php");
         $shipRepository = new ship();
         $shipTypes = $shipRepository->getClasses();
         renderShipTypes($shipTypes);
-        break;
-    case 'colony-type':
-        include_once("class/colony.class.php");
-        $colonyRepository = new colony();
-        $colonyTypes = $colonyRepository->getColonyTypes();
-        renderColonyTypes($colonyTypes);
         break;
 }
 
@@ -52,6 +59,76 @@ function renderSelect($entities, $entitySelected)
           <input type='submit' value='Refresh' />
         </form>
         <br>";
+}
+
+/*
+ * Render entities
+ */
+
+function renderColonyTypes($colonyTypes)
+{
+    echo "<table width=100% cellspacing=1 cellpadding=1 style='background-color: #262323'>
+            <tr>
+                <td class='tdmainobg' style='text-align: center;'><strong>ID</strong></td>
+                <td class='tdmainobg' style='text-align: center;'><strong>Image</strong></td>
+                <td class='tdmainobg' style='text-align: center;'><strong>Name</strong></td>
+                <td class='tdmainobg' style='text-align: center;'><strong>Iridium-Erz</strong></td>
+                <td class='tdmainobg' style='text-align: center;'><strong>Dilithium</strong></td>
+                <td class='tdmainobg' style='text-align: center;'><strong>Kelbonit-Erz</strong></td>
+                <td class='tdmainobg' style='text-align: center;'><strong>Nitrium-Erz</strong></td>
+                <td class='tdmainobg' style='text-align: center;'><strong>Iridium-Erz (T)</strong></td>
+                <td class='tdmainobg' style='text-align: center;'><strong>Kelbonit-Erz (T)</strong></td>
+                <td class='tdmainobg' style='text-align: center;'><strong>Nitrium-Erz (T)</strong></td>
+                <td class='tdmainobg' style='text-align: center;'><strong>Atmosphäre</strong></td>
+            </tr>";
+
+    foreach ($colonyTypes as $type) {
+        echo "<tr>
+                <td class='tdmainobg' style='text-align: center;'>{$type['id']}</td>
+                <td class='tdmainobg' style='text-align: center;'><img src=/gfx/planets/{$type['id']}.gif alt={$type['name']}></td>
+                <td class='tdmainobg' style='text-align: center;'>{$type['name']}</td>
+                <td class='tdmainobg' style='text-align: center;'>{$type['mine7']}</td>
+                <td class='tdmainobg' style='text-align: center;'>{$type['mine17']}</td>
+                <td class='tdmainobg' style='text-align: center;'>{$type['mine33']}</td>
+                <td class='tdmainobg' style='text-align: center;'>{$type['mine34']}</td>
+                <td class='tdmainobg' style='text-align: center;'>{$type['mine74']}</td>
+                <td class='tdmainobg' style='text-align: center;'>{$type['mine75']}</td>
+                <td class='tdmainobg' style='text-align: center;'>{$type['mine76']}</td>
+                <td class='tdmainobg' style='text-align: center;'>{$type['atmos']}</td>
+              </tr>";
+    }
+
+    echo "</table>";
+}
+
+function renderCommodities($commodities)
+{
+    echo "<table width=100% cellspacing=1 cellpadding=1 style='background-color: #262323'>
+            <tr>
+                <td class='tdmainobg' style='text-align: center;'><strong>ID</strong></td>
+                <td class='tdmainobg' style='text-align: center;'><strong>Image</strong></td>
+                <td class='tdmainobg' style='text-align: center;'><strong>Name</strong></td>
+                <td class='tdmainobg' style='text-align: center;'><strong>wfaktor</strong></td>
+                <td class='tdmainobg' style='text-align: center;'><strong>hide</strong></td>
+                <td class='tdmainobg' style='text-align: center;'><strong>sort</strong></td>
+                <td class='tdmainobg' style='text-align: center;'><strong>secretimage</strong></td>
+                <td class='tdmainobg' style='text-align: center;'><strong>maxoffer</strong></td>
+            </tr>";
+
+    foreach ($commodities as $commodity) {
+        echo "<tr>
+                <td class='tdmainobg' style='text-align: center;'>{$commodity['id']}</td>
+                <td class='tdmainobg' style='text-align: center;'><img src=/gfx/goods/{$commodity['id']}.gif alt={$commodity['name']}></td>
+                <td class='tdmainobg' style='text-align: center;'>{$commodity['name']}</td>
+                <td class='tdmainobg' style='text-align: center;'>{$commodity['wfaktor']}</td>
+                <td class='tdmainobg' style='text-align: center;'>{$commodity['hide']}</td>
+                <td class='tdmainobg' style='text-align: center;'>{$commodity['sort']}</td>
+                <td class='tdmainobg' style='text-align: center;'>{$commodity['secretimage']}</td>
+                <td class='tdmainobg' style='text-align: center;'>{$commodity['maxoffer']}</td>
+              </tr>";
+    }
+
+    echo "</table>";
 }
 
 function renderShipTypes($shipTypes)
@@ -90,26 +167,6 @@ function renderShipTypes($shipTypes)
                 <td class='tdmainobg' style='text-align: center;'>{$ship['fusion']}</td>
                 <td class='tdmainobg' style='text-align: center;'>{$ship['crew_min']} / {$ship['crew']}</td>
                 <td class='tdmainobg' style='text-align: center;'>{$ship['storage']}</td>
-              </tr>";
-    }
-
-    echo "</table>";
-}
-
-function renderColonyTypes($colonyTypes)
-{
-    echo "<table width=100% cellspacing=1 cellpadding=1 style='background-color: #262323'>
-            <tr>
-                <td class='tdmainobg' style='text-align: center;'><strong>ID</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>Image</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>Name</strong></td>
-            </tr>";
-
-    foreach ($colonyTypes as $colonyType) {
-        echo "<tr>
-                <td class='tdmainobg' style='text-align: center;'>{$colonyType['id']}</td>
-                <td class='tdmainobg' style='text-align: center;'><img src=/gfx/planets/{$colonyType['id']}.gif></td>
-                <td class='tdmainobg' style='text-align: center;'>{$colonyType['name']}</td>
               </tr>";
     }
 
