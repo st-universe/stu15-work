@@ -122,7 +122,7 @@ function renderCommodities($commodities)
 
         echo "<tr>
                 <td class='tdmainobg' style='text-align: center;'>{$commodity['id']}</td>
-                <td class='tdmainobg' style='text-align: center;'><img src=$imagePath alt={$commodity['name']}></td>
+                <td class='tdmainobg' style='text-align: center;'><img src=$imagePath alt=\"{$commodity['name']}\"></td>
                 <td class='tdmainobg' style='text-align: center;'>{$commodity['name']}</td>
                 <td class='tdmainobg' style='text-align: center;'>{$commodity['wfaktor']}</td>
                 <td class='tdmainobg' style='text-align: center;'>{$commodity['hide']}</td>
