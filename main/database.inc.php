@@ -3,9 +3,9 @@
 $entitySelected = isset($_GET['selected']) ? $_GET['selected'] : 'ship-type';
 
 $entities = [
-    'colony-type' => 'Colony Type',
-    'commodity' => 'Commodity',
-    'ship-type' => 'Ship Type',
+    'colony-type' => 'Colony Types',
+    'commodity' => 'Commodities',
+    'ship-type' => 'Ship Types',
 ];
 
 renderBreadcrumb();
@@ -22,7 +22,8 @@ switch ($entitySelected) {
         include_once("class/colony.class.php");
         $colonyRepository = new colony();
         $commodities = $colonyRepository->goodlist(true);
-        renderCommodities($commodities);
+        $data = getCommoditiesData($commodities);
+        renderTable($data);
         break;
     case 'ship-type':
     default:
@@ -101,38 +102,31 @@ function renderColonyTypes($colonyTypes)
     echo "</table>";
 }
 
-function renderCommodities($commodities)
+function getCommoditiesData($commodities)
 {
-    echo "<table width=100% cellspacing=1 cellpadding=1 style='background-color: #262323'>
-            <tr>
-                <td class='tdmainobg' style='text-align: center;'><strong>ID</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>Image</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>Name</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>wfaktor</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>hide</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>sort</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>secretimage</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>maxoffer</strong></td>
-            </tr>";
+    $headers = ['ID', 'Image', 'Name', 'wfaktor', 'hide', 'sort', 'secretimage', 'maxoffer'];
 
-    foreach ($commodities as $commodity) {
+    $data = array_map(function ($commodity) {
         $imagePath = $commodity['secretimage']
             ? "/gfx/secret/{$commodity['secretimage']}.gif"
             : "/gfx/goods/{$commodity['id']}.gif";
 
-        echo "<tr>
-                <td class='tdmainobg' style='text-align: center;'>{$commodity['id']}</td>
-                <td class='tdmainobg' style='text-align: center;'><img src=$imagePath alt=\"{$commodity['name']}\"></td>
-                <td class='tdmainobg' style='text-align: center;'>{$commodity['name']}</td>
-                <td class='tdmainobg' style='text-align: center;'>{$commodity['wfaktor']}</td>
-                <td class='tdmainobg' style='text-align: center;'>{$commodity['hide']}</td>
-                <td class='tdmainobg' style='text-align: center;'>{$commodity['sort']}</td>
-                <td class='tdmainobg' style='text-align: center;'>{$commodity['secretimage']}</td>
-                <td class='tdmainobg' style='text-align: center;'>{$commodity['maxoffer']}</td>
-              </tr>";
-    }
+        return [
+            ['value' => $commodity['id']],
+            ['value' => $imagePath, 'image' => true],
+            ['value' => $commodity['name']],
+            ['value' => $commodity['wfaktor']],
+            ['value' => $commodity['hide']],
+            ['value' => $commodity['sort']],
+            ['value' => $commodity['secretimage']],
+            ['value' => $commodity['maxoffer']],
+        ];
+    }, $commodities);
 
-    echo "</table>";
+    return [
+        'headers' => $headers,
+        'data' => $data,
+    ];
 }
 
 function renderShipTypes($shipTypes)
@@ -172,6 +166,38 @@ function renderShipTypes($shipTypes)
                 <td class='tdmainobg' style='text-align: center;'>{$ship['crew_min']} / {$ship['crew']}</td>
                 <td class='tdmainobg' style='text-align: center;'>{$ship['storage']}</td>
               </tr>";
+    }
+
+    echo "</table>";
+}
+
+function renderTable($data)
+{
+    echo "<table id='database' width=100% cellspacing=1 cellpadding=1 style='background-color: #262323'>
+            <tr>";
+
+    foreach ($data['headers'] as $header) {
+        echo "<td class='tdmainobg' style='text-align: center;'><strong>$header</strong></td>";
+    }
+
+    echo "</tr>";
+
+    foreach ($data['data'] as $row) {
+        echo "<tr>";
+
+        foreach ($row as $cell) {
+            echo "<td class='tdmainobg' style='text-align: center;'>";
+
+            if (isset($cell['image']) && $cell['image']) {
+                echo "<img src={$cell['value']}>";
+            } else {
+                echo $cell['value'];
+            }
+
+            echo "</td>";
+        }
+
+        echo "</tr>";
     }
 
     echo "</table>";
