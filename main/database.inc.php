@@ -5,6 +5,7 @@ $entitySelected = isset($_GET['selected']) ? $_GET['selected'] : 'ship-type';
 $entities = [
     'colony-type' => 'Colony Types',
     'commodity' => 'Commodities',
+    'map-field' => 'Map Fields',
     'ship-type' => 'Ship Types',
 ];
 
@@ -16,25 +17,33 @@ switch ($entitySelected) {
         include_once("class/colony.class.php");
         $colonyRepository = new colony();
         $colonyTypes = $colonyRepository->getColonyTypes();
-        $data = getColonyTypesData($colonyTypes);
+        $tableData = getColonyTypesData($colonyTypes);
         break;
     case 'commodity':
         include_once("class/colony.class.php");
         $colonyRepository = new colony();
         $commodities = $colonyRepository->goodlist(true);
-        $data = getCommoditiesData($commodities);
+        $tableData = getCommoditiesData($commodities);
+        break;
+    case 'map-field':
+        include_once("class/map.class.php");
+        $mapRepository = new map();
+        $fields = $mapRepository->getFields();
+        $tableData = getMapFieldsData($fields);
+        var_dump(count($tableData));
+        $tableData = array_slice($tableData, 0, 50);
         break;
     case 'ship-type':
     default:
         include_once("class/ship.class.php");
         $shipRepository = new ship();
         $shipTypes = $shipRepository->getClasses();
-        $data = getShipTypesData($shipTypes);
+        $tableData = getShipTypesData($shipTypes);
         break;
 }
 
-if (isset($data)) {
-    renderTable($data);
+if (isset($tableData)) {
+    renderTable($tableData);
 }
 
 function renderBreadcrumb()
@@ -155,6 +164,27 @@ function getCommoditiesData($commodities)
             $commodity['maxoffer'],
         ];
     }, $commodities);
+
+    return [
+        'headers' => $headers,
+        'data' => $data,
+    ];
+}
+
+function getMapFieldsData($mapFields)
+{
+    $headers = ['ID', 'coords_x', 'coords_y', 'type', 'race', 'wese'];
+
+    $data = array_map(function ($field) {
+        return [
+            $field['id'],
+            $field['coords_x'],
+            $field['coords_y'],
+            $field['type'],
+            $field['race'],
+            $field['wese'],
+        ];
+    }, $mapFields);
 
     return [
         'headers' => $headers,
