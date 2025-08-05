@@ -30,7 +30,7 @@ switch ($entitySelected) {
         $mapRepository = new map();
         $fields = $mapRepository->getFields();
         $tableData = getMapFieldsData($fields);
-        var_dump(count($tableData));
+        var_dump(count($tableData['data']));
         $tableData = array_slice($tableData, 0, 50);
         break;
     case 'ship-type':
