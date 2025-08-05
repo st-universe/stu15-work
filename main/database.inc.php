@@ -31,7 +31,10 @@ switch ($entitySelected) {
         $fields = $mapRepository->getFields();
         $tableData = getMapFieldsData($fields);
         var_dump(count($tableData['data']));
-        $tableData = array_slice($tableData, 0, 50);
+        $tableData = [
+            'headers' => $tableData['headers'],
+            'data' => array_slice($tableData['data'], 0, 50),
+        ];
         break;
     case 'ship-type':
     default:
