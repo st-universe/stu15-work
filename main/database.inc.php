@@ -16,22 +16,25 @@ switch ($entitySelected) {
         include_once("class/colony.class.php");
         $colonyRepository = new colony();
         $colonyTypes = $colonyRepository->getColonyTypes();
-        renderColonyTypes($colonyTypes);
+        $data = getColonyTypesData($colonyTypes);
         break;
     case 'commodity':
         include_once("class/colony.class.php");
         $colonyRepository = new colony();
         $commodities = $colonyRepository->goodlist(true);
         $data = getCommoditiesData($commodities);
-        renderTable($data);
         break;
     case 'ship-type':
     default:
         include_once("class/ship.class.php");
         $shipRepository = new ship();
         $shipTypes = $shipRepository->getClasses();
-        renderShipTypes($shipTypes);
+        $data = getShipTypesData($shipTypes);
         break;
+}
+
+if (isset($data)) {
+    renderTable($data);
 }
 
 function renderBreadcrumb()
@@ -62,44 +65,74 @@ function renderSelect($entities, $entitySelected)
         <br>";
 }
 
-/*
- * Render entities
- */
-
-function renderColonyTypes($colonyTypes)
+function renderTable($data)
 {
-    echo "<table width=100% cellspacing=1 cellpadding=1 style='background-color: #262323'>
-            <tr>
-                <td class='tdmainobg' style='text-align: center;'><strong>ID</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>Image</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>Name</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>Iridium-Erz</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>Dilithium</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>Kelbonit-Erz</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>Nitrium-Erz</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>Iridium-Erz (T)</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>Kelbonit-Erz (T)</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>Nitrium-Erz (T)</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>Atmosphäre</strong></td>
-            </tr>";
+    echo "<table id=\"database\" width=\"100%\" cellspacing=\"1\" cellpadding=\"1\" style=\"background-color: #262323;\">
+            <tr>";
 
-    foreach ($colonyTypes as $type) {
-        echo "<tr>
-                <td class='tdmainobg' style='text-align: center;'>{$type['id']}</td>
-                <td class='tdmainobg' style='text-align: center;'><img src=/gfx/planets/{$type['id']}.gif alt={$type['name']}></td>
-                <td class='tdmainobg' style='text-align: center;'>{$type['name']}</td>
-                <td class='tdmainobg' style='text-align: center;'>{$type['mine7']}</td>
-                <td class='tdmainobg' style='text-align: center;'>{$type['mine17']}</td>
-                <td class='tdmainobg' style='text-align: center;'>{$type['mine33']}</td>
-                <td class='tdmainobg' style='text-align: center;'>{$type['mine34']}</td>
-                <td class='tdmainobg' style='text-align: center;'>{$type['mine74']}</td>
-                <td class='tdmainobg' style='text-align: center;'>{$type['mine75']}</td>
-                <td class='tdmainobg' style='text-align: center;'>{$type['mine76']}</td>
-                <td class='tdmainobg' style='text-align: center;'>{$type['atmos']}</td>
-              </tr>";
+    foreach ($data['headers'] as $header) {
+        echo "<td class=\"tdmainobg\" style=\"text-align: center;\">";
+
+        if (is_array($header) && isset($header['image']) && $header['image']) {
+            echo "<img src=\"{$header['src']}\" alt=\"{$header['alt']}\">";
+        } else {
+            echo "<strong>$header</strong>";
+        }
+
+        echo "</td>";
+    }
+
+    echo "</tr>";
+
+    foreach ($data['data'] as $row) {
+        echo "<tr>";
+
+        foreach ($row as $cell) {
+            echo "<td class=\"tdmainobg\" style=\"text-align: center;\">";
+
+            if (is_array($cell) && isset($cell['image']) && $cell['image']) {
+                echo "<img src=\"{$cell['src']}\" alt=\"{$cell['alt']}\">";
+            } else {
+                echo $cell;
+            }
+
+            echo "</td>";
+        }
+
+        echo "</tr>";
     }
 
     echo "</table>";
+}
+
+/*
+ * Entities data configs
+ */
+
+function getColonyTypesData($colonyTypes)
+{
+    $headers = ['ID', 'Image', 'Name', 'Iridium-Erz', 'Dilithium', 'Kelbonit-Erz', 'Nitrium-Erz', 'Iridium-Erz (T)', 'Kelbonit-Erz (T)', 'Nitrium-Erz (T)', 'Atmosphäre'];
+
+    $data = array_map(function ($type) {
+        return [
+            $type['id'],
+            ['image' => true, 'src' => "/gfx/planets/{$type['id']}.gif", 'alt' => $type['name']],
+            $type['name'],
+            $type['mine7'],
+            $type['mine17'],
+            $type['mine33'],
+            $type['mine34'],
+            $type['mine74'],
+            $type['mine75'],
+            $type['mine76'],
+            $type['atmos'],
+        ];
+    }, $colonyTypes);
+
+    return [
+        'headers' => $headers,
+        'data' => $data,
+    ];
 }
 
 function getCommoditiesData($commodities)
@@ -112,14 +145,14 @@ function getCommoditiesData($commodities)
             : "/gfx/goods/{$commodity['id']}.gif";
 
         return [
-            ['value' => $commodity['id']],
-            ['value' => $imagePath, 'image' => true],
-            ['value' => $commodity['name']],
-            ['value' => $commodity['wfaktor']],
-            ['value' => $commodity['hide']],
-            ['value' => $commodity['sort']],
-            ['value' => $commodity['secretimage']],
-            ['value' => $commodity['maxoffer']],
+            $commodity['id'],
+            ['image' => true, 'src' => $imagePath, 'alt' => $commodity['name']],
+            $commodity['name'],
+            $commodity['wfaktor'],
+            $commodity['hide'],
+            $commodity['sort'],
+            $commodity['secretimage'],
+            $commodity['maxoffer'],
         ];
     }, $commodities);
 
@@ -129,76 +162,46 @@ function getCommoditiesData($commodities)
     ];
 }
 
-function renderShipTypes($shipTypes)
+function getShipTypesData($shipTypes)
 {
-    echo "<table width=100% cellspacing=1 cellpadding=1 style='background-color: #262323'>
-            <tr>
-                <td class='tdmainobg' style='text-align: center;'><strong>ID</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>Image</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>Name</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><img src='/gfx/goods/50.gif' alt='Hüllenlevel Anzahl/min/max'></td>
-                <td class='tdmainobg' style='text-align: center;'><img src='/gfx/goods/58.gif' alt='Schildlevel Anzahl/min/max'></td>
-                <td class='tdmainobg' style='text-align: center;'><img src='/gfx/goods/62.gif' alt='Waffenlevel Anzahl/min/max'></td>
-                <td class='tdmainobg' style='text-align: center;'><img src='/gfx/goods/87.gif' alt='Reaktorlevel min/max'></td>
-                <td class='tdmainobg' style='text-align: center;'><img src='/gfx/goods/55.gif' alt='Computerlevel min/max'></td>
-                <td class='tdmainobg' style='text-align: center;'><img src='/gfx/goods/75.gif' alt='Antriebslevel min/max'></td>
-                <td class='tdmainobg' style='text-align: center;'><img src='/gfx/goods/83.gif' alt='Sensorlevel Anzahl/min/max'></td>
-                <td class='tdmainobg' style='text-align: center;'><img src='/gfx/goods/79.gif' alt='EPS-Gitterlevel Anzahl/min/max'></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>Fusion</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>Crew</strong></td>
-                <td class='tdmainobg' style='text-align: center;'><strong>Ladung</strong></td>
-            </tr>";
+    $headers = [
+        'ID',
+        'Image',
+        'Name',
+        ['image' => true, 'src' => "/gfx/goods/50.gif", 'alt' => 'Hüllenlevel Anzahl/min/max'],
+        ['image' => true, 'src' => "/gfx/goods/58.gif", 'alt' => 'Schildlevel Anzahl/min/max'],
+        ['image' => true, 'src' => "/gfx/goods/62.gif", 'alt' => 'Waffenlevel Anzahl/min/max'],
+        ['image' => true, 'src' => "/gfx/goods/87.gif", 'alt' => 'Reaktorlevel min/max'],
+        ['image' => true, 'src' => "/gfx/goods/55.gif", 'alt' => 'Computerlevel min/max'],
+        ['image' => true, 'src' => "/gfx/goods/75.gif", 'alt' => 'Antriebslevel min/max'],
+        ['image' => true, 'src' => "/gfx/goods/83.gif", 'alt' => 'Sensorlevel Anzahl/min/max'],
+        ['image' => true, 'src' => "/gfx/goods/79.gif", 'alt' => 'EPS-Gitterlevel Anzahl/min/max'],
+        'Fusion',
+        'Crew',
+        'Ladung',
+    ];
 
-    foreach ($shipTypes as $ship) {
-        echo "<tr>
-                <td class='tdmainobg' style='text-align: center;'>{$ship['id']}</td>
-                <td class='tdmainobg' style='text-align: center;'><img src=/gfx/ships/{$ship['id']}.gif></td>
-                <td class='tdmainobg' style='text-align: center;'>{$ship['name']}</td>
-                <td class='tdmainobg' style='text-align: center;'>{$ship['huellmod']}/<span style='color: #008000'>{$ship['huellmod_min']}</span>/<span style='color: #00FF00'>{$ship['huellmod_max']}</span></td>
-                <td class='tdmainobg' style='text-align: center;'>{$ship['schildmod']}/<span style='color: #008000'>{$ship['schildmod_min']}</span>/<span style='color: #00FF00'>{$ship['schildmod_max']}</span></td>
-                <td class='tdmainobg' style='text-align: center;'>{$ship['waffenmod']}/<span style='color: #008000'>{$ship['waffenmod_min']}</span>/<span style='color: #00FF00'>{$ship['waffenmod_max']}</span></td>
-                <td class='tdmainobg' style='text-align: center;'><span style='color: #008000'>{$ship['reaktormod_min']}</span>/<span style='color: #00FF00'>{$ship['reaktormod_max']}</span></td>
-                <td class='tdmainobg' style='text-align: center;'><span style='color: #008000'>{$ship['computermod_min']}</span>/<span style='color: #00FF00'>{$ship['computermod_max']}</span></td>
-                <td class='tdmainobg' style='text-align: center;'><span style='color: #008000'>{$ship['antriebsmod_min']}</span>/<span style='color: #00FF00'>{$ship['antriebsmod_max']}</span></td>
-                <td class='tdmainobg' style='text-align: center;'>{$ship['sensormod']}/<span style='color: #008000'>{$ship['sensormod_min']}</span>/<span style='color: #00FF00'>{$ship['sensormod_max']}</span></td>
-                <td class='tdmainobg' style='text-align: center;'>{$ship['epsmod']}/<span style='color: #008000'>{$ship['epsmod_min']}</span>/<span style='color: #00FF00'>{$ship['epsmod_max']}</span></td>
-                <td class='tdmainobg' style='text-align: center;'>{$ship['fusion']}</td>
-                <td class='tdmainobg' style='text-align: center;'>{$ship['crew_min']} / {$ship['crew']}</td>
-                <td class='tdmainobg' style='text-align: center;'>{$ship['storage']}</td>
-              </tr>";
-    }
+    $data = array_map(function ($type) {
+        return [
+            $type['id'],
+            ['image' => true, 'src' => "/gfx/ships/{$type['id']}.gif", 'alt' => $type['name']],
+            $type['name'],
+            "{$type['huellmod']}/<span style='color: #008000'>{$type['huellmod_min']}</span>/<span style='color: #00FF00'>{$type['huellmod_max']}</span>",
+            "{$type['schildmod']}/<span style='color: #008000'>{$type['schildmod_min']}</span>/<span style='color: #00FF00'>{$type['schildmod_max']}</span>",
+            "{$type['waffenmod']}/<span style='color: #008000'>{$type['waffenmod_min']}</span>/<span style='color: #00FF00'>{$type['waffenmod_max']}</span>",
+            "<span style='color: #008000'>{$type['reaktormod_min']}</span>/<span style='color: #00FF00'>{$type['reaktormod_max']}</span>",
+            "<span style='color: #008000'>{$type['computermod_min']}</span>/<span style='color: #00FF00'>{$type['computermod_max']}</span>",
+            "<span style='color: #008000'>{$type['antriebsmod_min']}</span>/<span style='color: #00FF00'>{$type['antriebsmod_max']}</span>",
+            "{$type['sensormod']}/<span style='color: #008000'>{$type['sensormod_min']}</span>/<span style='color: #00FF00'>{$type['sensormod_max']}</span>",
+            "{$type['epsmod']}/<span style='color: #008000'>{$type['epsmod_min']}</span>/<span style='color: #00FF00'>{$type['epsmod_max']}</span>",
+            $type['fusion'],
+            "{$type['crew_min']} / {$type['crew']}",
+            $type['storage'],
+        ];
+    }, $shipTypes);
 
-    echo "</table>";
-}
-
-function renderTable($data)
-{
-    echo "<table id='database' width=100% cellspacing=1 cellpadding=1 style='background-color: #262323'>
-            <tr>";
-
-    foreach ($data['headers'] as $header) {
-        echo "<td class='tdmainobg' style='text-align: center;'><strong>$header</strong></td>";
-    }
-
-    echo "</tr>";
-
-    foreach ($data['data'] as $row) {
-        echo "<tr>";
-
-        foreach ($row as $cell) {
-            echo "<td class='tdmainobg' style='text-align: center;'>";
-
-            if (isset($cell['image']) && $cell['image']) {
-                echo "<img src={$cell['value']}>";
-            } else {
-                echo $cell['value'];
-            }
-
-            echo "</td>";
-        }
-
-        echo "</tr>";
-    }
-
-    echo "</table>";
+    return [
+        'headers' => $headers,
+        'data' => $data,
+    ];
 }
