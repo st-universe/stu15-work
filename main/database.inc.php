@@ -12,37 +12,41 @@ $entities = [
 renderBreadcrumb();
 renderSelect($entities, $entitySelected);
 
-switch ($entitySelected) {
-    case 'colony-type':
-        include_once("class/colony.class.php");
-        $colonyRepository = new colony();
-        $colonyTypes = $colonyRepository->getColonyTypes();
-        $tableData = getColonyTypesData($colonyTypes);
-        break;
-    case 'commodity':
-        include_once("class/colony.class.php");
-        $colonyRepository = new colony();
-        $commodities = $colonyRepository->goodlist(true);
-        $tableData = getCommoditiesData($commodities);
-        break;
-    case 'map-field':
-        include_once("class/map.class.php");
-        $mapRepository = new map();
-        $fields = $mapRepository->getFields();
-        $tableData = getMapFieldsData($fields);
-        var_dump(count($tableData['data']));
-        $tableData = [
-            'headers' => $tableData['headers'],
-            'data' => array_slice($tableData['data'], 0, 50),
-        ];
-        break;
-    case 'ship-type':
-    default:
-        include_once("class/ship.class.php");
-        $shipRepository = new ship();
-        $shipTypes = $shipRepository->getClasses();
-        $tableData = getShipTypesData($shipTypes);
-        break;
+try {
+    switch ($entitySelected) {
+        case 'colony-type':
+            include_once("class/colony.class.php");
+            $colonyRepository = new colony();
+            $colonyTypes = $colonyRepository->getColonyTypes();
+            $tableData = getColonyTypesData($colonyTypes);
+            break;
+        case 'commodity':
+            include_once("class/colony.class.php");
+            $colonyRepository = new colony();
+            $commodities = $colonyRepository->goodlist(true);
+            $tableData = getCommoditiesData($commodities);
+            break;
+        case 'map-field':
+            include_once("class/map.class.php");
+            $mapRepository = new map();
+            $fields = $mapRepository->getFields();
+            $tableData = getMapFieldsData($fields);
+            var_dump(count($tableData['data']));
+            $tableData = [
+                'headers' => $tableData['headers'],
+                'data' => array_slice($tableData['data'], 0, 50),
+            ];
+            break;
+        case 'ship-type':
+        default:
+            include_once("class/ship.class.php");
+            $shipRepository = new ship();
+            $shipTypes = $shipRepository->getClasses();
+            $tableData = getShipTypesData($shipTypes);
+            break;
+    }
+} catch (Exception $e) {
+    echo $e->getMessage();
 }
 
 if (isset($tableData)) {
