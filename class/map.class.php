@@ -10,7 +10,7 @@ class map
 
 	function getFields()
 	{
-		return $this->db->query("SELECT * FROM stu_map_fields", 2);
+		return $this->db->query("SELECT * FROM stu_map_fields LIMIT 50", 2);
 	}
 	
 	function getrow($x1,$x2,$y,$wese=1) { return $this->db->query("SELECT a.coords_x,a.coords_y,a.type,a.race,b.sperrung FROM stu_map_fields as a LEFT JOIN stu_colonies as b USING(coords_x,coords_y,wese) WHERE a.wese=".$wese." AND a.coords_x>=".$x1." AND a.coords_x<=".$x2." AND a.coords_y=".$y,2); }
