@@ -31,11 +31,15 @@ try {
             $mapRepository = new map();
             $fields = $mapRepository->getFields();
             $tableData = getMapFieldsData($fields);
+            $fieldsCount = $mapRepository->getFieldsCount();
+            echo "Total fields: $fieldsCount";
+            /*
             var_dump(count($tableData['data']));
             $tableData = [
                 'headers' => $tableData['headers'],
                 'data' => array_slice($tableData['data'], 0, 50),
             ];
+            */
             break;
         case 'ship-type':
         default:
