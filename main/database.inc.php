@@ -18,18 +18,21 @@ try {
             include_once("class/colony.class.php");
             $colonyRepository = new colony();
             $colonyTypes = $colonyRepository->getColonyTypes();
+            $entity = 'colony-type';
             $tableData = getColonyTypesData($colonyTypes);
             break;
         case 'commodity':
             include_once("class/colony.class.php");
             $colonyRepository = new colony();
             $commodities = $colonyRepository->goodlist(true);
+            $entity = 'commodity';
             $tableData = getCommoditiesData($commodities);
             break;
         case 'map-field':
             include_once("class/map.class.php");
             $mapRepository = new map();
             $fields = $mapRepository->getFields();
+            $entity = 'map-field';
             $tableData = getMapFieldsData($fields);
             $fieldsCount = $mapRepository->getFieldsCount();
             echo "Total fields: $fieldsCount";
@@ -46,6 +49,7 @@ try {
             include_once("class/ship.class.php");
             $shipRepository = new ship();
             $shipTypes = $shipRepository->getClasses();
+            $entity = 'ship-type';
             $tableData = getShipTypesData($shipTypes);
             break;
     }
@@ -53,8 +57,8 @@ try {
     echo $e->getMessage();
 }
 
-if (isset($tableData)) {
-    renderTable($tableData);
+if (isset($entity) && isset($tableData)) {
+    renderTable($entity, $tableData);
 }
 
 function renderBreadcrumb()
@@ -85,9 +89,9 @@ function renderSelect($entities, $entitySelected)
         <br>";
 }
 
-function renderTable($data)
+function renderTable($entity, $data)
 {
-    echo "<table id=\"database\" width=\"100%\" cellspacing=\"1\" cellpadding=\"1\" style=\"background-color: #262323;\">
+    echo "<table id=\"database\" data-entity=\"$entity\" cellspacing=\"1\" cellpadding=\"1\" style=\"width: 100%; background-color: #262323;\">
             <tr>";
 
     foreach ($data['headers'] as $header) {
@@ -219,7 +223,28 @@ function getShipTypesData($shipTypes)
         ['image' => true, 'src' => "/gfx/goods/79.gif", 'alt' => 'EPS-Gitterlevel Anzahl/min/max'],
         'Fusion',
         'Crew',
-        'Ladung',
+        'Storage',
+        'Battery max',
+        'Bussard',
+        'Ore',
+        'Cloak',
+        'Slots',
+        'Replicator',
+        'Torpedos',
+        'Torpedo Evade',
+        'Sort A',
+        'Sort B',
+        'Tachyon',
+        'View',
+        'EWerft',
+        'Points',
+        'Construction time',
+        'Debris',
+        'EPS Cost',
+        'Probe',
+        'Probe Storage',
+        'Size',
+        'Secret Image',
     ];
 
     $data = array_map(function ($type) {
@@ -238,6 +263,27 @@ function getShipTypesData($shipTypes)
             $type['fusion'],
             "{$type['crew_min']} / {$type['crew']}",
             $type['storage'],
+            $type['max_batt'],
+            $type['bussard'],
+            $type['erz'],
+            $type['cloak'],
+            $type['slots'],
+            $type['replikator'],
+            $type['torps'],
+            $type['torp_evade'],
+            $type['sorta'],
+            $type['sortb'],
+            $type['tachyon'],
+            $type['view'],
+            $type['ewerft'],
+            $type['points'],
+            $type['buildtime'],
+            $type['trumfield'],
+            $type['eps_cost'],
+            $type['probe'],
+            $type['probe_stor'],
+            $type['size'],
+            $type['secretimage'],
         ];
     }, $shipTypes);
 
