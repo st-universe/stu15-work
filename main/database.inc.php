@@ -16,54 +16,32 @@ try {
     switch ($entitySelected) {
         case 'colony-type':
             include_once("class/colony.class.php");
-            $colonyRepository = new colony();
-            $colonyTypes = $colonyRepository->getColonyTypes();
-            $entity = 'colony-type';
-            $tableData = getColonyTypesData($colonyTypes);
+            renderTable('colony-type', getColonyTypeFields(), (new colony())->getColonyTypes());
             break;
         case 'commodity':
             include_once("class/colony.class.php");
-            $colonyRepository = new colony();
-            $commodities = $colonyRepository->goodlist(true);
-            $entity = 'commodity';
-            $tableData = getCommoditiesData($commodities);
+            renderTable('commodity', getCommodityFields(), (new colony())->goodlist(true));
             break;
         case 'map-field':
             include_once("class/map.class.php");
             $mapRepository = new map();
-            $fields = $mapRepository->getFields();
-            $entity = 'map-field';
-            $tableData = getMapFieldsData($fields);
-            $fieldsCount = $mapRepository->getFieldsCount();
-            echo "Total fields: $fieldsCount";
-            /*
-            var_dump(count($tableData['data']));
-            $tableData = [
-                'headers' => $tableData['headers'],
-                'data' => array_slice($tableData['data'], 0, 50),
-            ];
-            */
+            $fieldCount = $mapRepository->getFieldsCount();
+            echo "<span style='color: lightgrey'>Total fields: $fieldCount</span>";
+            renderTable('map-field', getMapFieldFields(), $mapRepository->getFields());
             break;
         case 'ship-type':
         default:
             include_once("class/ship.class.php");
-            $shipRepository = new ship();
-            $shipTypes = $shipRepository->getClasses();
-            $entity = 'ship-type';
-            $tableData = getShipTypesData($shipTypes);
+            renderTable('ship-type', getShipTypeFields(), (new ship())->getClasses());
             break;
     }
 } catch (Exception $e) {
     echo $e->getMessage();
 }
 
-if (isset($entity) && isset($tableData)) {
-    renderTable($entity, $tableData);
-}
-
 function renderBreadcrumb()
 {
-    echo "<table width=100% cellspacing=1 cellpadding=1 style='background-color: #262323'>
+    echo "<table cellspacing='1' cellpadding='1' style='width: 100%; background-color: #262323'>
             <tr>
                 <td class='tdmain'>/ <a href='page=main'>STU</a> / <strong>Database</strong></td>
             </tr>
@@ -89,35 +67,43 @@ function renderSelect($entities, $entitySelected)
         <br>";
 }
 
-function renderTable($entity, $data)
+function renderTable($entity, $fields, $data)
 {
-    echo "<table id=\"database\" data-entity=\"$entity\" cellspacing=\"1\" cellpadding=\"1\" style=\"width: 100%; background-color: #262323;\">
-            <tr>";
+    echo "<table id='database' data-entity='$entity' cellspacing='1' cellpadding='1' style='width: 100%; background-color: #262323;'>
+            <thead><tr>";
 
-    foreach ($data['headers'] as $header) {
-        echo "<td class=\"tdmainobg\" style=\"text-align: center;\">";
+    foreach ($fields as $header) {
+        echo "<td class='tdmainobg' data-field='{$header['field']}' style='text-align: center;'>";
 
-        if (is_array($header) && isset($header['image']) && $header['image']) {
-            echo "<img src=\"{$header['src']}\" alt=\"{$header['alt']}\">";
+        if (array_key_exists('image', $header)) {
+            if (array_key_exists('text', $header)) {
+                echo "<strong>{$header['text']}</strong>";
+            } else {
+                echo "<img src='{$header['src']}' alt='{$header['alt']}'>";
+            }
+        } elseif (array_key_exists('headerIsImage', $header)) {
+            echo "<img src='{$header['src']}' alt='{$header['alt']}'>";
         } else {
-            echo "<strong>$header</strong>";
+            echo "<strong>{$header['text']}</strong>";
         }
 
         echo "</td>";
     }
 
-    echo "</tr>";
+    echo "</tr></thead><tbody>";
 
-    foreach ($data['data'] as $row) {
+    foreach ($data as $row) {
         echo "<tr>";
 
-        foreach ($row as $cell) {
-            echo "<td class=\"tdmainobg\" style=\"text-align: center;\">";
+        foreach ($fields as $header) {
+            echo "<td class='tdmainobg' style='text-align: center;'>";
 
-            if (is_array($cell) && isset($cell['image']) && $cell['image']) {
-                echo "<img src=\"{$cell['src']}\" alt=\"{$cell['alt']}\">";
+            if (array_key_exists('image', $header)) {
+                echo "<img src='{$header['src']($row)}' alt='{$header['alt']($row)}'>";
+            } elseif (array_key_exists('color', $header)) {
+                echo "<span style='color: {$header['color']}'>{$row[$header['field']]}</span>";
             } else {
-                echo $cell;
+                echo $row[$header['field']];
             }
 
             echo "</td>";
@@ -126,169 +112,250 @@ function renderTable($entity, $data)
         echo "</tr>";
     }
 
-    echo "</table>";
+    echo "</tbody></table>";
 }
 
 /*
- * Entities data configs
+ * Entity field configs
  */
 
-function getColonyTypesData($colonyTypes)
+function getColonyTypeFields()
 {
-    $headers = ['ID', 'Image', 'Name', 'Iridium-Erz', 'Dilithium', 'Kelbonit-Erz', 'Nitrium-Erz', 'Iridium-Erz (T)', 'Kelbonit-Erz (T)', 'Nitrium-Erz (T)', 'Atmosphäre'];
-
-    $data = array_map(function ($type) {
-        return [
-            $type['id'],
-            ['image' => true, 'src' => "/gfx/planets/{$type['id']}.gif", 'alt' => $type['name']],
-            $type['name'],
-            $type['mine7'],
-            $type['mine17'],
-            $type['mine33'],
-            $type['mine34'],
-            $type['mine74'],
-            $type['mine75'],
-            $type['mine76'],
-            $type['atmos'],
-        ];
-    }, $colonyTypes);
-
     return [
-        'headers' => $headers,
-        'data' => $data,
+        ['field' => 'id', 'text' => 'ID'],
+        [
+            'field' => 'image',
+            'text' => 'Image',
+            'image' => true,
+            'src' => function ($type) { return "/gfx/planets/{$type['id']}.gif"; },
+            'alt' => function ($type) { return $type['name']; },
+        ],
+        ['field' => 'name', 'text' => 'Name'],
+        ['field' => 'mine7', 'text' => 'Iridium-Erz'],
+        ['field' => 'mine17', 'text' => 'Dilithium'],
+        ['field' => 'mine33', 'text' => 'Kelbonit-Erz'],
+        ['field' => 'mine34', 'text' => 'Nitrium-Erz'],
+        ['field' => 'mine74', 'text' => 'Iridium-Erz (T)'],
+        ['field' => 'mine75', 'text' => 'Kelbonit-Erz (T)'],
+        ['field' => 'mine76', 'text' => 'Nitrium-Erz (T)'],
+        ['field' => 'atmos', 'text' => 'Atmosphere'],
     ];
 }
 
-function getCommoditiesData($commodities)
+function getCommodityFields()
 {
-    $headers = ['ID', 'Image', 'Name', 'wfaktor', 'hide', 'sort', 'secretimage', 'maxoffer'];
-
-    $data = array_map(function ($commodity) {
-        $imagePath = $commodity['secretimage']
-            ? "/gfx/secret/{$commodity['secretimage']}.gif"
-            : "/gfx/goods/{$commodity['id']}.gif";
-
-        return [
-            $commodity['id'],
-            ['image' => true, 'src' => $imagePath, 'alt' => $commodity['name']],
-            $commodity['name'],
-            $commodity['wfaktor'],
-            $commodity['hide'],
-            $commodity['sort'],
-            $commodity['secretimage'],
-            $commodity['maxoffer'],
-        ];
-    }, $commodities);
-
     return [
-        'headers' => $headers,
-        'data' => $data,
+        ['field' => 'id', 'text' => 'ID'],
+        [
+            'field' => 'image',
+            'text' => 'Image',
+            'image' => true,
+            'src' => function ($type) {
+                return $type['secretimage']
+                    ? "/gfx/secret/{$type['secretimage']}.gif"
+                    : "/gfx/goods/{$type['id']}.gif";
+            },
+            'alt' => function ($type) { return $type['name']; },
+        ],
+        ['field' => 'name', 'text' => 'Name'],
+        ['field' => 'wfaktor', 'text' => 'wfaktor'],
+        ['field' => 'hide', 'text' => 'hide'],
+        ['field' => 'sort', 'text' => 'sort'],
+        ['field' => 'secretimage', 'text' => 'Secret Image'],
+        ['field' => 'maxoffer', 'text' => 'Max Offer'],
     ];
 }
 
-function getMapFieldsData($mapFields)
+function getMapFieldFields()
 {
-    $headers = ['ID', 'coords_x', 'coords_y', 'type', 'race', 'wese'];
-
-    $data = array_map(function ($field) {
-        return [
-            $field['id'],
-            $field['coords_x'],
-            $field['coords_y'],
-            $field['type'],
-            $field['race'],
-            $field['wese'],
-        ];
-    }, $mapFields);
-
     return [
-        'headers' => $headers,
-        'data' => $data,
+        ['field' => 'id', 'text' => 'ID'],
+        ['field' => 'coords_x', 'text' => 'X'],
+        ['field' => 'coords_y', 'text' => 'Y'],
+        ['field' => 'type', 'text' => 'Type'],
+        ['field' => 'race', 'text' => 'race'],
+        ['field' => 'wese', 'text' => 'wese'],
     ];
 }
 
-function getShipTypesData($shipTypes)
+function getShipTypeFields()
 {
-    $headers = [
-        'ID',
-        'Image',
-        'Name',
-        ['image' => true, 'src' => "/gfx/goods/50.gif", 'alt' => 'Hüllenlevel Anzahl/min/max'],
-        ['image' => true, 'src' => "/gfx/goods/58.gif", 'alt' => 'Schildlevel Anzahl/min/max'],
-        ['image' => true, 'src' => "/gfx/goods/62.gif", 'alt' => 'Waffenlevel Anzahl/min/max'],
-        ['image' => true, 'src' => "/gfx/goods/87.gif", 'alt' => 'Reaktorlevel min/max'],
-        ['image' => true, 'src' => "/gfx/goods/55.gif", 'alt' => 'Computerlevel min/max'],
-        ['image' => true, 'src' => "/gfx/goods/75.gif", 'alt' => 'Antriebslevel min/max'],
-        ['image' => true, 'src' => "/gfx/goods/83.gif", 'alt' => 'Sensorlevel Anzahl/min/max'],
-        ['image' => true, 'src' => "/gfx/goods/79.gif", 'alt' => 'EPS-Gitterlevel Anzahl/min/max'],
-        'Fusion',
-        'Crew',
-        'Storage',
-        'Battery max',
-        'Bussard',
-        'Ore',
-        'Cloak',
-        'Slots',
-        'Replicator',
-        'Torpedos',
-        'Torpedo Evade',
-        'Sort A',
-        'Sort B',
-        'Tachyon',
-        'View',
-        'EWerft',
-        'Points',
-        'Construction time',
-        'Debris',
-        'EPS Cost',
-        'Probe',
-        'Probe Storage',
-        'Size',
-        'Secret Image',
-    ];
-
-    $data = array_map(function ($type) {
-        return [
-            $type['id'],
-            ['image' => true, 'src' => "/gfx/ships/{$type['id']}.gif", 'alt' => $type['name']],
-            $type['name'],
-            "{$type['huellmod']}/<span style='color: #008000'>{$type['huellmod_min']}</span>/<span style='color: #00FF00'>{$type['huellmod_max']}</span>",
-            "{$type['schildmod']}/<span style='color: #008000'>{$type['schildmod_min']}</span>/<span style='color: #00FF00'>{$type['schildmod_max']}</span>",
-            "{$type['waffenmod']}/<span style='color: #008000'>{$type['waffenmod_min']}</span>/<span style='color: #00FF00'>{$type['waffenmod_max']}</span>",
-            "<span style='color: #008000'>{$type['reaktormod_min']}</span>/<span style='color: #00FF00'>{$type['reaktormod_max']}</span>",
-            "<span style='color: #008000'>{$type['computermod_min']}</span>/<span style='color: #00FF00'>{$type['computermod_max']}</span>",
-            "<span style='color: #008000'>{$type['antriebsmod_min']}</span>/<span style='color: #00FF00'>{$type['antriebsmod_max']}</span>",
-            "{$type['sensormod']}/<span style='color: #008000'>{$type['sensormod_min']}</span>/<span style='color: #00FF00'>{$type['sensormod_max']}</span>",
-            "{$type['epsmod']}/<span style='color: #008000'>{$type['epsmod_min']}</span>/<span style='color: #00FF00'>{$type['epsmod_max']}</span>",
-            $type['fusion'],
-            "{$type['crew_min']} / {$type['crew']}",
-            $type['storage'],
-            $type['max_batt'],
-            $type['bussard'],
-            $type['erz'],
-            $type['cloak'],
-            $type['slots'],
-            $type['replikator'],
-            $type['torps'],
-            $type['torp_evade'],
-            $type['sorta'],
-            $type['sortb'],
-            $type['tachyon'],
-            $type['view'],
-            $type['ewerft'],
-            $type['points'],
-            $type['buildtime'],
-            $type['trumfield'],
-            $type['eps_cost'],
-            $type['probe'],
-            $type['probe_stor'],
-            $type['size'],
-            $type['secretimage'],
-        ];
-    }, $shipTypes);
-
     return [
-        'headers' => $headers,
-        'data' => $data,
+        ['field' => 'id', 'text' => 'ID'],
+        [
+            'field' => 'image',
+            'text' => 'Image',
+            'image' => true,
+            'src' => function ($type) { return "/gfx/ships/{$type['id']}.gif"; },
+            'alt' => function ($type) { return $type['name']; },
+        ],
+        ['field' => 'name', 'text' => 'Name'],
+        [
+            'field' => 'huellmod',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/50.gif",
+            'alt' => 'Hüllenlevel Anzahl',
+        ],
+        [
+            'field' => 'huellmod_min',
+            'color' => '#008000',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/50.gif",
+            'alt' => 'Hüllenlevel min',
+        ],
+        [
+            'field' => 'huellmod_max',
+            'color' => '#00FF00',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/50.gif",
+            'alt' => 'Hüllenlevel max',
+        ],
+        [
+            'field' => 'schildmod',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/58.gif",
+            'alt' => 'Schildlevel Anzahl',
+        ],
+        [
+            'field' => 'schildmod_min',
+            'color' => '#008000',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/58.gif",
+            'alt' => 'Schildlevel min',
+        ],
+        [
+            'field' => 'schildmod_max',
+            'color' => '#00FF00',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/58.gif",
+            'alt' => 'Schildlevel max',
+        ],
+        [
+            'field' => 'waffenmod',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/62.gif",
+            'alt' => 'Waffenlevel Anzahl',
+        ],
+        [
+            'field' => 'waffenmod_min',
+            'color' => '#008000',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/62.gif",
+            'alt' => 'Waffenlevel min',
+        ],
+        [
+            'field' => 'waffenmod_max',
+            'color' => '#00FF00',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/62.gif",
+            'alt' => 'Waffenlevel max',
+        ],
+        [
+            'field' => 'reaktormod_min',
+            'color' => '#008000',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/87.gif",
+            'alt' => 'Reaktorlevel min',
+        ],
+        [
+            'field' => 'reaktormod_max',
+            'color' => '#00FF00',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/87.gif",
+            'alt' => 'Reaktorlevel max',
+        ],
+        [
+            'field' => 'computermod_min',
+            'color' => '#008000',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/55.gif",
+            'alt' => 'Computerlevel min',
+        ],
+        [
+            'field' => 'computermod_max',
+            'color' => '#00FF00',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/55.gif",
+            'alt' => 'Computerlevel max',
+        ],
+        [
+            'field' => 'antriebsmod_min',
+            'color' => '#008000',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/75.gif",
+            'alt' => 'Antriebslevel min',
+        ],
+        [
+            'field' => 'antriebsmod_max',
+            'color' => '#00FF00',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/75.gif",
+            'alt' => 'Antriebslevel max',
+        ],
+        [
+            'field' => 'sensormod',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/83.gif",
+            'alt' => 'Sensorlevel Anzahl',
+        ],
+        [
+            'field' => 'sensormod_min',
+            'color' => '#008000',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/83.gif",
+            'alt' => 'Sensorlevel min',
+        ],
+        [
+            'field' => 'sensormod_max',
+            'color' => '#00FF00',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/83.gif",
+            'alt' => 'Sensorlevel max',
+        ],
+        [
+            'field' => 'epsmod',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/79.gif",
+            'alt' => 'EPS-Gitterlevel Anzahl',
+        ],
+        [
+            'field' => 'epsmod_min',
+            'color' => '#008000',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/79.gif",
+            'alt' => 'EPS-Gitterlevel min',
+        ],
+        [
+            'field' => 'epsmod_max',
+            'color' => '#00FF00',
+            'headerIsImage' => true,
+            'src' => "/gfx/goods/79.gif",
+            'alt' => 'EPS-Gitterlevel max',
+        ],
+        ['field' => 'fusion', 'text' => 'Fusion'],
+        ['field' => 'crew_min', 'text' => 'Crew Min'],
+        ['field' => 'crew', 'text' => 'Crew'],
+        ['field' => 'storage', 'text' => 'Storage'],
+        ['field' => 'max_batt', 'text' => 'Battery max'],
+        ['field' => 'bussard', 'text' => 'Bussard'],
+        ['field' => 'erz', 'text' => 'Ore'],
+        ['field' => 'cloak', 'text' => 'Cloak'],
+        ['field' => 'slots', 'text' => 'Slots'],
+        ['field' => 'replikator', 'text' => 'Replicator'],
+        ['field' => 'torps', 'text' => 'Torpedos'],
+        ['field' => 'torp_evade', 'text' => 'Torpedo Evade'],
+        ['field' => 'sorta', 'text' => 'Sort A'],
+        ['field' => 'sortb', 'text' => 'Sort B'],
+        ['field' => 'tachyon', 'text' => 'Tachyon'],
+        ['field' => 'view', 'text' => 'View'],
+        ['field' => 'ewerft', 'text' => 'EWerft'],
+        ['field' => 'points', 'text' => 'Points'],
+        ['field' => 'buildtime', 'text' => 'Construction time'],
+        ['field' => 'trumfield', 'text' => 'Debris'],
+        ['field' => 'eps_cost', 'text' => 'EPS Cost'],
+        ['field' => 'probe', 'text' => 'Probe'],
+        ['field' => 'probe_stor', 'text' => 'Probe Storage'],
+        ['field' => 'size', 'text' => 'Size'],
+        ['field' => 'secretimage', 'text' => 'Secret Image'],
     ];
 }
