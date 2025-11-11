@@ -4,6 +4,7 @@ $entitySelected = isset($_GET['selected']) ? $_GET['selected'] : 'ship-type';
 
 $entities = [
     'building-type' => 'Building Types',
+    'building-type-field-type' => 'Building Type Field Types',
     'colony-type' => 'Colony Types',
     'commodity' => 'Commodities',
     'map-field' => 'Map Fields',
@@ -20,6 +21,10 @@ try {
             $result = (new colony())->getBuildings();
             for ($types = []; $row = mysql_fetch_assoc($result); $types[] = $row);
             renderTable('building-type', getBuildingTypeFields(), $types);
+            break;
+        case 'building_type_field_type':
+            include_once("class/colony.class.php");
+            renderTable('building-type-field-type', getBuildingTypeFieldTypeFields(), (new colony())->getBuildingTypeFieldTypeAll());
             break;
         case 'colony-type':
             include_once("class/colony.class.php");
@@ -154,6 +159,15 @@ function getBuildingTypeFields()
         ['field' => 'buildtime', 'text' => 'Construction Time'],
         ['field' => 'blimit', 'text' => 'Construction Limit'],
         ['field' => 'secretimage', 'text' => 'Secret Image'],
+    ];
+}
+
+function getBuildingTypeFieldTypeFields()
+{
+    return [
+        ['field' => 'id', 'text' => 'ID'],
+        ['field' => 'buildings_id', 'text' => 'Building Type ID'],
+        ['field' => 'type', 'text' => 'Field Type ID'],
     ];
 }
 
