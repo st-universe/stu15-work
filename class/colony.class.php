@@ -128,7 +128,7 @@ class colony
 
     function getBuildingTypeFieldTypeAll()
     {
-        return $this->db->query("SELECT * FROM stu_field_build", 2);
+        return $this->db->query("SELECT * FROM stu_field_build ORDER BY id", 2);
     }
 
 	function getStorageById($colId) { return $this->db->query("SELECT a.goods_id,a.count,b.name FROM stu_colonies_storage as a LEFT JOIN stu_goods as b ON a.goods_id=b.id WHERE a.colonies_id=".$colId." ORDER BY sort ASC",2); }
