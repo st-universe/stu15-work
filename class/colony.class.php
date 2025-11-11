@@ -106,7 +106,10 @@ class colony
 	function getunrvgbyid($colId) { return $this->db->query("SELECT SUM(a.count) as gs,goods_id FROM stu_buildings_goods as a LEFT JOIN stu_colonies_underground as b ON a.buildings_id=b.buildings_id WHERE a.mode=2 AND b.colonies_id=".$colId." AND b.aktiv=1 GROUP BY a.goods_id"); }
 	
 	function getclassbyid($classId) { return $this->db->query("SELECT * FROM stu_colonies_classes WHERE id='".$classId."'",4); }
-	
+
+    /**
+     * Adds one arbitrary field type due to "GROUP BY a.id".
+     */
 	function getbuildings() { return $this->db->query("SELECT a.*,b.type FROM stu_buildings as a LEFT JOIN stu_field_build as b ON a.id=b.buildings_id WHERE a.view=1 GROUP BY a.id ORDER by a.level,a.name ASC"); }
 	
 	function getnpcbuildings()

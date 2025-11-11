@@ -3,6 +3,7 @@
 $entitySelected = isset($_GET['selected']) ? $_GET['selected'] : 'ship-type';
 
 $entities = [
+    'building-type' => 'Building Types',
     'colony-type' => 'Colony Types',
     'commodity' => 'Commodities',
     'map-field' => 'Map Fields',
@@ -14,6 +15,12 @@ renderSelect($entities, $entitySelected);
 
 try {
     switch ($entitySelected) {
+        case 'building-type':
+            include_once("class/colony.class.php");
+            $result = (new colony())->getBuildings();
+            for ($types = []; $row = mysql_fetch_assoc($result); $types[] = $row);
+            renderTable('building-type', getBuildingTypeFields(), $types);
+            break;
         case 'colony-type':
             include_once("class/colony.class.php");
             renderTable('colony-type', getColonyTypeFields(), (new colony())->getColonyTypes());
@@ -118,6 +125,37 @@ function renderTable($entity, $fields, $data)
 /*
  * Entity field configs
  */
+
+function getBuildingTypeFields()
+{
+    return [
+        ['field' => 'id', 'text' => 'ID'],
+        [
+            'field' => 'image',
+            'text' => 'Image',
+            'image' => true,
+            'src' => function ($type) { return "/gfx/buildings/{$type['id']}_{$type['type']}.gif"; },
+            'alt' => function ($type) { return $type['name']; },
+        ],
+        ['field' => 'name', 'text' => 'Name'],
+        ['field' => 'lager', 'text' => 'Storage'],
+        ['field' => 'eps_cost', 'text' => 'EPS Cost'],
+        ['field' => 'eps', 'text' => 'EPS'],
+        ['field' => 'eps_min', 'text' => 'EPS Min'],
+        ['field' => 'eps_pro', 'text' => 'EPS Pro'],
+        ['field' => 'bev_pro', 'text' => 'Bev Pro'],
+        ['field' => 'bev_use', 'text' => 'Bev Use'],
+        ['field' => 'level', 'text' => 'Level'],
+        ['field' => 'integrity', 'text' => 'Integrity'],
+        ['field' => 'research_id', 'text' => 'Research ID'],
+        ['field' => 'points', 'text' => 'Points'],
+        ['field' => 'view', 'text' => 'View'],
+        ['field' => 'schilde', 'text' => 'Shields'],
+        ['field' => 'buildtime', 'text' => 'Construction Time'],
+        ['field' => 'blimit', 'text' => 'Construction Limit'],
+        ['field' => 'secretimage', 'text' => 'Secret Image'],
+    ];
+}
 
 function getColonyTypeFields()
 {
