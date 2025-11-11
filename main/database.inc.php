@@ -22,7 +22,7 @@ try {
             for ($types = []; $row = mysql_fetch_assoc($result); $types[] = $row);
             renderTable('building-type', getBuildingTypeFields(), $types);
             break;
-        case 'building_type_field_type':
+        case 'building-type-field-type':
             include_once("class/colony.class.php");
             renderTable('building-type-field-type', getBuildingTypeFieldTypeFields(), (new colony())->getBuildingTypeFieldTypeAll());
             break;
