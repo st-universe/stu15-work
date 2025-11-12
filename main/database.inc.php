@@ -35,11 +35,11 @@ try {
             renderTable('commodity', getCommodityFields(), (new colony())->goodlist(true));
             break;
         case 'map-field':
-            include_once("class/map.class.php");
-            $mapRepository = new map();
-            $fieldCount = $mapRepository->getFieldsCount();
-            echo "<span style='color: lightgrey'>Total fields: $fieldCount</span>";
-            renderTable('map-field', getMapFieldFields(), $mapRepository->getFields());
+            include_once('class/Repositories/MapFieldRepository.php');
+            $mapFieldRepository = new MapFieldRepository();
+            $total = $mapFieldRepository->total();
+            echo "<span style='color: lightgrey'>Total: $total</span>";
+            renderTable('map-field', getMapFieldFields(), $mapFieldRepository->index());
             break;
         case 'ship-type':
         default:
