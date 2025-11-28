@@ -2,9 +2,10 @@
 
 $entity = isset($_GET['entity']) ? $_GET['entity'] : null;
 $page   = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-$limit  = isset($_GET['limit']) ? max(1, intval($_GET['limit'])) : 20;
+$limit  = isset($_GET['limit']) ? max(1, intval($_GET['limit'])) : 50;
 
 $entities = [
+    'commodity',
     'map-field',
     'module',
 ];
@@ -23,6 +24,12 @@ $db = new Database();
 try {
     // All cases must set $items and $total
     switch ($entity) {
+        case 'commodity':
+            include_once ('class/Repositories/CommodityRepository.php');
+            $commodityRepository = new CommodityRepository($db);
+            $items = $commodityRepository->index($offset, $limit);
+            $total = $commodityRepository->total();
+            break;
         case 'map-field':
             include_once('class/Repositories/MapFieldRepository.php');
             $mapFieldRepository = new MapFieldRepository($db);
