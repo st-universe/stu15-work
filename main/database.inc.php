@@ -7,7 +7,6 @@ $entities = [
     'building-type-field-type' => 'Building Type Field Types',
     'colony-type' => 'Colony Types',
     'commodity' => 'Commodities',
-    'map-field' => 'Map Fields',
     'ship-type' => 'Ship Types',
 ];
 
@@ -33,13 +32,6 @@ try {
         case 'commodity':
             include_once("class/colony.class.php");
             renderTable('commodity', getCommodityFields(), (new colony())->goodlist(true));
-            break;
-        case 'map-field':
-            include_once('class/Repositories/MapFieldRepository.php');
-            $mapFieldRepository = new MapFieldRepository();
-            $total = $mapFieldRepository->total();
-            echo "<span style='color: lightgrey'>Total: $total</span>";
-            renderTable('map-field', getMapFieldFields(), $mapFieldRepository->index());
             break;
         case 'ship-type':
         default:
@@ -215,18 +207,6 @@ function getCommodityFields()
         ['field' => 'sort', 'text' => 'sort'],
         ['field' => 'secretimage', 'text' => 'Secret Image'],
         ['field' => 'maxoffer', 'text' => 'Max Offer'],
-    ];
-}
-
-function getMapFieldFields()
-{
-    return [
-        ['field' => 'id', 'text' => 'ID'],
-        ['field' => 'coords_x', 'text' => 'X'],
-        ['field' => 'coords_y', 'text' => 'Y'],
-        ['field' => 'type', 'text' => 'Type'],
-        ['field' => 'race', 'text' => 'race'],
-        ['field' => 'wese', 'text' => 'wese'],
     ];
 }
 
