@@ -8,6 +8,7 @@ $entities = [
     'commodity',
     'map-field',
     'module',
+    'ship',
 ];
 
 if (! $entity) {
@@ -41,6 +42,12 @@ try {
             $moduleRepository = new ModuleRepository($db);
             $items = $moduleRepository->index($offset, $limit);
             $total = $moduleRepository->total();
+            break;
+        case 'ship':
+            include_once('class/Repositories/ShipRepository.php');
+            $shipRepository = new ShipRepository($db);
+            $items = $shipRepository->index();
+            $total = $shipRepository->total();
             break;
     }
 
