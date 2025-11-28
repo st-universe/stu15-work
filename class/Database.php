@@ -38,7 +38,7 @@ class Database
         }
     }
 
-    public function query($sql, $params = [], $mode = 'all')
+    public function query($sql, $params = [], $mode = null)
     {
         if (! $this->pdo) {
             die('PDO not initialized.');
@@ -52,7 +52,6 @@ class Database
                 return $stmt->fetch();
             case 'value':
                 return $stmt->fetchColumn();
-            case 'all':
             default:
                 return $stmt->fetchAll();
         }

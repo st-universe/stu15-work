@@ -1,10 +1,10 @@
 <?php
 
-class MapFieldRepository
+class ModuleRepository
 {
     private $db;
 
-    const TABLE_NAME = 'stu_map_fields';
+    const TABLE_NAME = 'stu_ships_modules';
 
     public function __construct($db)
     {
