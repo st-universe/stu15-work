@@ -9,6 +9,7 @@ $entities = [
     'map-field',
     'module',
     'ship',
+    'torpedo-type',
 ];
 
 if (! $entity) {
@@ -48,6 +49,12 @@ try {
             $shipRepository = new ShipRepository($db);
             $items = $shipRepository->index();
             $total = $shipRepository->total();
+            break;
+        case 'torpedo-type':
+            include_once('class/Repositories/TorpedoTypeRepository.php');
+            $torpedoTypeRepository = new TorpedoTypeRepository($db);
+            $items = $torpedoTypeRepository->index($offset, $limit);
+            $total = $torpedoTypeRepository->total();
             break;
     }
 
