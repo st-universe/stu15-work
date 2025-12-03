@@ -7,6 +7,7 @@ $limit  = isset($_GET['limit']) ? max(1, intval($_GET['limit'])) : 50;
 $entities = [
     'commodity',
     'map-field',
+    'map-field-special',
     'module',
     'ship',
     'torpedo-type',
@@ -37,6 +38,12 @@ try {
             $mapFieldRepository = new MapFieldRepository($db);
             $items = $mapFieldRepository->index($offset, $limit);
             $total = $mapFieldRepository->total();
+            break;
+        case 'map-field-special':
+            include_once('class/Repositories/MapFieldSpecialRepository.php');
+            $mapFieldSpecialRepository = new MapFieldSpecialRepository($db);
+            $items = $mapFieldSpecialRepository->index($offset, $limit);
+            $total = $mapFieldSpecialRepository->total();
             break;
         case 'module':
             include_once('class/Repositories/ModuleRepository.php');
