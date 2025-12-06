@@ -5,63 +5,37 @@ $page   = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $limit  = isset($_GET['limit']) ? max(1, intval($_GET['limit'])) : 50;
 
 $entities = [
-    'commodity',
-    'map-field',
-    'map-field-special',
-    'module',
-    'ship',
-    'torpedo-type',
+    'commodity' => 'Commodity',
+    'map-field' => 'MapField',
+    'map-field-special' => 'MapFieldSpecial',
+    'module' => 'Module',
+    'ship' => 'Ship',
+    'torpedo-type' => 'TorpedoType',
+    'user' => 'User',
 ];
 
 if (! $entity) {
     response(['error' => 'No entity selected.'], 400);
-} elseif (! in_array($entity, $entities)) {
+} elseif (! array_key_exists($entity, $entities)) {
     response(['error' => 'Invalid entity.'], 400);
 }
 
 $offset = ($page - 1) * $limit;
 
 include_once('class/Database.php');
-$db = new Database();
+$database = new Database();
 
 try {
     // All cases must set $items and $total
     switch ($entity) {
         case 'commodity':
-            include_once ('class/Repositories/CommodityRepository.php');
-            $commodityRepository = new CommodityRepository($db);
-            $items = $commodityRepository->index($offset, $limit);
-            $total = $commodityRepository->total();
-            break;
         case 'map-field':
-            include_once('class/Repositories/MapFieldRepository.php');
-            $mapFieldRepository = new MapFieldRepository($db);
-            $items = $mapFieldRepository->index($offset, $limit);
-            $total = $mapFieldRepository->total();
-            break;
         case 'map-field-special':
-            include_once('class/Repositories/MapFieldSpecialRepository.php');
-            $mapFieldSpecialRepository = new MapFieldSpecialRepository($db);
-            $items = $mapFieldSpecialRepository->index($offset, $limit);
-            $total = $mapFieldSpecialRepository->total();
-            break;
         case 'module':
-            include_once('class/Repositories/ModuleRepository.php');
-            $moduleRepository = new ModuleRepository($db);
-            $items = $moduleRepository->index($offset, $limit);
-            $total = $moduleRepository->total();
-            break;
         case 'ship':
-            include_once('class/Repositories/ShipRepository.php');
-            $shipRepository = new ShipRepository($db);
-            $items = $shipRepository->index();
-            $total = $shipRepository->total();
-            break;
         case 'torpedo-type':
-            include_once('class/Repositories/TorpedoTypeRepository.php');
-            $torpedoTypeRepository = new TorpedoTypeRepository($db);
-            $items = $torpedoTypeRepository->index($offset, $limit);
-            $total = $torpedoTypeRepository->total();
+        case 'user':
+            list($items, $total) = data($entity, $entities, $database, $offset, $limit);
             break;
     }
 
@@ -87,4 +61,16 @@ function response($content, $status = 200)
     header('Content-Type: application/json');
     echo json_encode($content);
     die();
+}
+
+function data($entity, $entities, $database, $offset, $limit)
+{
+    $repository = $entities[$entity].'Repository';
+    include_once ('class/Repositories/'.$repository.'.php');
+    $repository = new $repository($database);
+
+    return [
+        $repository->index($offset, $limit),
+        $repository->total(),
+    ];
 }
