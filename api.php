@@ -11,6 +11,7 @@ $entities = [
     'module' => 'Module',
     'ship' => 'Ship',
     'torpedo-type' => 'TorpedoType',
+    'trading-station' => null,
     'user' => 'User',
 ];
 
@@ -36,6 +37,12 @@ try {
         case 'torpedo-type':
         case 'user':
             list($items, $total) = data($entity, $entities, $database, $offset, $limit);
+            break;
+        case 'trading-station':
+            include_once ('class/Repositories/ShipRepository.php');
+            $shipRepository = new ShipRepository($database);
+            $items = $shipRepository->tradingStations($offset, $limit);
+            $total = count($items);
             break;
     }
 
