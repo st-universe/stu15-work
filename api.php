@@ -24,14 +24,18 @@ if (! $entity) {
 include_once('class/Database.php');
 $database = new Database();
 
-$showColumns = isset($_GET['columns']) ? $_GET['columns'] : null;
+$showColumns = isset($_GET['columns']);
 
 if ($showColumns) {
-    $repository = $entities[$entity].'Repository';
-    include_once ('class/Repositories/'.$repository.'.php');
-    $repository = new $repository($database);
+    try {
+        $repository = $entities[$entity].'Repository';
+        include_once ('class/Repositories/'.$repository.'.php');
+        $repository = new $repository($database);
 
-    response(['columns' => $repository->columns()]);
+        response(['columns' => $repository->columns()]);
+    } catch (Exception $e) {
+        response(['error' => $e->getMessage()], 400);
+    }
 }
 
 $page   = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;

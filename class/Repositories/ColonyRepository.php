@@ -4,7 +4,7 @@ include_once ('BaseRepository.php');
 
 class ColonyRepository extends BaseRepository
 {
-    protected $table = 'stu_colonies_classes';
+    protected $table = 'stu_colonies';
 
     public function index($offset = 0, $limit = 10)
     {
