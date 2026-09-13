@@ -1,8 +1,6 @@
 <?php
 
 $entity = isset($_GET['entity']) ? $_GET['entity'] : null;
-$page   = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-$limit  = isset($_GET['limit']) ? max(1, intval($_GET['limit'])) : 50;
 
 $entities = [
     'colony' => 'Colony',
@@ -23,10 +21,24 @@ if (! $entity) {
     response(['error' => 'Invalid entity.'], 400);
 }
 
-$offset = ($page - 1) * $limit;
-
 include_once('class/Database.php');
 $database = new Database();
+
+$showColumns = isset($_GET['columns']) ? $_GET['columns'] : null;
+
+if ($showColumns) {
+    $repository = $entities[$entity].'Repository';
+    include_once ('class/Repositories/'.$repository.'.php');
+    $repository = new $repository($database);
+
+    response(['columns' => $repository->columns()]);
+}
+
+$page   = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$limit  = isset($_GET['limit']) ? max(1, intval($_GET['limit'])) : 50;
+
+
+$offset = ($page - 1) * $limit;
 
 try {
     // All cases must set $items and $total

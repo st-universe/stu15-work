@@ -10,6 +10,11 @@ abstract class BaseRepository
         $this->db = $db;
     }
 
+    public function columns()
+    {
+        return $this->db->query("SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name = ".$this->table, [], 'value');
+    }
+
     public function total()
     {
         return $this->db->query("SELECT COUNT(*) FROM ".$this->table, [], 'value');
