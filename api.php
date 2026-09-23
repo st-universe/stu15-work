@@ -13,6 +13,7 @@ $entities = [
     'torpedo-type' => 'TorpedoType',
     'trading-station' => null,
     'user' => 'User',
+    'user-level' => 'UserLevel',
 ];
 
 if (! $entity) {
