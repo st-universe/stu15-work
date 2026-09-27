@@ -9,6 +9,7 @@ $entities = [
     'map-field' => 'MapField',
     'map-field-special' => 'MapFieldSpecial',
     'module' => 'Module',
+    'research' => 'Research',
     'ship' => 'Ship',
     'torpedo-type' => 'TorpedoType',
     'trading-station' => null,
@@ -54,6 +55,7 @@ try {
         case 'map-field':
         case 'map-field-special':
         case 'module':
+        case 'research':
         case 'ship':
         case 'torpedo-type':
         case 'user':
